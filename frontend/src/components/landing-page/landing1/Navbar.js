@@ -11,7 +11,7 @@ function Navbar() {
             
             <button className="login-button">
                 <a href="/">Log In</a>
-                // Log In
+                {/* Log In */}
             </button>
         </nav>
     </div>
