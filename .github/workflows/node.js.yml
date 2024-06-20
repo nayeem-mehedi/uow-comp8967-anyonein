@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main","frontend-main"]
+    branches: [ "main","frontend-main","server-setup"]
   pull_request:
-    branches: [ "main","frontend-main"]
+    branches: [ "main","frontend-main","server-setup"]
 
 jobs:
   build:
@@ -26,9 +26,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+        cache-dependency-path: frontend/package-lock.json,server-setup/package-lock.json
     - name: Install, build and test
       run: |
         npm ci
         npm run build --if-present
-      working-directory: ./frontend
+      working-directory: ./frontend,./server-setup
