@@ -10,8 +10,8 @@ function Navbar() {
             </div>
             
             <button className="login-button">
-                <a href="/"></a>
-                Log In
+                <a href="/">Log In</a>
+                // Log In
             </button>
         </nav>
     </div>
