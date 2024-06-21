@@ -4,6 +4,7 @@ import landingContent from '../assets/landing-page/landing-content';
 import Footer from './Footer';
 import Navbar from './Navbar';
 
+var isLoggedIn = false;
 
 function LandingStart(){
   return(
@@ -51,7 +52,7 @@ function Landing() {
     return (
       <div className="landing">
         <div className="landing-start">
-          <Navbar />
+          <Navbar isLoggedIn={isLoggedIn} />
           <LandingStart />
         </div>
         <div className="landing-section2">

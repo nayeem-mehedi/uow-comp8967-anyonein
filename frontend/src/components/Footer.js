@@ -1,6 +1,5 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 function Footer(){
@@ -26,11 +25,11 @@ function Footer(){
                 </nav>
             </div>
             <div className="foot-socials">
-                <Link to="https://www.facebook.com/" className="socials">Facebook</Link>
-                <Link to="https://www.linkedin.com/" className="socials">Linkedin</Link>
-                <Link to="https://x.com/" className="socials">Twitter</Link>
-                <Link to="https://www.youtube.com/" className="socials">Youtube</Link>
-                <Link to="https://www.instagram.com/" className="socials">Instagram</Link>
+                <a href="https://www.facebook.com/" className="socials">Facebook</a>
+                <a href="https://www.linkedin.com/" className="socials">Linkedin</a>
+                <a href="https://x.com/" className="socials">Twitter</a>
+                <a href="https://www.youtube.com/" className="socials">Youtube</a>
+                <a href="https://www.instagram.com/" className="socials">Instagram</a>
             </div>
           </div>
         </footer>
