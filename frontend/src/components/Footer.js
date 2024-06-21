@@ -1,5 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Footer(){
 
@@ -11,24 +13,24 @@ function Footer(){
           <div className="footer-top">
             <p>© {currentYear} AnyoneIn</p>
             <h1>AnyoneIn</h1>
-            <a className="main-btn footer-btn">Learn More</a>
+            <NavLink to="/learn-more" className="main-btn learn-btn">Learn More</NavLink>
           </div>
           <div className="footer-bottom">
             <div className="foot-nav">
                 <nav className="navbar">
                     <div className="nav-links">
-                        <a href="./Landing.js">Home</a>
-                        <a href="#">About Us</a>
-                        <a href="#">Contact Us</a>
+                      <NavLink to="/home" className="nav-items">Home</NavLink>
+                      <NavLink to="/about" className="nav-items">About Us</NavLink>
+                      <NavLink to="/contact" className="nav-items">Contact Us</NavLink>
                     </div>
                 </nav>
             </div>
             <div className="foot-socials">
-                <a href="https://www.facebook.com/">Facebook</a>
-                <a href="https://www.facebook.com/">Linkedin</a>
-                <a href="https://www.facebook.com/">Twitter</a>
-                <a href="https://www.facebook.com/">Youtube</a>
-                <a href="https://www.facebook.com/">Instagram</a>
+                <Link to="https://www.facebook.com/" className="socials">Facebook</Link>
+                <Link to="https://www.linkedin.com/" className="socials">Linkedin</Link>
+                <Link to="https://x.com/" className="socials">Twitter</Link>
+                <Link to="https://www.youtube.com/" className="socials">Youtube</Link>
+                <Link to="https://www.instagram.com/" className="socials">Instagram</Link>
             </div>
           </div>
         </footer>

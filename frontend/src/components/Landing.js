@@ -1,25 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import landingContent from '../assets/landing-page/landing-content';
 import Footer from './Footer';
-
-
-function Navbar() {
-  return (
-    <div className="nav-div">
-        <nav className="navbar">
-            <div className="nav-links">
-                <a href="./Landing.js">Home</a>
-                <a href="#">About Us</a>
-                <a href="#">Contact Us</a>
-            </div>
-            
-            <a className="main-btn login-button">
-                Log In
-            </a>
-        </nav>
-    </div>
-  );
-}
+import Navbar from './Navbar';
 
 
 function LandingStart(){
@@ -29,8 +12,8 @@ function LandingStart(){
               <h1>AnyoneIn: Connect, Collaborate, Create</h1>
               <p>We are a community platform aiming to connect innovators with like-minded individuals, help them build their dream project with their dream team. Let’s ignite the power of collaboration!</p>
               <div className="landing-start-buttons">
-                  <a className="main-btn get-started-btn" href="#">Get Started</a>
-                  <a className="alt-btn learn-btn" href="#">Learn More</a>
+                  <Link to="/get-started" className="main-btn get-started-btn">Get Started</Link>
+                  <Link to="/learn-more" className="main-btn learn-btn">Learn More</Link>
               </div>
           </div>
       </div>
@@ -56,7 +39,7 @@ function LandingSection(props){
                 </div>
                 <div className={props.name+"-extra-join"}>
                   <p>{props.extraText1}<br />{props.extraText2}</p>
-                  <a className="main-btn landing-extra-btn" href="#">Join Us Today</a>
+                  <Link to="/login" className="main-btn landing-extra-btn">Join Us Today</Link>
                 </div>
               </div>
           </div>
