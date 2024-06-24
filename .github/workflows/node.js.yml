@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main","frontend-main"]
+    branches: [ "main","frontend-main","server-setup"]
   pull_request:
-    branches: [ "main","frontend-main"]
+    branches: [ "main","frontend-main","server-setup"]
 
 jobs:
   build-frontend-main:
@@ -33,3 +33,28 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+
+  build-server-setp:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [18.x]
+  
+      steps:
+        - name: checkout repo
+          uses: actions/checkout@v4
+  
+        - name: setup node
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+  
+        - name: Install dependencies for backend
+          working-directory: backend
+          run: npm install
+  
+        - name: Build frontend
+          working-directory: backend
+          run: npm run build
+  
