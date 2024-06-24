@@ -45,7 +45,7 @@ jobs:
         - name: checkout repo
           uses: actions/checkout@v4
   
-        - name: setup node
+        - name: setup nodeV
           uses: actions/setup-node@v3
           with:
             node-version: '18'
