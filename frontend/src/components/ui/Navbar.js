@@ -8,7 +8,7 @@ function ProfileDropdown() {
       <Dropdown.Toggle className="grey-btn"></Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Profile</Dropdown.Item>
+        <Dropdown.Item href="#/action-1">View Profile</Dropdown.Item>
         <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -24,7 +24,7 @@ function Navbar(props) {
                 <NavLink to="/about" className="nav-items">About Us</NavLink>
                 <NavLink to="/contact" className="nav-items">Contact Us</NavLink>
               </div>
-                {props.isLoggedIn === false ? (<NavLink to="/login" className="main-btn login-btn">Login</NavLink>) : (<ProfileDropdown />)}
+              {props.isLoggedIn === false ? (<NavLink to="/login" className="main-btn">Login</NavLink>) : (<ProfileDropdown />)}
           </nav>
       </div>
     );

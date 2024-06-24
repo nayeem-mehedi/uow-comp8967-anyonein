@@ -74,6 +74,7 @@ html{
 .navbar{
     padding: 40px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
@@ -385,7 +386,7 @@ footer h1{
 }
 
 .login-form{
-    margin: 30px 0px 50px 0px;
+    margin: 30px 0px 30px 0px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -397,17 +398,11 @@ footer h1{
     border: 2px solid #09113367;
 }
 
-.login-btn-div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.login-btn{
+    margin-top: 40px;
 }
 
-.login-btn-div p{
-    padding: 30px 0px;
-}
-
-.login-btn-div .signup-link{
+.signup-link{
     text-decoration: none;
 }
 
@@ -456,10 +451,15 @@ footer h1{
 }
 
 .signup-form{
-    margin: 30px 0px 50px 0px;
+    margin: 30px 0px 30px 0px;
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.fl-name{
+    width: 100%;
 }
 
 .signup-field{
@@ -468,17 +468,12 @@ footer h1{
     margin: 10px 0px;
 }
 
-.signup-btn-div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.signup-btn{
+    margin-top: 30px;
+    max-width: fit-content;
 }
 
-.signup-btn-div p{
-    padding: 30px 0px;
-}
-
-.signup-btn-div .signup-link{
+.login-link{
     text-decoration: none;
 }
 
