@@ -9,6 +9,7 @@ import {
 import Login from "./components/pages/Login/Login"
 import Landing from './components/pages/Landing/Landing';
 import Signup from './components/pages/Signup/Signup';
+import Profile from './components/pages/Profile/Profile';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 

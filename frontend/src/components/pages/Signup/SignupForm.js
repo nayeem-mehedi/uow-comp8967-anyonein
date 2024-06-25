@@ -8,7 +8,6 @@ function SignupForm() {
 
     const [validated, setValidated] = useState(false);
 
-    //FOR BACKEND TEAM
     const [values, setValues] = useState({
         fname: "",
         lname: "",
@@ -17,7 +16,7 @@ function SignupForm() {
     });
 
     const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]}));
+        setValues(prev => ({...prev, [event.target.name]: event.target.value}));
     };
 
     const handleSubmit = (event) => {
@@ -28,7 +27,7 @@ function SignupForm() {
         }
         setValidated(true);
 
-        //BACKEND TEAM CALL YOUR API HERE
+        //TODO: CALL API HERE
     };
 
 
