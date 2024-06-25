@@ -63,4 +63,45 @@ jobs:
         # - name: Build backend
           # working-directory: backend
           # run: npm run build
+
+  build-main:
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/main' 
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies for frontend
+        working-directory: frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Test frontend
+        working-directory: frontend
+        run: npm test -- --passWithNoTests
+
+      - name: Install dependencies for backend
+        working-directory: backend
+        run: npm install
+        
+      # - name: Build backend
+      #   working-directory: backend
+      #   run: npm run build
+
+      - name: Test backend
+        working-directory: backend
+        run: npm test -- --passWithNoTests
   
