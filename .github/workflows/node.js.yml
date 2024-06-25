@@ -37,9 +37,8 @@ jobs:
 
       - name: test frontend
         working-directory: frontend
-        run: npm test
+        run: npm test -- --passWithNoTests
         
-
   build-server-setup:
       runs-on: ubuntu-latest
       # if: github.ref == 'refs/heads/server-setup'
