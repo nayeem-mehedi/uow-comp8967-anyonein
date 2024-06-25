@@ -5,9 +5,15 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main","frontend-main","server-setup"]
+    branches:
+      - main
+      - frontend-main
+      - server-setup
   pull_request:
-    branches: [ "main","frontend-main","server-setup"]
+    branches:
+      - main
+      - frontend-main
+      - server-setup
 
 jobs:
   build-frontend-main:
