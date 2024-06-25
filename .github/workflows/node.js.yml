@@ -12,7 +12,7 @@ on:
 jobs:
   build-frontend-main:
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/frontend-main'
+    if: github.ref == 'refs/heads/frontend-main'
 
     strategy:
       matrix:
