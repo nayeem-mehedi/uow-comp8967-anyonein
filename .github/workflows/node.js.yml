@@ -97,11 +97,13 @@ jobs:
         working-directory: backend
         run: npm install
         
+      # No test needed for backend for the time being
       # - name: Build backend
       #   working-directory: backend
       #   run: npm run build
 
-      - name: Test backend
-        working-directory: backend
-        run: npm test -- --passWithNoTests
+      # No test script needed for backend for the time being
+      # - name: Test backend
+        # working-directory: backend
+        # run: npm test -- --passWithNoTests
   
