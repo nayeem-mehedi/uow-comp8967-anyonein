@@ -1,16 +1,25 @@
 import express from 'express';
-import routes from './src/routes/routes';
+import bodyParser from 'body-parser';
+import { AppDataSource } from './src/config/db.js';
+import loginRoutes from './src/routes/loginRoutes.js';
+import userRoutes from './src/routes/userRoutes.js';
+
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const PORT = 4000;
+const port = process.env.PORT || 9001;
+
+app.use(bodyParser.json());
+app.use('/api/auth', loginRoutes)
+app.use('/api/users', userRoutes);
 
 
-routes(app);
-
-app.get('/', (req, res) => 
-    res.send(`Node and express server port : ${PORT}`)
-);
-
-app.listen(PORT, () =>
-    console.log(`server running on ${PORT}`)
-);
+AppDataSource.initialize()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => console.log(error));
