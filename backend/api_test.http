@@ -1,0 +1,75 @@
+@baseUrl = http://localhost:9001/api
+
+
+### Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "rudaba",
+  "password": "rudaba123",
+  "firstName": "rudaba",
+  "lastName": "kamor",
+  "email": "rudaba@test.com",
+  "phone": "123123123"
+}
+
+###
+
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "rudaba",
+  "password": "rudaba123"
+}
+
+###
+
+@authToken = {{login.response.body.token}}
+
+### Get user details
+GET http://localhost:9001/api/users/1
+Authorization: basic {{authToken}}
+
+### Edit user details
+PUT http://localhost:9001/api/users/3
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "firstName": "rudaba adnin",
+  "phone": "456456456"
+}
+
+### List all users
+GET http://localhost:9001/api/users
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+### Delete user
+DELETE http://localhost:9001/api/users/2
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+
+### Change user password
+PUT {{baseUrl}}/users/change-password
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "oldPassword": "rudaba123",
+  "newPassword": "rudaba456"
+}
+
+###
+
+# @name logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+#####################################
+
