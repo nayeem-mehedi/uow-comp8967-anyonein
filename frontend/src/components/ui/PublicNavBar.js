@@ -21,7 +21,7 @@ function PublicNavbar(props) {
 
             <Dropdown.Menu>
                 <Dropdown.Item>
-                    <NavLink to="/profile" className="nav-items">View Profile</NavLink>
+                    <NavLink to="/profile/self" className="nav-items">View Profile</NavLink>
                 </Dropdown.Item>
                 <Dropdown.Item>
                     <NavLink to="/logout" className="nav-items">Logout</NavLink>

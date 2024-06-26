@@ -30,7 +30,7 @@ function LoginForm() {
                 const response = await axios.post('http://localhost:9001/api/auth/login', values);
                 if (response.data) {
                     localStorage.setItem('token', response.data.token); 
-                    navigate('/profile'); 
+                    navigate('/profile/self'); 
                 }
             } catch (error) {
                 setError("Login failed. Please check your username and password.");

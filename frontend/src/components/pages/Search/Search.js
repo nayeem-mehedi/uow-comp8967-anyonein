@@ -21,6 +21,14 @@ function Search(){
     setResults(data.data);
   };
 
+  if (!results) {
+    return (
+        <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+        </div>
+    );
+}
+
   return (
     <Container>
       <Row className="justify-content-md-center">
@@ -53,7 +61,7 @@ function Search(){
                     <strong>Active:</strong> {user.isActive ? 'Yes' : 'No'}<br /> */}
                     <strong>Skills:</strong> {user.profile.skills.map(skill => skill.name).join(', ')}
                   </Card.Text>
-                  <Button variant="primary" href={`/profile/${user.id}`}>
+                  <Button variant="primary" href={`/profile/${user.profile.id}`}>
                     View Profile
                   </Button>
                 </Card.Body>
