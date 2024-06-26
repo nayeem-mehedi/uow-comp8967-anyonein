@@ -1,33 +1,49 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { isLoggedIn } from '../../helper/auth';
 
-function ProfileDropdown() {
-  return (
+function Navbar(props) {
+  const navigate = useNavigate();
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      navigate('/login');
+    } else {
+      setLoggedIn(true);
+    }
+  }, [navigate]);
+
+  const ProfileDropdown = loggedIn ? <>
     <Dropdown>
       <Dropdown.Toggle className="grey-btn"></Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">View Profile</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Logout</Dropdown.Item>
+        <Dropdown.Item>
+          <NavLink to="/profile" className="nav-items">View Profile</NavLink>
+        </Dropdown.Item>
+        <Dropdown.Item>
+          <NavLink to="/logout" className="nav-items">Logout</NavLink>
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
+  </> : <><NavLink to="/login" className="main-btn">Login</NavLink></>
+
+  return (
+    <div className="nav-container">
+      <nav className="navbar">
+        <div className="nav-links">
+          <NavLink to="/home" className="nav-items">Home</NavLink>
+          <NavLink to="/search" className="nav-items">Search</NavLink>
+          <NavLink to="/about" className="nav-items">About Us</NavLink>
+          <NavLink to="/contact" className="nav-items">Contact Us</NavLink>
+        </div>
+        {ProfileDropdown}
+      </nav>
+    </div>
   );
 }
 
-function Navbar(props) {
-    return (
-      <div className="nav-container">
-          <nav className="navbar">
-              <div className="nav-links">
-                <NavLink to="/home" className="nav-items">Home</NavLink>
-                <NavLink to="/about" className="nav-items">About Us</NavLink>
-                <NavLink to="/contact" className="nav-items">Contact Us</NavLink>
-              </div>
-              {props.isLoggedIn === false ? (<NavLink to="/login" className="main-btn">Login</NavLink>) : (<ProfileDropdown />)}
-          </nav>
-      </div>
-    );
-  }
-
-  export default Navbar;
+export default Navbar;

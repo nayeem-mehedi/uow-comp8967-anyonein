@@ -92,6 +92,11 @@ html{
     color: #5472eb;
 }
 
+.nav-items.active {
+    background-color: #7272727b;
+    border-radius: 5px;
+}
+
 
 /* STARTING PART OF LANDING PAGE */
 

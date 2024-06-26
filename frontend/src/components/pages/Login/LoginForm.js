@@ -11,28 +11,29 @@ function LoginForm() {
     const [error, setError] = useState("");
     
     const [values, setValues] = useState({
-        email: "",
+        username: "",
         password: ""
     });
 
     const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]}));
+        setValues(prev => ({...prev, [event.target.name]: event.target.value}));
     };
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
-          event.preventDefault();
           event.stopPropagation();
         } else {
             try {
+                console.log(values);
                 const response = await axios.post('http://localhost:9001/api/auth/login', values);
                 if (response.data) {
                     localStorage.setItem('token', response.data.token); 
                     navigate('/profile'); 
                 }
             } catch (error) {
-                setError("Login failed. Please check your email and password.");
+                setError("Login failed. Please check your username and password.");
             }
         }
         setValidated(true);
@@ -42,17 +43,17 @@ function LoginForm() {
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="login-form">
             <FloatingLabel
                 controlId="floatingInput"
-                label="Email address"
+                label="Username"
                 className="mb-3 login-field"
             >
                 <Form.Control 
                     required
-                    type="email" 
-                    placeholder="name@example.com" 
-                    name="email" 
+                    type="username" 
+                    placeholder="username" 
+                    name="username" 
                     onChange={handleInput}
                 />
-                <Form.Control.Feedback type="invalid">Please enter a valid email.</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">Please enter a valid username.</Form.Control.Feedback>
             </FloatingLabel>
             <FloatingLabel
                 controlId="floatingPassword" 

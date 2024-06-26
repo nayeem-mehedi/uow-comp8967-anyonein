@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import Navbar from "../../ui/Navbar";
 
 function Search(){
-    const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  // Retrieve the token from localStorage
+  const token = localStorage.getItem('token');
 
-  const handleSearch = async () => {
-    const response = await fetch('https://api.example.com/search', {
-      method: 'POST',
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    const response = await fetch('http://localhost:9001/api/search/user?query='+query, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`,
       },
-      body: JSON.stringify({ query }),
     });
     const data = await response.json();
     setResults(data.data);
@@ -20,18 +24,19 @@ function Search(){
   return (
     <Container>
       <Row className="justify-content-md-center">
+        <Navbar />
         <Col md="6">
           <h1 className="text-center search-h1">Search Users</h1>
-          <Form className="search-form">
+          <Form className="search-form" onSubmit={handleSearch}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Control
                 type="text"
-                placeholder="Enter username"
+                placeholder="Name, username, skills"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
             </Form.Group>
-            <Button variant="primary" onClick={handleSearch}>
+            <Button variant="primary" type="submit">
               Search
             </Button>
           </Form>
@@ -44,8 +49,8 @@ function Search(){
                     <strong>Username:</strong> {user.username}<br />
                     <strong>Email:</strong> {user.email}<br />
                     <strong>Phone:</strong> {user.phone}<br />
-                    <strong>Role:</strong> {user.role}<br />
-                    <strong>Active:</strong> {user.isActive ? 'Yes' : 'No'}<br />
+                    {/* <strong>Role:</strong> {user.role}<br />
+                    <strong>Active:</strong> {user.isActive ? 'Yes' : 'No'}<br /> */}
                     <strong>Skills:</strong> {user.profile.skills.map(skill => skill.name).join(', ')}
                   </Card.Text>
                   <Button variant="primary" href={`/profile/${user.id}`}>

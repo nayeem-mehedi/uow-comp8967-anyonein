@@ -1,27 +1,17 @@
-import React, { useState} from 'react';
+import React from 'react';
 import landingContent from '../../../assets/landing-page/landing-content';
 import Footer from './Footer';
-import Navbar from '../../ui/Navbar';
+// import Navbar from '../../ui/Navbar';
+import PublicNavbar from '../../ui/PublicNavBar'
 import LandingStart from './LandingStart';
 import LandingSections from './LandingSections';
 
-
 function Landing() {
-
-  const [isLoggedIn, setLoggedIn] = useState(false);
-
-  function loggedIn(){
-    setLoggedIn(true);
-  }
-
-  function loggedOut(){
-    setLoggedIn(false);
-  }
 
   return (
     <div className="landing">
       <div className="landing-start">
-        <Navbar isLoggedIn={isLoggedIn} />
+        <PublicNavbar/>
         <LandingStart />
       </div>
       <div className="landing-section2">
