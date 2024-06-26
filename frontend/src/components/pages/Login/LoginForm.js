@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 
 function LoginForm() {
 
+    const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
-
-    //FOR BACKEND TEAM
+    const [error, setError] = useState("");
+    
     const [values, setValues] = useState({
         email: "",
         password: ""
@@ -16,15 +19,23 @@ function LoginForm() {
         setValues(prev => ({...prev, [event.target.name]: [event.target.value]}));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
+        } else {
+            try {
+                const response = await axios.post('http://localhost:9001/api/auth/login', values);
+                if (response.data) {
+                    localStorage.setItem('token', response.data.token); 
+                    navigate('/profile'); 
+                }
+            } catch (error) {
+                setError("Login failed. Please check your email and password.");
+            }
         }
         setValidated(true);
-
-        //BACKEND TEAM CALL YOUR API HERE
     };
 
     return (
