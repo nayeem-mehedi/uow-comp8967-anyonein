@@ -8,6 +8,7 @@ import skillRoutes from "./src/routes/skillRoutes.js";
 import profileSkillRoutes from "./src/routes/profileSkillRoutes.js";
 import searchRoutes from "./src/routes/searchRoutes.js"
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ const app = express();
 const port = process.env.PORT || 9001;
 
 app.use(bodyParser.json());
+app.use(cors("*"));
+
 app.use("/api/auth", loginRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/profiles", profileRoutes);
