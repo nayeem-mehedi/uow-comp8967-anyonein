@@ -6,6 +6,7 @@ import userRoutes from "./src/routes/userRoutes.js";
 import profileRoutes from "./src/routes/profileRoutes.js";
 import skillRoutes from "./src/routes/skillRoutes.js";
 import profileSkillRoutes from "./src/routes/profileSkillRoutes.js";
+import searchRoutes from "./src/routes/searchRoutes.js"
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/profile-skills", profileSkillRoutes);
+app.use("/api/search", searchRoutes)
 
 AppDataSource.initialize()
   .then(() => {

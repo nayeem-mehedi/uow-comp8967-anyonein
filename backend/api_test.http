@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
   "username": "rudaba",
-  "password": "rudaba123",
+  "password": "rudaba456",
   "firstName": "rudaba",
   "lastName": "kamor",
   "email": "rudaba@test.com",
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "username": "rudaba",
-  "password": "rudaba123"
+  "password": "rudaba456"
 }
 
 ###
@@ -30,11 +30,11 @@ Content-Type: application/json
 @authToken = {{login.response.body.token}}
 
 ### Get user details
-GET http://localhost:9001/api/users/1
+GET {{baseUrl}}/users/1
 Authorization: basic {{authToken}}
 
 ### Edit user details
-PUT http://localhost:9001/api/users/3
+PUT {{baseUrl}}/users/3
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
@@ -44,12 +44,12 @@ Authorization: basic {{authToken}}
 }
 
 ### List all users
-GET http://localhost:9001/api/users
+GET {{baseUrl}}/users
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
 ### Delete user
-DELETE http://localhost:9001/api/users/2
+DELETE {{baseUrl}}/users/2
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
@@ -60,8 +60,8 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "oldPassword": "rudaba123",
-  "newPassword": "rudaba456"
+  "oldPassword": "rudaba456",
+  "newPassword": "rudaba123"
 }
 
 ###
@@ -74,7 +74,7 @@ Authorization: basic {{authToken}}
 #####################################
 
 ### Create a profile for a user
-POST http://localhost:9001/api/profiles
+POST {{baseUrl}}/profiles
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
@@ -86,7 +86,7 @@ Authorization: basic {{authToken}}
 }
 
 ### Get profile details
-GET http://localhost:9001/api/profiles/1
+GET {{baseUrl}}/profiles/1
 Authorization: basic {{authToken}}
 
 # ### Update profile details
@@ -100,7 +100,7 @@ Authorization: basic {{authToken}}
 # }
 
 ### Create a new skill
-POST http://localhost:9001/api/skills
+POST {{baseUrl}}/skills
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
@@ -109,25 +109,33 @@ Authorization: basic {{authToken}}
 }
 
 ### List all skills
-GET http://localhost:9001/api/skills
+GET {{baseUrl}}/skills
 Authorization: basic {{authToken}}
 
 ### Delete a skill
-DELETE http://localhost:9001/api/skills/3
+DELETE {{baseUrl}}/skills/3
 Authorization: basic {{authToken}}
 
 ### Add skill to profile
-POST http://localhost:9001/api/profile-skills
+POST {{baseUrl}}/profile-skills
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "profileId": 1,
+  "profileId": 2,
   "skillId": 5
 }
 
 ### Remove skill from profile
-DELETE http://localhost:9001/api/profile-skills/1/5
+DELETE {{baseUrl}}/profile-skills/1/5
 Authorization: basic {{authToken}}
 
 ###################################################
+
+# @name search
+
+GET {{baseUrl}}/search/user?query=Java Selenium&page=1&limit=10
+Authorization: basic {{authToken}}
+
+
+####
