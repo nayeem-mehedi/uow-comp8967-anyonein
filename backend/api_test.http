@@ -73,3 +73,61 @@ Authorization: basic {{authToken}}
 
 #####################################
 
+### Create a profile for a user
+POST http://localhost:9001/api/profiles
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "githubProfile": "https://github.com/nayeem-mehedi",
+  "otherProfile": "https://www.linkedin.com/in/nayeem-mehedi",
+  "profilePicture": "https://example.com/profile.jpg",
+  "userId": 3
+}
+
+### Get profile details
+GET http://localhost:9001/api/profiles/1
+Authorization: basic {{authToken}}
+
+# ### Update profile details
+# PUT http://localhost:9001/api/profiles/1
+# Content-Type: application/json
+
+# {
+#   "githubProfile": "https://github.com/johndoe",
+#   "otherProfile": "https://linkedin.com/in/johndoe_new",
+#   "profilePicture": "https://example.com/new_profile.jpg"
+# }
+
+### Create a new skill
+POST http://localhost:9001/api/skills
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "name": "Selenium"
+}
+
+### List all skills
+GET http://localhost:9001/api/skills
+Authorization: basic {{authToken}}
+
+### Delete a skill
+DELETE http://localhost:9001/api/skills/3
+Authorization: basic {{authToken}}
+
+### Add skill to profile
+POST http://localhost:9001/api/profile-skills
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "profileId": 1,
+  "skillId": 5
+}
+
+### Remove skill from profile
+DELETE http://localhost:9001/api/profile-skills/1/5
+Authorization: basic {{authToken}}
+
+###################################################
