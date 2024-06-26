@@ -10,6 +10,7 @@ import Login from "./components/pages/Login/Login"
 import Landing from './components/pages/Landing/Landing';
 import Signup from './components/pages/Signup/Signup';
 import Profile from './components/pages/Profile/Profile';
+import Search from './components/pages/Search/Search';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     path: "/profile",
     element: <Profile />,
   },
+  {
+    path: "/search",
+    element: <Search />,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -491,3 +491,22 @@ footer h1{
 .signup-socials p{
     margin: 0px 20px;
 }
+
+/* SEARCH PAGE */
+
+.search-h1{
+    font-size: 50px;
+    font-weight: 600;
+    color: #091133;
+    margin-top: 150px;
+    margin-bottom: 50px
+}
+
+.search-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search-form button{
+}
