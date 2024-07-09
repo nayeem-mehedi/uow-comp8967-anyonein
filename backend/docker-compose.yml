@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  anyonein_mariadb:
+    image: mariadb:10
+    container_name: anyonein_mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=12341234
+      - MARIADB_DATABASE=anyonein
+      - MARIADB_USER=db_user
+      - MARIADB_PASSWORD=db1234
+    volumes:
+      - anyonein_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+
+  anyonein_redis:
+    image: redis:7.0-alpine
+    container_name: anyonein_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  anyonein_data:

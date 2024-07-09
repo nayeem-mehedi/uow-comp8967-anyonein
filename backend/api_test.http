@@ -1,0 +1,156 @@
+@baseUrl = http://localhost:9001/api
+
+
+### Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "rudaba",
+  "password": "rudaba456",
+  "firstName": "rudaba",
+  "lastName": "kamor",
+  "email": "rudaba@test.com",
+  "phone": "123123123"
+}
+
+###
+
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "rudaba",
+  "password": "rudaba456"
+}
+
+###
+
+@authToken = {{login.response.body.token}}
+
+### Get user details
+GET {{baseUrl}}/users/1
+Authorization: basic {{authToken}}
+
+### Edit user details
+PUT {{baseUrl}}/users/3
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "firstName": "rudaba adnin",
+  "phone": "456456456"
+}
+
+### List all users
+GET {{baseUrl}}/users
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+### Delete user
+DELETE {{baseUrl}}/users/2
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+
+### Change user password
+PUT {{baseUrl}}/users/change-password
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "oldPassword": "rudaba456",
+  "newPassword": "rudaba123"
+}
+
+###
+
+# @name logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+#####################################
+
+### Create a profile for a user
+POST {{baseUrl}}/profiles
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "githubProfile": "https://github.com/nayeem-mehedi",
+  "otherProfile": "https://www.linkedin.com/in/nayeem-mehedi",
+  "profilePicture": "https://example.com/profile.jpg",
+  "userId": 3
+}
+
+### Get Self profile details
+GET {{baseUrl}}/profiles/self
+Authorization: basic {{authToken}}
+
+###
+
+### Get profile details
+GET {{baseUrl}}/profiles/2
+Authorization: basic {{authToken}}
+
+###
+
+### Update profile details
+PUT http://localhost:9001/api/profiles/1
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "githubProfile": "https://github.com/nayeem-mehedi",
+  "otherProfile": "https://www.linkedin.com/in/nayeem-mehedi",
+  "profilePicture": "https://ui-avatars.com/api/?name=N+M"
+}
+
+# {
+#   "githubProfile": "https://github.com/johndoe",
+#   "otherProfile": "https://linkedin.com/in/johndoe_new",
+#   "profilePicture": "https://ui-avatars.com/api/?name=N+M"
+# }
+
+### Create a new skill
+POST {{baseUrl}}/skills
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "name": "Selenium"
+}
+
+### List all skills
+GET {{baseUrl}}/skills
+Authorization: basic {{authToken}}
+
+### Delete a skill
+DELETE {{baseUrl}}/skills/3
+Authorization: basic {{authToken}}
+
+### Add skill to profile
+POST {{baseUrl}}/profile-skills
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "profileId": 2,
+  "skillId": 5
+}
+
+### Remove skill from profile
+DELETE {{baseUrl}}/profile-skills/1/5
+Authorization: basic {{authToken}}
+
+###################################################
+
+# @name search
+
+GET {{baseUrl}}/search/user?query=Java Selenium&page=1&limit=10
+Authorization: basic {{authToken}}
+
+
+####
