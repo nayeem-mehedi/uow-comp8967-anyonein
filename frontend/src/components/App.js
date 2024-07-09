@@ -1,11 +1,12 @@
 import React from 'react';
-import Landing1 from './landing-page/Landing1';
+import Landing from './pages/Landing/Landing';
 import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() {
   return (
     <div className="App">
-      <Landing1 />
+      <Landing />
     </div>
   );
 }
