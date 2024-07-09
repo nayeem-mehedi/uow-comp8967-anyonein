@@ -6,9 +6,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "load_demo_data": "node ./load_demo_data.js"
   },
-  "author": "Md Mahmudur Reza",
+  "author": {
+    "name": "Md Nayeem Mehedi"
+  },
+  "contributors": [
+    {
+      "name": "Md Mahmudur Reza"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
