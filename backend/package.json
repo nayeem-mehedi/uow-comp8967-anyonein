@@ -6,13 +6,22 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "load_demo_data": "node ./load_demo_data.js"
   },
-  "author": "Md Mahmudur Reza",
+  "author": {
+    "name": "Md Nayeem Mehedi"
+  },
+  "contributors": [
+    {
+      "name": "Md Mahmudur Reza"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",

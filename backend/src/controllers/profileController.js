@@ -1,8 +1,10 @@
 import { AppDataSource } from '../config/db.js';
 import { Profile } from '../models/Profile.js';
+import { User } from '../models/User.js';
 import {checkAuthHeader} from '../helper/authHelper.js'
 
 const profileRepository = AppDataSource.getRepository(Profile);
+const userRepository = AppDataSource.getRepository(User);
 
 export const createProfile = async (req, res) => {
   // Check and validate Authorization token
@@ -23,6 +25,34 @@ export const createProfile = async (req, res) => {
   }
 };
 
+export const getSelfProfile = async (req, res) => {
+  // Check and validate Authorization token
+  const token = req.header('Authorization')?.split(' ')[1];
+  const userName = await checkAuthHeader(token, res);
+  console.log(userName);
+
+  const queryBuilder = profileRepository.createQueryBuilder('profile')
+      .leftJoinAndSelect('profile.user', 'user')
+      .leftJoinAndSelect('profile.skills', 'skill')
+      .where("user.username = :username", {username: userName});
+
+  try {
+    const profile = await queryBuilder.getOne();
+    console.log(profile);
+
+    if (!profile) {
+      return res.status(404).json({ message: 'Profile not found' });
+    }
+
+    profile.user.password = "";
+
+    return res.json(profile);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
 export const getProfile = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
@@ -35,6 +65,9 @@ export const getProfile = async (req, res) => {
     if (!profile) {
       return res.status(404).json({ message: 'Profile not found' });
     }
+
+    profile.user.password = "";
+
     res.json(profile);
   } catch (error) {
     res.status(500).json({ error: error.message });

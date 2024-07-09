@@ -85,18 +85,33 @@ Authorization: basic {{authToken}}
   "userId": 3
 }
 
-### Get profile details
-GET {{baseUrl}}/profiles/1
+### Get Self profile details
+GET {{baseUrl}}/profiles/self
 Authorization: basic {{authToken}}
 
-# ### Update profile details
-# PUT http://localhost:9001/api/profiles/1
-# Content-Type: application/json
+###
+
+### Get profile details
+GET {{baseUrl}}/profiles/2
+Authorization: basic {{authToken}}
+
+###
+
+### Update profile details
+PUT http://localhost:9001/api/profiles/1
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "githubProfile": "https://github.com/nayeem-mehedi",
+  "otherProfile": "https://www.linkedin.com/in/nayeem-mehedi",
+  "profilePicture": "https://ui-avatars.com/api/?name=N+M"
+}
 
 # {
 #   "githubProfile": "https://github.com/johndoe",
 #   "otherProfile": "https://linkedin.com/in/johndoe_new",
-#   "profilePicture": "https://example.com/new_profile.jpg"
+#   "profilePicture": "https://ui-avatars.com/api/?name=N+M"
 # }
 
 ### Create a new skill

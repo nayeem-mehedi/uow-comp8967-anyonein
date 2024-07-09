@@ -40,6 +40,7 @@ export const searchUsers = async (req, res) => {
         data: users
       });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 };
