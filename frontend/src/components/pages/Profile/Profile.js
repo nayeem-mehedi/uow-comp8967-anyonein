@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 
 function Profile() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
@@ -35,6 +36,10 @@ function Profile() {
 
         fetchProfile();
     }, [id, token]);
+
+    const handleEdit = () => {
+        navigate(`/edit-profile/${id}`);
+    };
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -71,6 +76,7 @@ function Profile() {
                                 <li key={skill.id} className="list-group-item">{skill.name}</li>
                             ))}
                         </ul>
+                        <button onClick={handleEdit} className="btn btn-primary mt-3">Edit Profile</button>
                     </div>
                 </div>
             </div>
