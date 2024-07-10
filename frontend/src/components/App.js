@@ -1,7 +1,7 @@
 import React from 'react';
 import Landing from './pages/Landing/Landing';
 import './App.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() {
   return (
