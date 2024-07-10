@@ -21,8 +21,8 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "username": "rudaba",
-  "password": "rudaba456"
+  "username": "harrypotter",
+  "password": "harry123"
 }
 
 ###
@@ -114,6 +114,17 @@ Authorization: basic {{authToken}}
 #   "profilePicture": "https://ui-avatars.com/api/?name=N+M"
 # }
 
+### Update profile details - SELF
+PUT http://localhost:9001/api/profiles/self
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "githubProfile": "https://github.com/nayeem-mehedi",
+  "otherProfile": "https://www.linkedin.com/in/nayeem-mehedi",
+  "profilePicture": "https://ui-avatars.com/api/?name=N+M"
+}
+
 ### Create a new skill
 POST {{baseUrl}}/skills
 Content-Type: application/json
@@ -149,7 +160,7 @@ Authorization: basic {{authToken}}
 
 # @name search
 
-GET {{baseUrl}}/search/user?query=Java Selenium&page=1&limit=10
+GET {{baseUrl}}/search/user?query=Selenium&page=1&limit=10
 Authorization: basic {{authToken}}
 
 
