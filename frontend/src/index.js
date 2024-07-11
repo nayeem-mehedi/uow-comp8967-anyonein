@@ -13,6 +13,10 @@ import Profile from './components/pages/Profile/Profile';
 import Search from './components/pages/Search/Search';
 import Searchproject from './components/pages/Search/Searchproject';
 import Logout from './components/pages/Logout/Logout';
+import EditProfile from './components/pages/Profile/EditProfile';
+import AdminProfile from './components/pages/AdminProfile/AdminProfile';
+import Projects from './components/pages/Projects/Projects';
+import ProjectDetails from './components/pages/Projects/ProjectDetails';
 
 const router = createBrowserRouter([
   {
@@ -45,8 +49,25 @@ const router = createBrowserRouter([
     element: <Search />,
   },
   {
+<<<<<<< HEAD
     path: "/searchproject",
     element: <Searchproject/>
+=======
+    path:"/edit-profile/:id",
+    element:<EditProfile/>,
+  },
+  {
+    path: "/admin",
+    element: <AdminProfile />,
+  },
+  {
+    path: "/projects",
+    element: <Projects />,
+  },
+  {
+    path: "/projects/:id",
+    element: <ProjectDetails />,
+>>>>>>> f18677411dd2eb83101c4a87844e9210ad023d28
   }
 ]);
 
