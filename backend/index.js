@@ -1,5 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import cors from "cors";
+
 import { AppDataSource } from "./src/config/db.js";
 import loginRoutes from "./src/routes/loginRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
@@ -7,8 +10,8 @@ import profileRoutes from "./src/routes/profileRoutes.js";
 import skillRoutes from "./src/routes/skillRoutes.js";
 import profileSkillRoutes from "./src/routes/profileSkillRoutes.js";
 import searchRoutes from "./src/routes/searchRoutes.js"
-import dotenv from "dotenv";
-import cors from "cors";
+import projectRoutes from "./src/routes/projectRoutes.js"
+import topicRoutes from "./src/routes/topicRoutes.js"
 
 dotenv.config();
 
@@ -24,6 +27,8 @@ app.use("/api/profiles", profileRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/profile-skills", profileSkillRoutes);
 app.use("/api/search", searchRoutes)
+app.use("/api/projects", projectRoutes)
+app.use("/api/topics", topicRoutes)
 
 AppDataSource.initialize()
   .then(() => {

@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 
-function goToSearch(){
-    
-}
-
-
-function Profile() {
+function AdminProfile() {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
@@ -42,10 +36,6 @@ function Profile() {
         fetchProfile();
     }, [id, token]);
 
-    const handleEdit = () => {
-        navigate(`/edit-profile/${id}`);
-    };
-
     if (error) {
         return <div>Error: {error.message}</div>;
     }
@@ -77,6 +67,7 @@ function Profile() {
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile}>{profile.otherProfile}</a></p>
                         <div className="profile-skills">
                             <p><strong>Skills:</strong></p>
+                            <button type="button" class="btn btn-primary">Add Skills</button>
                         </div>
                         
                         <ul className="list-group">
@@ -84,7 +75,6 @@ function Profile() {
                                 <li key={skill.id} className="list-group-item">{skill.name}</li>
                             ))}
                         </ul>
-                        <button onClick={handleEdit} className="btn btn-primary mt-3">Edit Profile</button>
                     </div>
                 </div>
             </div>
@@ -92,4 +82,4 @@ function Profile() {
     );
 }
 
-export default Profile;
+export default AdminProfile;

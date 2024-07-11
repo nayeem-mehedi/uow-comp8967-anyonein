@@ -4,6 +4,8 @@ import { User } from '../models/User.js';
 import { Profile } from '../models/Profile.js';
 import { Skill } from '../models/Skill.js';
 import { ProfileSkill } from '../models/ProfileSkill.js';
+import { Topic } from "../models/Topic.js";
+import { Project } from "../models/Project.js";
 
 dotenv.config();
 
@@ -14,6 +16,6 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [User, Profile, Skill, ProfileSkill],
+  entities: [User, Profile, Skill, ProfileSkill, Topic, Project],
   // logging: true,
 });

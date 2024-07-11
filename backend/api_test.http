@@ -163,5 +163,27 @@ Authorization: basic {{authToken}}
 GET {{baseUrl}}/search/user?query=Selenium&page=1&limit=10
 Authorization: basic {{authToken}}
 
+####
+
+# @name search_project
+# GET {{baseUrl}}/search/project?query=&page=1&limit=10&skills=JavaScript,React&topics=web,backend&contributor=&owner="
+GET {{baseUrl}}/search/project?query=dev&page=1&limit=10&skills=Java&topics=web backend&contributor=&owner="
+Authorization: basic {{authToken}}
+
+
+#####
+
+
+
+### List all projects
+GET {{baseUrl}}/projects
+Authorization: basic {{authToken}}
+
+####
+
+
+### List all topics
+GET {{baseUrl}}/topics
+Authorization: basic {{authToken}}
 
 ####
