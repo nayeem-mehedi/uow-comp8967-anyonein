@@ -102,6 +102,26 @@ const loadDemoData = async () => {
     }
 
     // Associate skills with profiles
+    const profileSkillRepo = AppDataSource.getRepository(ProfileSkill);
+    const profiles = await profileRepo.find();
+
+    for (const profile of profiles) {
+      const userSkills = skills.slice(0, Math.floor(Math.random() * skills.length) + 1);
+      for (const skill of userSkills) {
+        try {
+          const profileSkill = profileSkillRepo.create({
+            profile: profile,
+            skill: skill,
+          });
+          await profileSkillRepo.save(profileSkill);
+          console.log(`Skill ${skill.name} added to profile ${profile.id}.`);
+        } catch (profileSkillError) {
+          console.error(`Error associating skill ${skill.name} with profile ${profile.id}:`, profileSkillError);
+        }
+      }
+    }
+
+
     const topicNames = [
       'AI/ML', 'Web Development', 'Game Development', 'Mobile Development', 'Data Science',
       'Cybersecurity', 'DevOps', 'Cloud Computing', 'IoT', 'Blockchain', 'AR/VR', 'Big Data',
