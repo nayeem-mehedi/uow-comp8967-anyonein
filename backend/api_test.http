@@ -165,3 +165,17 @@ Authorization: basic {{authToken}}
 
 
 ####
+
+
+### List all projects
+GET {{baseUrl}}/projects
+Authorization: basic {{authToken}}
+
+####
+
+
+### List all topics
+GET {{baseUrl}}/topics
+Authorization: basic {{authToken}}
+
+####

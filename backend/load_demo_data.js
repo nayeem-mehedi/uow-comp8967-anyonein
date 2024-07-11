@@ -4,6 +4,8 @@ import { User } from './src/models/User.js';
 import { Profile } from './src/models/Profile.js';
 import { Skill } from './src/models/Skill.js';
 import { ProfileSkill } from './src/models/ProfileSkill.js';
+import { Topic } from './src/models/Topic.js';
+import { Project } from './src/models/Project.js';
 import bcrypt from 'bcrypt';
 
 dotenv.config();
@@ -15,7 +17,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [User, Profile, Skill, ProfileSkill],
+  entities: [User, Profile, Skill, ProfileSkill, Topic, Project],
   dropSchema: true,
   synchronize: true,
   logging: true,
@@ -100,23 +102,46 @@ const loadDemoData = async () => {
     }
 
     // Associate skills with profiles
-    const profileSkillRepo = AppDataSource.getRepository(ProfileSkill);
-    const profiles = await profileRepo.find();
+    const topicNames = [
+      'AI/ML', 'Web Development', 'Game Development', 'Mobile Development', 'Data Science',
+      'Cybersecurity', 'DevOps', 'Cloud Computing', 'IoT', 'Blockchain', 'AR/VR', 'Big Data',
+      'Robotics', 'Embedded Systems', 'Networking', 'Operating Systems', 'Database Management',
+      'Software Engineering', 'Functional Programming', 'UI/UX Design'
+    ];
+    const topicRepo = AppDataSource.getRepository(Topic);
+    const topics = topicNames.map(name => topicRepo.create({ name }));
+    await topicRepo.save(topics);
+    console.log('Topics have been created.');
 
-    for (const profile of profiles) {
-      const userSkills = skills.slice(0, Math.floor(Math.random() * skills.length) + 1);
-      for (const skill of userSkills) {
-        try {
-          const profileSkill = profileSkillRepo.create({
-            profile: profile,
-            skill: skill,
-          });
-          await profileSkillRepo.save(profileSkill);
-          console.log(`Skill ${skill.name} added to profile ${profile.id}.`);
-        } catch (profileSkillError) {
-          console.error(`Error associating skill ${skill.name} with profile ${profile.id}:`, profileSkillError);
-        }
-      }
+    // Create projects and associate with topics, skills, and users
+    const projectRepo = AppDataSource.getRepository(Project);
+    const projectsData = [
+      { name: 'AI Project 1', description: 'AI project description', githubLink: 'https://github.com/ai_project_1', gitlabLink: '', topic: topics[0] },
+      { name: 'Web Dev Project 1', description: 'Web development project description', githubLink: 'https://github.com/web_dev_project_1', gitlabLink: '', topic: topics[1] },
+      { name: 'Game Dev Project 1', description: 'Game development project description', githubLink: 'https://github.com/game_dev_project_1', gitlabLink: '', topic: topics[2] },
+      { name: 'Mobile Dev Project 1', description: 'Mobile development project description', githubLink: 'https://github.com/mobile_dev_project_1', gitlabLink: '', topic: topics[3] },
+      { name: 'Data Science Project 1', description: 'Data science project description', githubLink: 'https://github.com/data_science_project_1', gitlabLink: '', topic: topics[4] },
+      { name: 'Cybersecurity Project 1', description: 'Cybersecurity project description', githubLink: 'https://github.com/cybersecurity_project_1', gitlabLink: '', topic: topics[5] },
+      { name: 'DevOps Project 1', description: 'DevOps project description', githubLink: 'https://github.com/devops_project_1', gitlabLink: '', topic: topics[6] },
+      { name: 'Cloud Computing Project 1', description: 'Cloud computing project description', githubLink: 'https://github.com/cloud_computing_project_1', gitlabLink: '', topic: topics[7] },
+      { name: 'IoT Project 1', description: 'IoT project description', githubLink: 'https://github.com/iot_project_1', gitlabLink: '', topic: topics[8] },
+      { name: 'Blockchain Project 1', description: 'Blockchain project description', githubLink: 'https://github.com/blockchain_project_1', gitlabLink: '', topic: topics[9] },
+    ];
+
+    const skills_db = await skillRepo.find();
+    const users_db = await userRepo.find();
+
+    for (const projectData of projectsData) {
+      const project = projectRepo.create(projectData);
+
+      const randomSkills = skills_db.slice(0, Math.floor(Math.random() * 6) + 1);
+      project.skills = randomSkills;
+
+      const randomUsers = users_db.slice(0, Math.floor(Math.random() * 3) + 1);//.map(user => profile.user);
+      project.users = randomUsers;
+
+      await projectRepo.save(project);
+      console.log(`Project ${project.name} has been created.`);
     }
 
     console.log('Demo data loaded successfully!');
