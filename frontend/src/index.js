@@ -11,6 +11,7 @@ import Landing from './components/pages/Landing/Landing';
 import Signup from './components/pages/Signup/Signup';
 import Profile from './components/pages/Profile/Profile';
 import Search from './components/pages/Search/Search';
+import Searchproject from './components/pages/Search/Searchproject';
 import Logout from './components/pages/Logout/Logout';
 
 const router = createBrowserRouter([
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <Search />,
+  },
+  {
+    path: "/searchproject",
+    element: <Searchproject/>
   }
 ]);
 
