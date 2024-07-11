@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Navbar from "../../ui/Navbar";
 import ProjectCard from "./ProjectCard"; // Import the ProjectCard component
 
@@ -53,7 +53,7 @@ function Projects() {
       <Row>
         {projects.map((project) => (
           <Col key={project.id} xs={12} md={4} className="mb-4">
-            <ProjectCard project={project} />
+            <ProjectCard project={project} showDetailsButton={true}/>
           </Col>
         ))}
       </Row>

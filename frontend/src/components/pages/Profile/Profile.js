@@ -80,7 +80,6 @@ function Profile() {
                         <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile}>{profile.githubProfile}</a></p>
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile}>{profile.otherProfile}</a></p>
                         <div className="profile-skills">
-                            <p><strong> Skills:</strong></p>
                             {/* <button type="button" class="btn btn-info"><NavLink to = "/getSkills">Show Skills</NavLink></button>  */}
                             {/* <button type="button" class="btn btn-info" onClick={handleShowSkills}>Show Skills</button> */}
                             <button onClick={handleEdit} className="btn btn-primary mt-3">Edit Profile</button>
@@ -102,7 +101,7 @@ function Profile() {
                 </div>
             </div>
         </div>
-        );
+    );
 }
 
 export default Profile;

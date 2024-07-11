@@ -1,8 +1,9 @@
 // ProjectDetails.js - Ensure id is retrieved from useParams
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Button, Row } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
+import Navbar from "../../ui/Navbar";
 
 const ProjectDetails = () => {
   const { id } = useParams(); // Retrieve id from route parameters
@@ -10,6 +11,10 @@ const ProjectDetails = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  const handleGoBack = () => {
+    navigate(-1); // Go back to the previous page
+  };
 
   useEffect(() => {
     const fetchProjectDetails = async () => {
@@ -36,10 +41,6 @@ const ProjectDetails = () => {
     fetchProjectDetails();
   }, [id, token]);
 
-  const handleGoBack = () => {
-    navigate(-1); // Go back to the previous page
-  };
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -54,8 +55,16 @@ const ProjectDetails = () => {
 
   return (
     <Container>
-      <h1>Project Details</h1>
-      <ProjectCard project={project} />
+      <Row>
+        <Navbar />
+      </Row>
+      <Row>
+        <h1>Project Details</h1>
+        <ProjectCard project={project}  showDetailsButton={false}/>
+        <div className="p-3" >
+          <Button variant="secondary" onClick={handleGoBack} >Go back</Button>
+        </div>
+      </Row>
     </Container>
   );
 };

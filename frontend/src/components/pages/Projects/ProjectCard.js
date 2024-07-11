@@ -4,7 +4,7 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, showDetailsButton }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
@@ -25,9 +25,17 @@ const ProjectCard = ({ project }) => {
               {index < project.users.length - 1 && ' , '}
             </span>))}<br />
         </Card.Text>
-        <Button variant="primary" onClick={handleViewDetails}>
-          View Project
-        </Button>
+        <div className="d-flex justify-content-start">
+          <div className="p-3">
+            {showDetailsButton ? (
+              <Button variant="primary" onClick={handleViewDetails}>
+              View Project
+            </Button>
+            ) : <></>}
+            
+          </div>
+
+        </div>
       </Card.Body>
     </Card>
 
