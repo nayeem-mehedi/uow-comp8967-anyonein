@@ -106,7 +106,15 @@ const loadDemoData = async () => {
     const profiles = await profileRepo.find();
 
     for (const profile of profiles) {
-      const userSkills = skills.slice(0, Math.floor(Math.random() * skills.length) + 1);
+      const r1 = Math.floor(Math.random() * skills.length);
+      const r2 = Math.floor(Math.random() * skills.length)
+      let userSkills = [];
+      if(r1>r2){
+        userSkills = skills.slice(r2, r1 + 1);
+      } else {
+        userSkills = skills.slice(r1, r2 + 1);
+      }
+      
       for (const skill of userSkills) {
         try {
           const profileSkill = profileSkillRepo.create({

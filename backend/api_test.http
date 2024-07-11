@@ -148,12 +148,11 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "profileId": 2,
   "skillId": 5
 }
 
 ### Remove skill from profile
-DELETE {{baseUrl}}/profile-skills/1/5
+DELETE {{baseUrl}}/profile-skills/5
 Authorization: basic {{authToken}}
 
 ###################################################

@@ -7,7 +7,7 @@ import {
 const router = Router();
 
 router.post('/', addSkillToProfile);
-router.delete('/:profile_id/:skill_id', removeSkillFromProfile);
+router.delete('/:skill_id', removeSkillFromProfile);
 // TODO 
 
 export default router;
