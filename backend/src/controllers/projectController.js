@@ -12,7 +12,7 @@ const projectRepository = AppDataSource.getRepository(Project);
 
     // 2. PROJECT details
     export const detailsProject = async (req, res) => {
-        const project = await projectRepository.findOne(req.params.id, { relations: ["topic", "skills", "users"] });
+        const project = await projectRepository.findOne({ where: {id: req.params.id}, relations: ["topic", "skills", "users"] });
         res.json(project);
     };
 
