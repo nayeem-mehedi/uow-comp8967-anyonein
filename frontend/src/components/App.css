@@ -512,6 +512,12 @@ footer h1{
     flex-direction: column;
     justify-content: center;
 }
-
 .search-form button{
+}
+
+.skill-div{
+    display: flex;
+    flex-direction: row;
+    
+   
 }

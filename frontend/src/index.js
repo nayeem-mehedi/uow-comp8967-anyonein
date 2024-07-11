@@ -12,6 +12,9 @@ import Signup from './components/pages/Signup/Signup';
 import Profile from './components/pages/Profile/Profile';
 import Search from './components/pages/Search/Search';
 import Logout from './components/pages/Logout/Logout';
+import GetSkills from './components/pages/Skills/getSkills';
+import DeleteSkill from './components/pages/Skills/deleteSkill'
+import AddSkill from './components/pages/Skills/addSkill'
 
 const router = createBrowserRouter([
   {
@@ -42,7 +45,20 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <Search />,
+  },
+  {
+    path: "/getSkills",
+    element: <GetSkills />,
+  },
+  {
+    path: "/deleteSkill",
+    element: <DeleteSkill />,
+  },
+  {
+    path: "/AddSkill",
+    element: <AddSkill />,
   }
+
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

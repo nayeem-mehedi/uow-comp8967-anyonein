@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 
 function Profile() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
@@ -16,7 +17,7 @@ function Profile() {
 
                 console.log(id);
 
-                const response = await fetch('http://localhost:9001/api/profiles/'+id, {
+                const response = await fetch('http://localhost:9001/api/profiles/' + id, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -43,9 +44,17 @@ function Profile() {
     if (!profile) {
         return (
             <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
+                <span class="sr-only">Loading...</span>
             </div>
         );
+    }
+
+    // const handleShowSkills = () => {
+    //     navigate("/getSkills");
+    // }
+
+    const handleAddSkills = () => {
+        navigate("/addSkill");
     }
 
     return (
@@ -65,10 +74,21 @@ function Profile() {
                         <p><strong>Phone:</strong> {profile.user.phone}</p>
                         <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile}>{profile.githubProfile}</a></p>
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile}>{profile.otherProfile}</a></p>
-                        <p><strong>Skills:</strong></p>
+                        <div className="profile-skills">
+                            <p><strong> Skills:</strong></p>
+                            {/* <button type="button" class="btn btn-info"><NavLink to = "/getSkills">Show Skills</NavLink></button>  */}
+                            {/* <button type="button" class="btn btn-info" onClick={handleShowSkills}>Show Skills</button> */}
+                            <button type="button" class="btn btn-info" onClick={handleAddSkills}>Add Skill</button>
+
+                        </div>
                         <ul className="list-group">
                             {profile.skills.map(skill => (
-                                <li key={skill.id} className="list-group-item">{skill.name}</li>
+                                <div className='skill-div container' key={skill.id}>
+                                    <div className='col'>
+                                        <li className="list-group-item">{skill.name}</li>
+                                    </div>
+                                    <div className='col-2'><button type='button' className='btn-close' aria-label="Close"></button></div>
+                                </div>
                             ))}
                         </ul>
                     </div>
