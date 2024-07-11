@@ -515,3 +515,9 @@ footer h1{
 
 .search-form button{
 }
+
+.profile-skills{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

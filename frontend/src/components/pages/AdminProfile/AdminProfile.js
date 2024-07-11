@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 
-function goToSearch(){
-    
-}
-
-
-function Profile() {
+function AdminProfile() {
     const { id } = useParams();
 
     const [profile, setProfile] = useState(null);
@@ -72,6 +67,7 @@ function Profile() {
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile}>{profile.otherProfile}</a></p>
                         <div className="profile-skills">
                             <p><strong>Skills:</strong></p>
+                            <button type="button" class="btn btn-primary">Add Skills</button>
                         </div>
                         
                         <ul className="list-group">
@@ -86,4 +82,4 @@ function Profile() {
     );
 }
 
-export default Profile;
+export default AdminProfile;
