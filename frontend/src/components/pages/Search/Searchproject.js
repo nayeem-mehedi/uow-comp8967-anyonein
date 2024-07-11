@@ -11,6 +11,7 @@ function Searchproject() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        // TODO: add other filtering options
         const response = await fetch('http://localhost:9001/api/projects', {
           method: 'GET',
           headers: {

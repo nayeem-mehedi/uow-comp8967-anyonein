@@ -49,10 +49,6 @@ const router = createBrowserRouter([
     element: <Search />,
   },
   {
-<<<<<<< HEAD
-    path: "/searchproject",
-    element: <Searchproject/>
-=======
     path:"/edit-profile/:id",
     element:<EditProfile/>,
   },
@@ -67,7 +63,10 @@ const router = createBrowserRouter([
   {
     path: "/projects/:id",
     element: <ProjectDetails />,
->>>>>>> f18677411dd2eb83101c4a87844e9210ad023d28
+  },
+  {
+    path: "/searchproject",
+    element: <Searchproject/>
   }
 ]);
 

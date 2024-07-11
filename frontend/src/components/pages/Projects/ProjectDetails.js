@@ -1,7 +1,8 @@
 // ProjectDetails.js - Ensure id is retrieved from useParams
 import React, { useState, useEffect } from "react";
-import { Container, Card, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
+import ProjectCard from "./ProjectCard";
 
 const ProjectDetails = () => {
   const { id } = useParams(); // Retrieve id from route parameters
@@ -54,14 +55,7 @@ const ProjectDetails = () => {
   return (
     <Container>
       <h1>Project Details</h1>
-      <Card>
-        <Card.Body>
-          <Card.Title>{project.name}</Card.Title>
-          <Card.Text>{project.description}</Card.Text>
-          <Card.Text>Source Code Link: <a href={project.sourceCodeLink}>{project.sourceCodeLink}</a></Card.Text>
-          <Button variant="secondary" onClick={handleGoBack}>Go Back</Button>
-        </Card.Body>
-      </Card>
+      <ProjectCard project={project} />
     </Container>
   );
 };

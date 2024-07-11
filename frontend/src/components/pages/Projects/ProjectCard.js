@@ -12,15 +12,25 @@ const ProjectCard = ({ project }) => {
   };
 
   return (
-    <Card style={{ margin: '10px 0' }}>
+    <Card>
       <Card.Body>
         <Card.Title>{project.name}</Card.Title>
-        <Card.Text>{project.description}</Card.Text>
+        <Card.Text>
+          <strong>Description:</strong> {project.description}<br />
+          <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
+          <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
+          <strong>Users:</strong> {project.users.map((user, index) => (
+            <span key={user.id}>
+              <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>
+              {index < project.users.length - 1 && ' , '}
+            </span>))}<br />
+        </Card.Text>
         <Button variant="primary" onClick={handleViewDetails}>
-          View Details
+          View Project
         </Button>
       </Card.Body>
     </Card>
+
   );
 };
 
