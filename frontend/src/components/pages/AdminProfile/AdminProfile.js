@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 
-
-function Profile() {
+function AdminProfile() {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
@@ -18,7 +16,7 @@ function Profile() {
 
                 console.log(id);
 
-                const response = await fetch('http://localhost:9001/api/profiles/' + id, {
+                const response = await fetch('http://localhost:9001/api/profiles/'+id, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -38,10 +36,6 @@ function Profile() {
         fetchProfile();
     }, [id, token]);
 
-    const handleEdit = () => {
-        navigate(`/edit-profile/${id}`);
-    };
-
     if (error) {
         return <div>Error: {error.message}</div>;
     }
@@ -49,17 +43,9 @@ function Profile() {
     if (!profile) {
         return (
             <div className="spinner-border" role="status">
-                <span className="sr-only">Loading...</span>
+                    <span className="sr-only">Loading...</span>
             </div>
         );
-    }
-
-    // const handleShowSkills = () => {
-    //     navigate("/getSkills");
-    // }
-
-    const handleAddSkills = () => {
-        navigate("/addSkill");
     }
 
     return (
@@ -80,29 +66,20 @@ function Profile() {
                         <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile}>{profile.githubProfile}</a></p>
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile}>{profile.otherProfile}</a></p>
                         <div className="profile-skills">
-                            <p><strong> Skills:</strong></p>
-                            {/* <button type="button" class="btn btn-info"><NavLink to = "/getSkills">Show Skills</NavLink></button>  */}
-                            {/* <button type="button" class="btn btn-info" onClick={handleShowSkills}>Show Skills</button> */}
-                            <button onClick={handleEdit} className="btn btn-primary mt-3">Edit Profile</button>
-                            <button type="button" class="btn btn-info" onClick={handleAddSkills}>Add Skill</button>
+                            <p><strong>Skills:</strong></p>
+                            <button type="button" class="btn btn-primary">Add Skills</button>
                         </div>
-                        <p><strong>Skills:</strong></p>
+                        
+                        <ul className="list-group">
+                            {profile.skills.map(skill => (
+                                <li key={skill.id} className="list-group-item">{skill.name}</li>
+                            ))}
+                        </ul>
                     </div>
-
-                    <ul className="list-group">
-                        {profile.skills.map(skill => (
-                            <div className='skill-div container' key={skill.id}>
-                                <div className='col'>
-                                    <li className="list-group-item">{skill.name}</li>
-                                </div>
-                                <div className='col-2'><button type='button' className='btn-close' aria-label="Close"></button></div>
-                            </div>
-                        ))}
-                    </ul>
                 </div>
             </div>
         </div>
-        );
+    );
 }
 
-export default Profile;
+export default AdminProfile;

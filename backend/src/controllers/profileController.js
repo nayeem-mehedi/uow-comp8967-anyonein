@@ -1,7 +1,7 @@
 import { AppDataSource } from '../config/db.js';
 import { Profile } from '../models/Profile.js';
 import { User } from '../models/User.js';
-import {checkAuthHeader} from '../helper/authHelper.js'
+import { checkAuthHeader } from '../helper/authHelper.js'
 
 const profileRepository = AppDataSource.getRepository(Profile);
 const userRepository = AppDataSource.getRepository(User);
@@ -32,9 +32,9 @@ export const getSelfProfile = async (req, res) => {
   console.log(userName);
 
   const queryBuilder = profileRepository.createQueryBuilder('profile')
-      .leftJoinAndSelect('profile.user', 'user')
-      .leftJoinAndSelect('profile.skills', 'skill')
-      .where("user.username = :username", {username: userName});
+    .leftJoinAndSelect('profile.user', 'user')
+    .leftJoinAndSelect('profile.skills', 'skill')
+    .where("user.username = :username", { username: userName });
 
   try {
     const profile = await queryBuilder.getOne();
@@ -75,28 +75,61 @@ export const getProfile = async (req, res) => {
 };
 
 export const updateProfile = async (req, res) => {
-  // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
-
-  // TODO: Only self allowed
-
-  const id = req.params.id;
-  const { githubProfile, otherProfile, profilePicture } = req.body;
-
   try {
-    const profile = await profileRepository.findOneBy({ id });
-    if (!profile) {
-      return res.status(404).json({ message: 'Profile not found' });
+
+    // Check and validate Authorization token
+    const token = req.header('Authorization')?.split(' ')[1];
+    await checkAuthHeader(token, res);
+
+    // FIXME: Only self allowed
+
+    const id = req.params.id;
+
+    if (id === 'self') {
+      const userName = await checkAuthHeader(token, res);
+      console.log(userName);
+
+      const queryBuilder = profileRepository.createQueryBuilder('profile')
+        .leftJoinAndSelect('profile.user', 'user')
+        .leftJoinAndSelect('profile.skills', 'skill')
+        .where("user.username = :username", { username: userName });
+
+      const profile = await queryBuilder.getOne();
+
+      const { githubProfile, otherProfile, profilePicture } = req.body;
+
+      if (!profile) {
+        return res.status(404).json({ message: 'Profile not found' });
+      }
+
+      profile.githubProfile = githubProfile;
+      profile.otherProfile = otherProfile;
+      profile.profilePicture = profilePicture;
+
+      const updatedProfile = await profileRepository.save(profile);
+      res.json(updatedProfile);
     }
-
-    profile.githubProfile = githubProfile;
-    profile.otherProfile = otherProfile;
-    profile.profilePicture = profilePicture;
-
-    const updatedProfile = await profileRepository.save(profile);
-    res.json(updatedProfile);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+
+
+
+
+
+  // try {
+  //   const profile = await profileRepository.findOneBy({ id });
+  //   if (!profile) {
+  //     return res.status(404).json({ message: 'Profile not found' });
+  //   }
+
+  //   profile.githubProfile = githubProfile;
+  //   profile.otherProfile = otherProfile;
+  //   profile.profilePicture = profilePicture;
+
+  //   const updatedProfile = await profileRepository.save(profile);
+  //   res.json(updatedProfile);
+  // } catch (error) {
+  //   res.status(500).json({ error: error.message });
+  // }
 };

@@ -5,6 +5,7 @@ import { Skill } from '../models/Skill.js';
 import {checkAuthHeader} from '../helper/authHelper.js'
 
 const profileSkillRepository = AppDataSource.getRepository(ProfileSkill);
+const profileRepository = AppDataSource.getRepository(Profile);
 
 export const addSkillToProfile = async (req, res) => {
   // Check and validate Authorization token
@@ -16,7 +17,13 @@ export const addSkillToProfile = async (req, res) => {
   const { profileId, skillId } = req.body;
 
   try {
-    const profile = await AppDataSource.getRepository(Profile).findOneBy({ id: profileId });
+
+    const queryBuilder = profileRepository.createQueryBuilder('profile')
+        .leftJoinAndSelect('profile.user', 'user')
+        .leftJoinAndSelect('profile.skills', 'skill')
+        .where("user.username = :username", { username: usernameRedis });
+
+    const profile = await queryBuilder.getOne();
     const skill = await AppDataSource.getRepository(Skill).findOneBy({ id: skillId });
 
     if (!profile || !skill) {
@@ -42,7 +49,15 @@ export const removeSkillFromProfile = async (req, res) => {
   const skill_id = req.params.skill_id;
 
   try {
-    const profileSkill = await profileSkillRepository.findOneBy({ profileId: profile_id, skillId: skill_id });
+
+    const queryBuilder = profileRepository.createQueryBuilder('profile')
+        .leftJoinAndSelect('profile.user', 'user')
+        .leftJoinAndSelect('profile.skills', 'skill')
+        .where("user.username = :username", { username: usernameRedis });
+
+    const profile = await queryBuilder.getOne();
+
+    const profileSkill = await profileSkillRepository.findOneBy({ profileId: profile.id, skillId: skill_id });
     if (!profileSkill) {
       return res.status(404).json({ message: 'Profile Skill not found' });
     }

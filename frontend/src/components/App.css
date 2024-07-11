@@ -518,6 +518,10 @@ footer h1{
 .skill-div{
     display: flex;
     flex-direction: row;
-    
+}
    
+.profile-skills{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
