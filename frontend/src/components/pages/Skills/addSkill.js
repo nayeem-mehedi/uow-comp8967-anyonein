@@ -11,9 +11,9 @@ import Row from 'react-bootstrap/Row';
 const AddSkill = () => {
   const [skills, setSkills] = useState([]);
   const [selectedSkill, setSelectedSkill] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [/*loading*/, setLoading] = useState(true);
   const { id } = useParams(); // Assuming you need to use this
-  const [error, setError] = useState(null);
+  const [/*error*/, setError] = useState(null);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
 
