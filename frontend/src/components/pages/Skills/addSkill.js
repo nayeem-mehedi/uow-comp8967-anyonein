@@ -6,13 +6,14 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-
+import Select from 'react-select';
+//import { useSnackbar } from 'notistack';
 
 const AddSkill = () => {
   const [skills, setSkills] = useState([]);
-  const [selectedSkill, setSelectedSkill] = useState('');
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { id } = useParams(); // Assuming you need to use this
+  const { id } = useParams();
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
@@ -22,7 +23,7 @@ const AddSkill = () => {
 
   const [values, setValues] = useState({
     profileId: id,
-    skillId: ''
+    skillIds: []
   });
 
   useEffect(() => {
@@ -33,7 +34,11 @@ const AddSkill = () => {
             'Authorization': `Basic ${token}`,
           }
         });
-        setSkills(response.data);
+        const skillOptions = response.data.map(skill => ({
+          value: skill.id,
+          label: skill.name
+        }));
+        setSkills(skillOptions);
         setLoading(false);
       } catch (error) {
         setError('Failed to load skills. Please try again.');
@@ -44,23 +49,23 @@ const AddSkill = () => {
     fetchSkills();
   }, [token]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setSelectedSkill(value);
+  const handleChange = (selectedOptions) => {
+    const selectedSkillIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    setSelectedSkills(selectedOptions);
     setValues(prevValues => ({
       ...prevValues,
-      [name]: value
+      skillIds: selectedSkillIds
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
+    console.log(values);
     if (form.checkValidity() === false) {
       event.stopPropagation();
     } else {
       try {
-        console.log(values);
         const response = await axios.post('http://localhost:9001/api/profile-skills', values, {
           headers: {
             'Content-Type': 'application/json',
@@ -68,7 +73,6 @@ const AddSkill = () => {
           }
         });
         if (response.data) {
-          //navigate('/getSkills');
           navigate('/profile/self');
         }
       } catch (error) {
@@ -84,29 +88,25 @@ const AddSkill = () => {
       <div className="d-flex justify-content-center align-items-center vh-100">
         <Form noValidate validated={validated} onSubmit={handleSubmit} className="w-50">
           <Row className="mb-3 justify-content-center">
-            <Form.Group as={Col} md="6" controlId="validationCustom01">
-              <FloatingLabel controlId="floatingSelect" label="Select Skill">
-                <Form.Select
-                  aria-label="Select a skill"
-                  name="skillId"
-                  value={selectedSkill}
+            {/* <Form.Group as={Col} md="6" controlId="validationCustom01"> */}
+              {/* <FloatingLabel controlId="floatingSelect" label=""> */}
+                <Select
+                  isMulti
+                  name="skillIds"
+                  options={skills}
+                  value={selectedSkills}
                   onChange={handleChange}
-                  required
-                >
-                  <option value="" disabled>Select a skill</option>
-                  {skills.map(skill => (
-                    <option key={skill.id} value={skill.id}>
-                      {skill.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </FloatingLabel>
-            </Form.Group>
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  placeholder="Select Skills"
+                />
+              {/* </FloatingLabel> */}
+           {/* </Form.Group> */}
           </Row>
           <div className="d-flex justify-content-center">
-            <button type="submit" className="btn btn-primary">Add Skill</button>
+            <button type="submit" className="btn btn-info">Add Skill</button>
           </div>
-         
+          {error && <p className="text-danger text-center mt-3">{error}</p>}
         </Form>
       </div>
     </div>

@@ -62,6 +62,10 @@ function Profile() {
         navigate("/addSkill");
     }
 
+    const handleDeleteSkills = (skillId) =>{
+        navigate(`/deleteSkill/${skillId}`);
+    }
+
     return (
         <div>
             <Navbar />
@@ -94,7 +98,8 @@ function Profile() {
                                 <div className='col'>
                                     <li className="list-group-item">{skill.name}</li>
                                 </div>
-                                <div className='col-2'><button type='button' className='btn-close' aria-label="Close"></button></div>
+                                <div className='col-2'><button type='button' className='btn-close' aria-label="Close" onClick={()=>handleDeleteSkills(skill.id)}></button></div>
+                               
                             </div>
                         ))}
                     </ul>

@@ -56,7 +56,7 @@ const router = createBrowserRouter([
     element: <GetSkills />,
   },
   {
-    path: "/deleteSkill",
+    path: "/deleteSkill/:id",
     element: <DeleteSkill />,
   },
   {
