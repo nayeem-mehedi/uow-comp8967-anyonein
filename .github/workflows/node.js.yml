@@ -1,118 +1,6 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+#This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+#For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-# name: Node.js CI
-
-# on:
-#   push:
-#     branches:
-#       - main
-#       - frontend-main
-#       - server-setup
-#   pull_request:
-#     branches:
-#       - main
-#       - frontend-main
-#       - server-setup
-
-# jobs:
-#   build-frontend-main:
-#     runs-on: ubuntu-latest
-#     # if: github.ref == 'refs/heads/frontend-main'
-
-#     strategy:
-#       matrix:
-#         node-version: [18.x]
-
-#     steps:
-#       - name: checkout repo
-#         uses: actions/checkout@v4
-
-#       - name: setup node
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: '18'
-
-#       - name: Install dependencies for frontend
-#         working-directory: frontend
-#         run: npm install
-
-#       - name: Build frontend
-#         working-directory: frontend
-#         run: npm run build
-
-#       - name: test frontend
-#         working-directory: frontend
-#         run: npm test -- --passWithNoTests
-        
-#   build-server-setup:
-#       runs-on: ubuntu-latest
-#       # if: github.ref == 'refs/heads/server-setup'
-      
-#       strategy:
-#         matrix:
-#           node-version: [18.x]
-  
-#       steps:
-#         - name: checkout repo
-#           uses: actions/checkout@v4
-  
-#         - name: setup nodeV
-#           uses: actions/setup-node@v3
-#           with:
-#             node-version: '18'
-  
-#         - name: Install dependencies for backend
-#           working-directory: backend
-#           run: npm install
-  
-#         # - name: Build backend
-#           # working-directory: backend
-#           # run: npm run build
-
-#   build-main:
-#     runs-on: ubuntu-latest
-#     # if: github.ref == 'refs/heads/main' 
-
-#     strategy:
-#       matrix:
-#         node-version: [18.x]
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: ${{ matrix.node-version }}
-
-#       - name: Install dependencies for frontend
-#         working-directory: frontend
-#         run: npm install
-
-#       - name: Build frontend
-#         working-directory: frontend
-#         run: npm run build
-
-#       - name: Test frontend
-#         working-directory: frontend
-#         run: npm test -- --passWithNoTests
-
-#       - name: Install dependencies for backend
-#         working-directory: backend
-#         run: npm install
-        
-#       # No test needed for backend for the time being
-#       # - name: Build backend
-#       #   working-directory: backend
-#       #   run: npm run build
-
-#       # No test script needed for backend for the time being
-#       # - name: Test backend
-#         # working-directory: backend
-#         # run: npm test -- --passWithNoTests
-  
 name: Node.js CI
 
 on:
@@ -128,8 +16,63 @@ on:
       - server-setup
 
 jobs:
-  build:
+  build-frontend-main:
     runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/frontend-main'
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies for frontend
+        working-directory: frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: test frontend
+        working-directory: frontend
+        run: npm test -- --passWithNoTests
+        
+  build-server-setup:
+      runs-on: ubuntu-latest
+      # if: github.ref == 'refs/heads/server-setup'
+      
+      strategy:
+        matrix:
+          node-version: [18.x]
+  
+      steps:
+        - name: checkout repo
+          uses: actions/checkout@v4
+  
+        - name: setup nodeV
+          uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+  
+        - name: Install dependencies for backend
+          working-directory: backend
+          run: npm install
+  
+        # - name: Build backend
+          # working-directory: backend
+          # run: npm run build
+
+  build-main:
+    runs-on: ubuntu-latest
+    # if: github.ref == 'refs/heads/main' 
 
     strategy:
       matrix:
@@ -159,7 +102,7 @@ jobs:
       - name: Install dependencies for backend
         working-directory: backend
         run: npm install
-
+        
       # No test needed for backend for the time being
       # - name: Build backend
       #   working-directory: backend
@@ -167,37 +110,15 @@ jobs:
 
       # No test script needed for backend for the time being
       # - name: Test backend
-      #   working-directory: backend
-      #   run: npm test -- --passWithNoTests
-
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies for frontend
-        working-directory: frontend
-        run: npm install
-
-      - name: Build frontend
-        working-directory: frontend
-        run: npm run build
+        # working-directory: backend
+        # run: npm test -- --passWithNoTests
 
       - name: Deploy to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-east-1'  # Change to your AWS region
-          S3_BUCKET: 'anyoneinbucket'  # Change to your bucket name
+          AWS_REGION: 'us-east-1'
+          S3_BUCKET: 'anyoneinbucket'
         run: |
           npm install -g aws-cli
           aws s3 sync frontend/build/ s3://$S3_BUCKET --delete
