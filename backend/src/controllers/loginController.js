@@ -42,7 +42,7 @@ export const loginUser = async (req, res) => {
     console.log(ttl);
 
     const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: `${ttl}s` });
-    await putValueWithExpire(token, user.username, ttl);
+    await putValueWithExpire(token, JSON.stringify({username: user.username, role: user.role}), ttl);
     res.json({ token });
   } catch (error) {
     console.warn(error.message);

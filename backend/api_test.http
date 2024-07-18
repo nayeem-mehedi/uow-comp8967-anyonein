@@ -20,17 +20,28 @@ Content-Type: application/json
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
+# {
+#   "username": "harrypotter",
+#   "password": "harry123"
+# }
+
+# {
+#   "username": "johnmcclane",
+#   "password": "john123"
+# }
+
 {
-  "username": "harrypotter",
-  "password": "harry123"
+  "username": "ellenripley",
+  "password": "ellen123"
 }
+
 
 ###
 
 @authToken = {{login.response.body.token}}
 
 ### Get user details
-GET {{baseUrl}}/users/1
+GET {{baseUrl}}/users/2
 Authorization: basic {{authToken}}
 
 ### Edit user details
@@ -172,7 +183,34 @@ Authorization: basic {{authToken}}
 
 #####
 
+### List all topics
+GET {{baseUrl}}/topics
+Authorization: basic {{authToken}}
 
+####
+
+### List all topics
+GET {{baseUrl}}/topics
+Authorization: basic {{authToken}}
+
+####
+
+### Create topic
+POST {{baseUrl}}/topics
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "name": "Business"
+}
+
+####
+
+### Delete topic
+DELETE {{baseUrl}}/topics/22
+Authorization: basic {{authToken}}
+
+####
 
 ### List all projects
 GET {{baseUrl}}/projects
@@ -180,9 +218,63 @@ Authorization: basic {{authToken}}
 
 ####
 
+### List one project's details
+GET {{baseUrl}}/projects/11
+Authorization: basic {{authToken}}
 
-### List all topics
-GET {{baseUrl}}/topics
+####
+
+### Create project
+POST {{baseUrl}}/projects
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "name": "Business",
+  "description": "This is a business project.",
+  "sourceCodeLink": "https://github.com/example/business-project",
+  "topic": {
+    "id": 1
+  },
+  "skills": [
+    { "id": 1 },
+    { "id": 2 }
+  ],
+  "users": [
+    { "id": 1 },
+    { "id": 2 }
+  ]
+}
+
+####
+
+
+### Update project
+PUT {{baseUrl}}/projects/11
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "name": "The Business News",
+  "description": "A business New Site.",
+  "sourceCodeLink": "https://github.com/example/tbs",
+  "topic": {
+    "id": 2
+  },
+  "skills": [
+    { "id": 1 },
+    { "id": 2 },
+    { "id": 5 }
+  ],
+  "users": [
+    { "id": 1 }
+  ]
+}
+
+####
+
+### Delete projects
+DELETE {{baseUrl}}/projects/11
 Authorization: basic {{authToken}}
 
 ####

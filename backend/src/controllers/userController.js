@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { AppDataSource } from '../config/db.js';
 import { User } from '../models/User.js';
 // import {getValue} from '../models/RdisModel.js';
-import {checkAuthHeader} from '../helper/authHelper.js'
+import { checkAuthHeader } from '../helper/authHelper.js'
 
 dotenv.config();
 
@@ -41,7 +41,7 @@ export const editUser = async (req, res) => {
   try {
     const user = await userRepository.findOneBy({ id });
 
-    if(usernameRedis != user.username) {
+    if (usernameRedis != user.username) {
       return res.status(401).json({ message: 'User not authorized' });
     }
 
@@ -64,45 +64,72 @@ export const editUser = async (req, res) => {
 };
 
 export const listUsers = async (req, res) => {
-  // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
-
   try {
-    const users = await userRepository.find();
-    res.status(200).json(users);
+    // Check and validate Authorization token
+    const token = req.header('Authorization')?.split(' ')[1];
+    let userDataRedis;
+
+    try {
+      userDataRedis = await checkAuthHeader(token, res);
+    } catch (error) {
+      return res.status(401).json({ message: 'Invalid authorization token' });
+    }
+
+    try {
+      const users = await userRepository.find();
+      res.status(200).json(users);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 export const deleteUser = async (req, res) => {
-  // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis =  await checkAuthHeader(token, res);
-
-  // TODO: Admin can also delete
-
-  const id = req.params.id;
-
   try {
-    const user = await userRepository.findOneBy({ id });
+    // Check and validate Authorization token
+    const token = req.header('Authorization')?.split(' ')[1];
+    let userDataRedis;
 
-    if(usernameRedis != user.username) {
-      return res.status(401).json({ message: 'User not authorized' });
+    try {
+      userDataRedis = await checkAuthHeader(token, res);
+    } catch (error) {
+      return res.status(401).json({ message: 'Invalid authorization token' });
+    }
+
+    const id = req.params.id;
+
+    let user;
+
+    try {
+      user = await userRepository.findOneBy({ id });
+    } catch (error) {
+      return res.status(500).json({ message: 'Error finding user', error: error.message });
     }
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.isActive = false;
-    await userRepository.save(user);
-    res.json({ message: 'User deleted successfully' });
+    //Admin of Self Delete
+    if ((userDataRedis.role !== 'admin') && (userDataRedis.username !== user.username)) {
+      return res.status(401).json({ message: 'User not authorized' });
+    }
+
+    try {
+      user.isActive = false;
+      await userRepository.save(user);
+      res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 export const changePassword = async (req, res) => {
   // Check and validate Authorization token
@@ -133,7 +160,7 @@ export const changePassword = async (req, res) => {
     res.status(200).json({ message: 'Password updated successfully' });
   } catch (error) {
     console.warn(error.message);
-    res.status(500).json({ message: 'SERVER_ERROR'});
+    res.status(500).json({ message: 'SERVER_ERROR' });
   }
-  
+
 };

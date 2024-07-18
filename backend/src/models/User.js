@@ -37,7 +37,7 @@ export const User = new EntitySchema({
     },
     role: {
       type: String,
-      default: 'user',
+      default: 'user', //user, admin
     },
     isActive: {
       type: Boolean,

@@ -21,6 +21,10 @@ export const Project = new EntitySchema({
       type: String,
       nullable: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   relations: {
     topic: {

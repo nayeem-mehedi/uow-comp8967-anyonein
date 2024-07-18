@@ -194,7 +194,7 @@ function EditProfile() {
                             className="form-control"
                         />
                     </div>
-                    <div className="form-group">
+                    {/* <div className="form-group">
                         <label><strong>My Skills</strong></label>
                         {profile.skills.map((skill, index) => (
                             <input
@@ -205,7 +205,7 @@ function EditProfile() {
                                 className="form-control mb-2"
                             />
                         ))}
-                    </div>
+                    </div> */}
                     <button type="submit" className="btn btn-primary">Save Changes</button>
                 </form>
             </div>

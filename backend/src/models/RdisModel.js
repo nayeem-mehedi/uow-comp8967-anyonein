@@ -14,7 +14,7 @@ const putValueWithExpire = async (key, value, timeAsSec) => {
 const getValue = async (key) => {
     const result = await redisClient.get(key);
     console.log(result);
-    return result;
+    return JSON.parse(result);
 }
 
 export {putValue, putValueWithExpire, getValue};
