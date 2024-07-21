@@ -28,13 +28,13 @@ export const createProfile = async (req, res) => {
 export const getSelfProfile = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const userName = await checkAuthHeader(token, res);
-  console.log(userName);
+  const user = await checkAuthHeader(token, res);
+  console.log(user);
 
   const queryBuilder = profileRepository.createQueryBuilder('profile')
     .leftJoinAndSelect('profile.user', 'user')
     .leftJoinAndSelect('profile.skills', 'skill')
-    .where("user.username = :username", { username: userName });
+    .where("user.username = :username", { username: user.username });
 
   try {
     const profile = await queryBuilder.getOne();

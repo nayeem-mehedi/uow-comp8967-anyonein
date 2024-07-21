@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from "../../ui/Navbar";
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 // import { useSnackbar } from 'notistack';
 
 const DeleteSkill = () => {

@@ -41,7 +41,7 @@ export const addSkillToProfile = async (req, res) => {
 export const removeSkillFromProfile = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis =  await checkAuthHeader(token, res);
+  const user =  await checkAuthHeader(token, res);
 
   // TODO: Only self allowed
 
@@ -53,7 +53,7 @@ export const removeSkillFromProfile = async (req, res) => {
     const queryBuilder = profileRepository.createQueryBuilder('profile')
         .leftJoinAndSelect('profile.user', 'user')
         .leftJoinAndSelect('profile.skills', 'skill')
-        .where("user.username = :username", { username: usernameRedis });
+        .where("user.username = :username", { username: user.username });
 
     const profile = await queryBuilder.getOne();
 
