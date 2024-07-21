@@ -59,8 +59,27 @@ export const Project = new EntitySchema({
         inverseJoinColumn: {
           name: 'userId',
           referencedColumnName: 'id'
-        }
+        },
+        // Adding extra column for user type
+        extraColumns: [
+          {
+            name: 'type',
+            type: 'enum',
+            enum: ['OWNER', 'CONTRIBUTOR'],
+            default: 'CONTRIBUTOR',
+          },
+        ],
       }
+    },
+    followedBy: {
+      type: 'one-to-many',
+      target: 'ProjectFollow',
+      inverseSide: 'project',
+    },
+    announcements: {
+      type: 'one-to-many',
+      target: 'Announcement',
+      inverseSide: 'project',
     },
   },
 });

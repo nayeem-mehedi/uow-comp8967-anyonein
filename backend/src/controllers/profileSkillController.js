@@ -2,37 +2,47 @@ import { AppDataSource } from '../config/db.js';
 import { ProfileSkill } from '../models/ProfileSkill.js';
 import { Profile } from '../models/Profile.js';
 import { Skill } from '../models/Skill.js';
-import {checkAuthHeader} from '../helper/authHelper.js'
+import { checkAuthHeader } from '../helper/authHelper.js'
 
 const profileSkillRepository = AppDataSource.getRepository(ProfileSkill);
 const profileRepository = AppDataSource.getRepository(Profile);
+const skillRepository = AppDataSource.getRepository(Skill);
 
 export const addSkillToProfile = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis =  await checkAuthHeader(token, res);
+  const { userId, username, role } = await checkAuthHeader(token, res);
 
   // TODO: Only self allowed
 
-  const { profileId, skillId } = req.body;
+  const { skills } = req.body;
+  console.log(skills);
 
   try {
-
     const queryBuilder = profileRepository.createQueryBuilder('profile')
         .leftJoinAndSelect('profile.user', 'user')
         .leftJoinAndSelect('profile.skills', 'skill')
-        .where("user.username = :username", { username: usernameRedis });
+        .where("user.username = :username", { username: username });
 
     const profile = await queryBuilder.getOne();
-    const skill = await AppDataSource.getRepository(Skill).findOneBy({ id: skillId });
 
-    if (!profile || !skill) {
+    if (!profile) {
       return res.status(404).json({ message: 'Profile or Skill not found' });
     }
 
-    const profileSkill = profileSkillRepository.create({ profile, skill });
-    const savedProfileSkill = await profileSkillRepository.save(profileSkill);
-    res.status(201).json(savedProfileSkill);
+    let skillList = [];
+
+    for (const skillId of skills) {
+      const skill = await skillRepository.findOne({where: {id: skillId} });
+      console.log(skill);
+      if (skill){
+        const profileSkill = profileSkillRepository.create({ profile, skillId: skill.id });
+        const savedProfileSkill = await profileSkillRepository.save(profileSkill);
+        skillList.push(skill);
+      }
+    }
+
+    res.status(201).json({ message: 'Skills added successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -41,7 +51,7 @@ export const addSkillToProfile = async (req, res) => {
 export const removeSkillFromProfile = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis =  await checkAuthHeader(token, res);
+  const userDataRedis = await checkAuthHeader(token, res);
 
   // TODO: Only self allowed
 
@@ -51,9 +61,9 @@ export const removeSkillFromProfile = async (req, res) => {
   try {
 
     const queryBuilder = profileRepository.createQueryBuilder('profile')
-        .leftJoinAndSelect('profile.user', 'user')
-        .leftJoinAndSelect('profile.skills', 'skill')
-        .where("user.username = :username", { username: usernameRedis });
+      .leftJoinAndSelect('profile.user', 'user')
+      .leftJoinAndSelect('profile.skills', 'skill')
+      .where("user.username = :username", { username: userDataRedis.username });
 
     const profile = await queryBuilder.getOne();
 

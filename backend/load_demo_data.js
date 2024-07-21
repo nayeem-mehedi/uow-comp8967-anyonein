@@ -6,6 +6,10 @@ import { Skill } from './src/models/Skill.js';
 import { ProfileSkill } from './src/models/ProfileSkill.js';
 import { Topic } from './src/models/Topic.js';
 import { Project } from './src/models/Project.js';
+import { ProjectFollow } from './src/models/ProjectFollow.js';
+import { UserFollow } from './src/models/UserFollow.js';
+import { Announcement } from './src/models/Announcement.js';
+import { Notification } from './src/models/Notification.js';
 import bcrypt from 'bcrypt';
 
 dotenv.config();
@@ -17,7 +21,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [User, Profile, Skill, ProfileSkill, Topic, Project],
+  entities: [User, Profile, Skill, ProfileSkill, Topic, Project, ProjectFollow, UserFollow, Announcement, Notification],
   dropSchema: true,
   synchronize: true,
   logging: true,
@@ -166,10 +170,163 @@ const loadDemoData = async () => {
       project.skills = randomSkills;
 
       const randomUsers = users_db.slice(0, Math.floor(Math.random() * 3) + 1);//.map(user => profile.user);
-      project.users = randomUsers;
+      let assignedUsers = [];
+
+      for(let i = 0; i<randomUsers.length; i++) {
+        assignedUsers.push({user: randomUsers[i], type: i%2 == 0 ? 'OWNER' : 'CONTRIBUTOR'});
+      }
+
+      project.users = assignedUsers;
+      
 
       await projectRepo.save(project);
       console.log(`Project ${project.name} has been created.`);
+    }
+
+    const project_db = await projectRepo.find();
+
+    // Create project follows
+    const projectFollowRepo = AppDataSource.getRepository(ProjectFollow);
+    for (const user of users_db) {
+      const randomProjects = project_db.slice(0, Math.floor(Math.random() * 3) + 1);
+      for (const project of randomProjects) {
+        const projectFollow = projectFollowRepo.create({
+          user: user,
+          project: project,
+        });
+        await projectFollowRepo.save(projectFollow);
+        console.log(`User ${user.username} followed project ${project.name}.`);
+      }
+    }
+
+    // Create user follows
+    const userFollowRepo = AppDataSource.getRepository(UserFollow);
+    for (const user of users_db) {
+      const randomUsers = users_db.filter(u => u.id !== user.id).slice(0, Math.floor(Math.random() * 3) + 1);
+      for (const followedUser of randomUsers) {
+        const userFollow = userFollowRepo.create({
+          follower: user,
+          following: followedUser,
+        });
+        await userFollowRepo.save(userFollow);
+        console.log(`User ${user.username} followed user ${followedUser.username}.`);
+      }
+    }
+
+    // Create announcements and notification 
+    const announcementRepo = AppDataSource.getRepository(Announcement);
+    const notificationRepo = AppDataSource.getRepository(Notification);
+
+    // Project
+    const projectUpdates = [
+      "Completed initial project planning phase.",
+      "Development team started coding the core features.",
+      "UI/UX design prototypes are finalized.",
+      "Completed first round of user testing.",
+      "Database schema has been designed.",
+      "Integration with third-party APIs has begun.",
+      "Performance optimizations are in progress.",
+      "Bug fixes from beta testing are being addressed.",
+      "Finalizing documentation for the project.",
+      "Preparing for the project launch next week."
+    ];
+    for (const project of project_db) {
+      const announcement = announcementRepo.create({
+        title: `Project Announcement - ${project.name}`,
+        content: `${project.name} - ${projectUpdates[Math.floor(Math.random() * projectUpdates.length)]}`,
+        project: project,
+        user: null,
+      });
+      await announcementRepo.save(announcement);
+      console.log(`Announcement created for project ${project.name}.`);
+
+      const projectFollowers = await projectFollowRepo.find({ where: { project: project.id }, relations: ["user", "project"]});
+      for (const projectFollow of projectFollowers) {
+        const notification = notificationRepo.create({
+          type: 'PROJECT_UPDATE',
+          content: `Project Announcement - ${project.name}`,
+          user: projectFollow.user,
+          relatedProject: project,
+
+        });
+        await notificationRepo.save(notification);
+        console.log(`Project Notification created for user ${projectFollow.user.username}.`);
+      }
+    }
+
+
+    // User
+    const userActions = [
+      // Activity
+      "User shared a product on social media.",
+      "User updated their profile picture.",
+    
+      // Project Updates
+      "User completed the initial project planning phase.",
+      "User started coding the core features.",
+      "User finalized the UI/UX design prototypes.",
+      "User completed the first round of user testing.",
+      "User designed the database schema.",
+      "User began integration with third-party APIs.",
+      "User is working on performance optimizations.",
+      "User is addressing bug fixes from beta testing.",
+      "User is finalizing the project documentation.",
+    
+      // Help Requests
+      "User requested help with password reset.",
+      "User needs assistance with account setup.",
+      "User reported a bug in the system.",
+      "User asked for a feature tutorial.",
+      "User inquired about subscription plans.",
+      "User needs help with payment issues.",
+      "User asked for product recommendations.",
+      "User reported a slow loading issue.",
+      "User requested help with profile update.",
+      "User needs assistance with data import.",
+    
+      // Code Updates
+      "User refactored the authentication module.",
+      "User added a new API endpoint for user data.",
+      "User fixed a bug in the payment gateway integration.",
+      "User optimized database queries for faster response.",
+      "User implemented a new caching mechanism.",
+      "User updated dependencies to the latest versions.",
+      "User improved error handling in the application.",
+      "User added unit tests for the new features.",
+      "User deployed the latest version to production.",
+      "User completed a code review and it was approved.",
+    
+      // Achievements
+      "User completed a project milestone ahead of schedule.",
+      "User's codebase reached 90% test coverage.",
+      "User received a badge for community contribution.",
+      "User's project team received positive feedback from the client.",
+      "User's app reached 1 million downloads.",
+      "User's code successfully passed a security audit.",
+      "User completed a challenging task."
+    ];    
+    const randomUsers = users_db.slice(0, Math.floor(Math.random() * users_db.length) + 1);
+    for (const user of randomUsers) {
+      const announcement = announcementRepo.create({
+        title: `User Announcement - ${user.username}`,
+        content: `${user.username} - ${userActions[Math.floor(Math.random() * userActions.length)]}`,
+        project: null,
+        user: user,
+      });
+      await announcementRepo.save(announcement);
+      console.log(`Announcement created for user ${user.username}.`);
+
+      const userFollowers = await userFollowRepo.find({ where: { following: user.id }, relations: ["follower", "following"]});
+      for (const userFollow of userFollowers) {
+        const notification = notificationRepo.create({
+          type: 'USER_UPDATE',
+          content: `User Announcement - ${user.username}`,
+          user: userFollow.follower,
+          relatedUser: user,
+        });
+        await notificationRepo.save(notification);
+        console.log(`User Notification created for user ${userFollow.follower.username}.`);
+      }
     }
 
     console.log('Demo data loaded successfully!');

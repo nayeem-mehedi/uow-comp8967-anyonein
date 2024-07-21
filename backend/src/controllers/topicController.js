@@ -8,7 +8,7 @@ const topicRepository = AppDataSource.getRepository(Topic);
     export const listTopic = async (req, res) => {
         // Check and validate Authorization token
         const token = req.header('Authorization')?.split(' ')[1];
-        const usernameRedis =  await checkAuthHeader(token, res);
+        const userDataRedis =  await checkAuthHeader(token, res);
 
         const topics = await topicRepository.find();
         res.json(topics);
@@ -18,7 +18,7 @@ const topicRepository = AppDataSource.getRepository(Topic);
     export const createTopic = async (req, res) => {
         // Check and validate Authorization token
         const token = req.header('Authorization')?.split(' ')[1];
-        const usernameRedis =  await checkAuthHeader(token, res);
+        const userDataRedis =  await checkAuthHeader(token, res);
 
         const topic = topicRepository.create(req.body);
 
@@ -32,7 +32,7 @@ const topicRepository = AppDataSource.getRepository(Topic);
     export const deleteTopic = async (req, res) => {
         // Check and validate Authorization token
         const token = req.header('Authorization')?.split(' ')[1];
-        const usernameRedis =  await checkAuthHeader(token, res);
+        const userDataRedis =  await checkAuthHeader(token, res);
 
         const result = await topicRepository.delete(req.params.id);
         res.status(200).json({message: "successfully deleted"});

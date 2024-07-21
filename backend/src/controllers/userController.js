@@ -31,7 +31,7 @@ export const getUser = async (req, res) => {
 export const editUser = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis = await checkAuthHeader(token, res);
+  const userDataRedis = await checkAuthHeader(token, res);
 
   // TODO: Admin can edit
 
@@ -41,7 +41,7 @@ export const editUser = async (req, res) => {
   try {
     const user = await userRepository.findOneBy({ id });
 
-    if (usernameRedis != user.username) {
+    if (userDataRedis.username != user.username) {
       return res.status(401).json({ message: 'User not authorized' });
     }
 
@@ -134,13 +134,13 @@ export const deleteUser = async (req, res) => {
 export const changePassword = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const tokenUser = await checkAuthHeader(token, res);
+  const userDataRedis = await checkAuthHeader(token, res);
 
   // get passwords from body
   const { oldPassword, newPassword } = req.body;
 
   try {
-    const user = await userRepository.findOneBy({ username: tokenUser });
+    const user = await userRepository.findOneBy({ username: userDataRedis.username });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });

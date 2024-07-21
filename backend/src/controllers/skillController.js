@@ -7,7 +7,7 @@ const skillRepository = AppDataSource.getRepository(Skill);
 export const createSkill = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis =  await checkAuthHeader(token, res);
+  const userDataRedis =  await checkAuthHeader(token, res);
 
   // Only Admin allow
 
@@ -38,7 +38,7 @@ export const getSkills = async (req, res) => {
 export const deleteSkill = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const usernameRedis =  await checkAuthHeader(token, res);
+  const userDataRedis =  await checkAuthHeader(token, res);
 
   // Only Admin allow
 

@@ -28,13 +28,13 @@ export const createProfile = async (req, res) => {
 export const getSelfProfile = async (req, res) => {
   // Check and validate Authorization token
   const token = req.header('Authorization')?.split(' ')[1];
-  const userName = await checkAuthHeader(token, res);
-  console.log(userName);
+  const {userId, username, role} = await checkAuthHeader(token, res);
 
+  //FIXME: 
   const queryBuilder = profileRepository.createQueryBuilder('profile')
     .leftJoinAndSelect('profile.user', 'user')
     .leftJoinAndSelect('profile.skills', 'skill')
-    .where("user.username = :username", { username: userName });
+    .where("user.username = :username", { username });
 
   try {
     const profile = await queryBuilder.getOne();
@@ -108,6 +108,8 @@ export const updateProfile = async (req, res) => {
 
       const updatedProfile = await profileRepository.save(profile);
       res.json(updatedProfile);
+    } else {
+      return res.status(401).json({ message: 'You can only change your own profile' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

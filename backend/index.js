@@ -12,6 +12,9 @@ import profileSkillRoutes from "./src/routes/profileSkillRoutes.js";
 import searchRoutes from "./src/routes/searchRoutes.js"
 import projectRoutes from "./src/routes/projectRoutes.js"
 import topicRoutes from "./src/routes/topicRoutes.js"
+import announcementRoutes from "./src/routes/announcementRoutes.js"
+import notificationRoutes from "./src/routes/notificationRoutes.js"
+import followRoutes from "./src/routes/followRoutes.js"
 
 dotenv.config();
 
@@ -29,6 +32,9 @@ app.use("/api/profile-skills", profileSkillRoutes);
 app.use("/api/search", searchRoutes)
 app.use("/api/projects", projectRoutes)
 app.use("/api/topics", topicRoutes)
+app.use("/api/announcements", announcementRoutes)
+app.use("/api/notifications", notificationRoutes)
+app.use("/api/follow", followRoutes)
 
 AppDataSource.initialize()
   .then(() => {

@@ -8,7 +8,7 @@ const projectRepository = AppDataSource.getRepository(Project);
 export const listProject = async (req, res) => {
     // Check and validate Authorization token
     const token = req.header('Authorization')?.split(' ')[1];
-    const usernameRedis = await checkAuthHeader(token, res);
+    const userDataRedis = await checkAuthHeader(token, res);
 
     const projects = await projectRepository.find({ relations: ["topic", "skills", "users"] });
     res.json(projects);
@@ -18,7 +18,7 @@ export const listProject = async (req, res) => {
 export const detailsProject = async (req, res) => {
     // Check and validate Authorization token
     const token = req.header('Authorization')?.split(' ')[1];
-    const usernameRedis = await checkAuthHeader(token, res);
+    const userDataRedis = await checkAuthHeader(token, res);
 
     const project = await projectRepository.findOne({ where: { id: req.params.id }, relations: ["topic", "skills", "users"] });
     res.json(project);
@@ -28,7 +28,7 @@ export const detailsProject = async (req, res) => {
 export const createProject = async (req, res) => {
     // Check and validate Authorization token
     const token = req.header('Authorization')?.split(' ')[1];
-    const usernameRedis = await checkAuthHeader(token, res);
+    const userDataRedis = await checkAuthHeader(token, res);
 
     const project = projectRepository.create(req.body);
     const result = await projectRepository.save(project);
@@ -40,7 +40,7 @@ export const createProject = async (req, res) => {
 export const updateProject = async (req, res) => {
     // Check and validate Authorization token
     const token = req.header('Authorization')?.split(' ')[1];
-    const usernameRedis = await checkAuthHeader(token, res);
+    const userDataRedis = await checkAuthHeader(token, res);
 
     // Get the project ID from the request parameters
     const { id } = req.params;
@@ -88,25 +88,41 @@ export const updateProject = async (req, res) => {
     }
 
     // Handle users additions and deletions
+    // users : [{id: 1, type: "OWNER"}, {id: 2, type: "CONTRIBUTOR"}]
+    // if (req.body.users) {
+    //     const { addUsers = [], removeUsers = [] } = req.body.users;
+
+    //     if (addUsers.length > 0) {
+    //         for (const user of addUsers) {
+    //             const userEntity = await userRepository.findOne(user.id);
+    //             if (userEntity && !project.users.some(u => u.id === userEntity.id)) {
+    //                 project.users.push(userEntity);
+    //             }
+    //         }
+    //     }
+
+    //     if (removeUsers.length > 0) {
+    //         project.users = project.users.filter(user => !removeUsers.includes(user.id));
+    //     }
+    // }
     if (req.body.users) {
-        const { addUsers = [], removeUsers = [] } = req.body.users;
-
-        if (addUsers.length > 0) {
-            for (const user of addUsers) {
-                const userEntity = await userRepository.findOne(user.id);
-                if (userEntity && !project.users.some(u => u.id === userEntity.id)) {
-                    project.users.push(userEntity);
-                }
-            }
+      // Remove all existing associations
+      project.users = [];
+    
+      // Add new associations
+      for (const user of req.body.users) {
+        const userEntity = await userRepository.findOne(user.id);
+        if (userEntity) {
+          project.users.push({
+            user: userEntity,
+            type: user.type,
+          });
         }
-
-        if (removeUsers.length > 0) {
-            project.users = project.users.filter(user => !removeUsers.includes(user.id));
-        }
+      }
     }
 
     // Merge the request body into the existing project entity
-    projectRepository.merge(project, req.body);
+    // projectRepository.merge(project, req.body);
 
     // Save the updated project
     const result = await projectRepository.save(project);

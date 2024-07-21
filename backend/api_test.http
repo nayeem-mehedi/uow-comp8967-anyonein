@@ -103,13 +103,13 @@ Authorization: basic {{authToken}}
 ###
 
 ### Get profile details
-GET {{baseUrl}}/profiles/2
+GET {{baseUrl}}/profiles/5
 Authorization: basic {{authToken}}
 
 ###
 
 ### Update profile details
-PUT http://localhost:9001/api/profiles/1
+PUT {{baseUrl}}/profiles/3
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
@@ -124,6 +124,8 @@ Authorization: basic {{authToken}}
 #   "otherProfile": "https://linkedin.com/in/johndoe_new",
 #   "profilePicture": "https://ui-avatars.com/api/?name=N+M"
 # }
+
+###
 
 ### Update profile details - SELF
 PUT http://localhost:9001/api/profiles/self
@@ -142,7 +144,7 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "name": "Selenium"
+  "name": "Selenium222"
 }
 
 ### List all skills
@@ -150,7 +152,7 @@ GET {{baseUrl}}/skills
 Authorization: basic {{authToken}}
 
 ### Delete a skill
-DELETE {{baseUrl}}/skills/3
+DELETE {{baseUrl}}/skills/110
 Authorization: basic {{authToken}}
 
 ### Add skill to profile
@@ -159,7 +161,7 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "skillId": 5
+  "skills": [1, 100]
 }
 
 ### Remove skill from profile
@@ -278,3 +280,69 @@ DELETE {{baseUrl}}/projects/11
 Authorization: basic {{authToken}}
 
 ####
+
+##### PHASE 3 START #####
+
+### Create an announcement for a user
+POST {{baseUrl}}/announcements/user
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "title": "New User Announcement",
+  "content": "User has joined the project",
+  "user": { "id": 1 }
+}
+
+###
+
+### Create an announcement for a project
+POST {{baseUrl}}/announcements/project
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "title": "Project Kickoff",
+  "content": "The project has started",
+  "project": { "id": 11 }
+}
+
+###
+
+### List notifications
+GET {{baseUrl}}/notifications
+Authorization: basic {{authToken}}
+
+###
+
+### Get notification count
+GET {{baseUrl}}/notifications/count
+Authorization: basic {{authToken}}
+
+###
+
+### Get notification details
+GET {{baseUrl}}/notifications/169
+Authorization: basic {{authToken}}
+
+###
+
+### Follow a user
+GET {{baseUrl}}/follow/user/1
+Authorization: basic {{authToken}}
+
+###
+
+### Follow a project
+GET {{baseUrl}}/follow/project/11
+Authorization: basic {{authToken}}
+
+###
+
+### List follow details
+GET {{baseUrl}}/follow/list
+Authorization: basic {{authToken}}
+
+###
+
+##### PHASE 3 END #####
