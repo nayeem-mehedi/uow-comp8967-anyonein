@@ -14,11 +14,14 @@ const DeleteSkill = () => {
 
   // Retrieve the token from localStorage
   const token = localStorage.getItem('token');
+
+  // Use the environment variable for the API URL
+  const apiUrl = process.env.REACT_APP_API_URL;
   
   console.log(id);
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:9001/api/profile-skills/${id}`, { 
+      const response = await axios.delete(`${apiUrl}/profile-skills/${id}`, { 
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${token}`,
@@ -38,14 +41,36 @@ const DeleteSkill = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mt-4">
-        <h1 className="mb-4">Delete Skill</h1>
-        <p>Are you sure you want to delete this skill?</p>
-        {error && <p className="text-danger">{error}</p>}
-        <Button variant="danger" onClick={handleDelete}>Delete</Button>
+      <div className="container mt-4 d-flex justify-content-center">
+        <Card className="w-50">
+          <Card.Body>
+            <Card.Title>Delete Skill</Card.Title>
+            <Card.Text>
+              Are you sure you want to delete this skill?
+            </Card.Text>
+            {error && <p className="text-danger">{error}</p>}
+            <Button variant="danger" onClick={handleDelete}>Delete</Button>
+          </Card.Body>
+        </Card>
       </div>
     </div>
   );
-};
+  };
+
+
+
+
+//   return (
+//     <div>
+//       <Navbar />
+//       <div className="container mt-4">
+//         <h1 className="mb-4">Delete Skill</h1>
+//         <p>Are you sure you want to delete this skill?</p>
+//         {error && <p className="text-danger">{error}</p>}
+//         <Button variant="danger" onClick={handleDelete}>Delete</Button>
+//       </div>
+//     </div>
+//   );
+// };
 
 export default DeleteSkill;

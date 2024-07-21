@@ -13,13 +13,16 @@ const GetSkills = () => {
   // Retrieve the token from localStorage
   const token = localStorage.getItem('token');
 
+  // Use the environment variable for the API URL
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
     const fetchSkills = async () => {
       try {
 
         console.log(id);
 
-        const response = await fetch('http://localhost:9001/api/skills/', {
+        const response = await fetch(`${apiUrl}/skills/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
