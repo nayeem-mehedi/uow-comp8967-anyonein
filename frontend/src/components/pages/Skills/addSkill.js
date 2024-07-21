@@ -26,10 +26,16 @@ const AddSkill = () => {
     skillIds: []
   });
 
+
+   // Use the environment variable for the API URL
+   const apiUrl = process.env.REACT_APP_API_URL;
+
+
+
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const response = await axios.get('http://localhost:9001/api/skills', {
+        const response = await axios.get(`${apiUrl}/skills`, {
           headers: {
             'Authorization': `Basic ${token}`,
           }
@@ -66,7 +72,7 @@ const AddSkill = () => {
       event.stopPropagation();
     } else {
       try {
-        const response = await axios.post('http://localhost:9001/api/profile-skills', values, {
+        const response = await axios.post(`${apiUrl}/skills`, values, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${token}`,
