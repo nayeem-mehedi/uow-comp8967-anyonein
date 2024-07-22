@@ -1,12 +1,14 @@
 import { AppDataSource } from '../config/db.js';
 import { User } from '../models/User.js';
 import { UserFollow } from '../models/UserFollow.js';
+import { Project } from '../models/Project.js';
 import { ProjectFollow } from '../models/ProjectFollow.js';
 import { checkAuthHeader } from '../helper/authHelper.js'
 
 const userRepository = AppDataSource.getRepository(User);
 const userFollowRepository = AppDataSource.getRepository(UserFollow);
 const projectFollowRepository = AppDataSource.getRepository(ProjectFollow);
+const projectRepository = AppDataSource.getRepository(Project);
 
 export const followUser = async (req, res) => {
     try {
@@ -21,22 +23,36 @@ export const followUser = async (req, res) => {
         }
 
         const followUserId = req.params.id;
-        const userToFollow = await userRepository.findOne({where: {id: followUserId}});
-
+        // console.log(followUserId)
+        const userToFollow = await userRepository.findOneBy({ id: followUserId });
+        // console.log(userToFollow)
         if (!userToFollow) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const existingFollow = await userFollowRepository.findOne({ where: { follower: {id: userDataRedis.userId}, following: followUserId } });
+        console.log(userToFollow)
+
+        const existingFollow = await userFollowRepository.findOne(
+            {
+                where:
+                {
+                    follower: { id: userDataRedis.userId },
+                    following: { id: followUserId }
+                },
+                relations: ['follower', 'following']
+            });
+
+        console.log(existingFollow)
         if (existingFollow) {
             await userFollowRepository.remove(existingFollow);
             return res.status(200).json({ message: 'Unfollowed the user' });
         } else {
-            const userFollow = userFollowRepository.create({ follower: {id: userDataRedis.userId}, following: userToFollow });
+            const userFollow = userFollowRepository.create({ follower: { id: userDataRedis.userId }, following: userToFollow });
             await userFollowRepository.save(userFollow);
             return res.status(200).json({ message: 'Started following the user' });
         }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: error.message });
     }
 }
@@ -55,19 +71,27 @@ export const followProject = async (req, res) => {
         }
 
         const followProjectId = req.params.id;
-        const projectToFollow = await projectRepository.findOne(followProjectId);
+        const projectToFollow = await projectRepository.findOneBy({ id: followProjectId });
 
         if (!projectToFollow) {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        const existingFollow = await projectFollowRepository.findOne({ where: { user: {id: userDataRedis.userId}, project: followProjectId } });
+        const existingFollow = await projectFollowRepository.findOne(
+            {
+                where:
+                {
+                    user: { id: userDataRedis.userId },
+                    project: { id: followProjectId }
+                },
+                relation: ['user', 'project']
+            });
 
         if (existingFollow) {
             await projectFollowRepository.remove(existingFollow);
             return res.status(200).json({ message: 'Unfollowed the project' });
         } else {
-            const projectFollow = projectFollowRepository.create({ user: {id: userDataRedis.userId}, project: projectToFollow });
+            const projectFollow = projectFollowRepository.create({ user: { id: userDataRedis.userId }, project: projectToFollow });
             await projectFollowRepository.save(projectFollow);
             return res.status(200).json({ message: 'Started following the project' });
         }

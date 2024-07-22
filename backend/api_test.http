@@ -328,13 +328,13 @@ Authorization: basic {{authToken}}
 ###
 
 ### Follow a user
-GET {{baseUrl}}/follow/user/1
+GET {{baseUrl}}/follow/user/5
 Authorization: basic {{authToken}}
 
 ###
 
 ### Follow a project
-GET {{baseUrl}}/follow/project/11
+GET {{baseUrl}}/follow/project/10
 Authorization: basic {{authToken}}
 
 ###
