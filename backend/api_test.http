@@ -283,16 +283,30 @@ Authorization: basic {{authToken}}
 
 ##### PHASE 3 START #####
 
-### Create an announcement for a user
+### List announcements for a user
+GET {{baseUrl}}/announcements/user/2
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+###
+
+
+### Create an announcement for a user (self)
 POST {{baseUrl}}/announcements/user
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "title": "New User Announcement",
-  "content": "User has joined the project",
-  "user": { "id": 1 }
+  "title": "Test User Announcement 1",
+  "content": "User has published the project"
 }
+
+###
+
+### List announcements for a project
+GET {{baseUrl}}/announcements/project/1
+Content-Type: application/json
+Authorization: basic {{authToken}}
 
 ###
 
@@ -304,7 +318,7 @@ Authorization: basic {{authToken}}
 {
   "title": "Project Kickoff",
   "content": "The project has started",
-  "project": { "id": 11 }
+  "projectId": "7"
 }
 
 ###
@@ -322,7 +336,7 @@ Authorization: basic {{authToken}}
 ###
 
 ### Get notification details
-GET {{baseUrl}}/notifications/169
+GET {{baseUrl}}/notifications/770
 Authorization: basic {{authToken}}
 
 ###

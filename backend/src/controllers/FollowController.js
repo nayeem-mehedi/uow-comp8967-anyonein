@@ -113,12 +113,21 @@ export const followList = async (req, res) => {
             return res.status(401).json({ message: 'Invalid authorization token' });
         }
 
-        const followedUsers = await userFollowRepository.find({ where: { follower: { id: userDataRedis.userId } }, relations: ['following'] });
+        const userFollow = await userFollowRepository.find({ where: { follower: { id: userDataRedis.userId } }, relations: ['following'] });
+        
+        // FIXME: remove most of the user details that goes to FE
+        const uFList = userFollow.map(follow => follow.following)
+        
+        console.log()
         const followedProjects = await projectFollowRepository.find({ where: { user: { id: userDataRedis.userId } }, relations: ['project'] });
+        // Users following the authenticated user
+        const followers = await userFollowRepository.find({ where: { following: { id: userDataRedis.userId } }, relations: ['follower'] });
+
 
         return res.status(200).json({
-            users: followedUsers.map(follow => follow.following),
+            users: userFollow.map(follow => follow.following),
             projects: followedProjects.map(follow => follow.project),
+            followers
         });
 
     } catch (error) {

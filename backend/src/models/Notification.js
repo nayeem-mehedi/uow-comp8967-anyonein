@@ -46,5 +46,11 @@ export const Notification = new EntitySchema({
       joinColumn: true,
       nullable: true,
     },
+    announcement: {
+      type: 'many-to-one',
+      target: 'Announcement',
+      joinColumn: true,
+      nullable: true,
+    },
   },
 });

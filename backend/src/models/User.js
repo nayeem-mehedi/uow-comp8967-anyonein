@@ -53,7 +53,7 @@ export const User = new EntitySchema({
   }, followedProjects: {
     type: 'one-to-many',
     target: 'ProjectFollow',
-    inverseSide: 'user',
+    inverseSide: 'userFollow',
   },
   followedUsers: {
     type: 'one-to-many',

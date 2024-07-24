@@ -191,8 +191,8 @@ const loadDemoData = async () => {
       const randomProjects = project_db.slice(0, Math.floor(Math.random() * 3) + 1);
       for (const project of randomProjects) {
         const projectFollow = projectFollowRepo.create({
-          user: user,
-          project: project,
+          follower: user,
+          pointedProject: project
         });
         await projectFollowRepo.save(projectFollow);
         console.log(`User ${user.username} followed project ${project.name}.`);
@@ -240,14 +240,14 @@ const loadDemoData = async () => {
       await announcementRepo.save(announcement);
       console.log(`Announcement created for project ${project.name}.`);
 
-      const projectFollowers = await projectFollowRepo.find({ where: { project: project.id }, relations: ["user", "project"]});
+      const projectFollowers = await projectFollowRepo.find({ where: { pointedProject: {id: project.id} }, relations: ["follower", "pointedProject"]});
       for (const projectFollow of projectFollowers) {
         const notification = notificationRepo.create({
           type: 'PROJECT_UPDATE',
           content: `Project Announcement - ${project.name}`,
           user: projectFollow.user,
           relatedProject: project,
-
+          announcement: announcement,
         });
         await notificationRepo.save(notification);
         console.log(`Project Notification created for user ${projectFollow.user.username}.`);
@@ -323,6 +323,7 @@ const loadDemoData = async () => {
           content: `User Announcement - ${user.username}`,
           user: userFollow.follower,
           relatedUser: user,
+          announcement: announcement,
         });
         await notificationRepo.save(notification);
         console.log(`User Notification created for user ${userFollow.follower.username}.`);
