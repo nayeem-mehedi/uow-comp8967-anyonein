@@ -7,8 +7,8 @@ import {
 
 const router = Router();
 
-router.get('/user/:id', followUser);
-router.get('/project/:id', followProject);
+router.post('/user/:id', followUser);
+router.post('/project/:id', followProject);
 router.get('/list', followList);
 
 export default router;

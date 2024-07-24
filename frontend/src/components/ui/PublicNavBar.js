@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { isLoggedIn } from '../../helper/auth';
+import NotificationBadge from "../pages/Notification/NotificationBadge";
 
 function PublicNavbar(props) {
 
@@ -14,6 +15,13 @@ function PublicNavbar(props) {
             setLoggedIn(true);
         }
     }, [navigate]);
+
+    const loggedInItems = loggedIn ? <>
+        <NavLink to="/search" className="nav-items">Search Users</NavLink>
+        <NavLink to="/searchproject" className="nav-items">Search Projects</NavLink>
+        <NavLink to="/projects" className="nav-items">Projects</NavLink>
+        <NavLink to="/follow-list" className="nav-items">Follow List</NavLink>
+    </> : <></>
 
     const ProfileDropdown = loggedIn ? <>
         <Dropdown>
@@ -35,11 +43,10 @@ function PublicNavbar(props) {
             <nav className="navbar">
                 <div className="nav-links">
                     <NavLink to="/home" className="nav-items">Home</NavLink>
-                    <NavLink to="/search" className="nav-items">Search Users</NavLink>
-                    <NavLink to="/searchproject" className="nav-items">Search Projects</NavLink>
-                    <NavLink to="/projects" className="nav-items">Projects</NavLink>
-                    <NavLink to="/about" className="nav-items">About Us</NavLink>
-                    <NavLink to="/contact" className="nav-items">Contact Us</NavLink>
+                    {loggedInItems}
+                    {/*<NavLink to="/about" className="nav-items">About Us</NavLink>*/}
+                    {/*<NavLink to="/contact" className="nav-items">Contact Us</NavLink>*/}
+                    {/*<NotificationBadge/>*/}
                 </div>
                 {ProfileDropdown}
             </nav>
