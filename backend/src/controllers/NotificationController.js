@@ -23,12 +23,19 @@ export const countNotifications = async (req, res) => {
             return res.status(401).json({ message: 'Invalid authorization token' });
         }
 
-        const count = await notificationRepository.count({ where: { user: { id: userDataRedis.userId }, isRead: false } });
+        const unreadNotificationCount = await notificationRepository
+            .createQueryBuilder('notification')
+            .select('COUNT(notification.id)', 'count')
+            .where('notification.userId = :userId', { userId: userDataRedis.userId })
+            .andWhere('notification.isRead = :isRead', { isRead: false })
+            .getRawOne();
 
-        return res.status(200).json({ count });
+        console.error(unreadNotificationCount);
+        return res.status(200).json(unreadNotificationCount);
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error(error);
+        return res.status(500).json({ error: error.message });
     }
 };
 
