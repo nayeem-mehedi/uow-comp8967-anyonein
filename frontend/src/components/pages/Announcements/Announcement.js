@@ -7,7 +7,7 @@ import { isLoggedIn } from '../../../helper/auth';
 function Announcement() {
     const navigate = useNavigate();
     const { id } = useParams();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     // console.log(id);
 
@@ -36,8 +36,8 @@ function Announcement() {
             const response = await fetch('http://localhost:9001/api/announcements/user/2', {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'basic {{authToken}}'
+                    "Content-Type": "application/json",
+                    Authorization: `Basic ${token}`,
                 }
             });
             const data = await response.json();
@@ -49,12 +49,11 @@ function Announcement() {
 
     const handleCreateAnnouncement = async () => {
         try {
-            console.log(token);
             const response = await fetch('http://localhost:9001/api/announcements/user', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'basic {{token}}'
+                    "Content-Type": "application/json",
+                    Authorization: `Basic ${token}`,
                 },
                 body: JSON.stringify({ title, content })
             });
