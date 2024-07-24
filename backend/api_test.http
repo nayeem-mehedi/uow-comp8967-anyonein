@@ -336,7 +336,7 @@ Authorization: basic {{authToken}}
 ###
 
 ### Get notification details
-GET {{baseUrl}}/notifications/770
+GET {{baseUrl}}/notifications/608
 Authorization: basic {{authToken}}
 
 ###
