@@ -20,6 +20,7 @@ import EditProfile from './components/pages/Profile/EditProfile';
 import AdminProfile from './components/pages/AdminProfile/AdminProfile';
 import Projects from './components/pages/Projects/Projects';
 import ProjectDetails from './components/pages/Projects/ProjectDetails';
+import Announcement from './components/pages/Announcements/Announcement';
 import FollowList from './components/pages/Follow/FollowList';
 import NotificationPage from './components/pages/Notification/NotificationPage';
 
@@ -86,6 +87,9 @@ const router = createBrowserRouter([
     element: <Searchproject/>
   },
   {
+    path:"/announcement",
+    element:<Announcement/>
+  },{
     path: "/follow-list",
     element: <FollowList/>
   },

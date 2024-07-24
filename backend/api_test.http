@@ -297,8 +297,8 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "title": "Test User Announcement 1",
-  "content": "User has published the project"
+  "title": "Test User Announcement 2",
+  "content": "Checking if that is working!"
 }
 
 ###

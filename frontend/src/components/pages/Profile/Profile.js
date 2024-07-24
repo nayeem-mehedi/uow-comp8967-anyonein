@@ -87,7 +87,7 @@ function Profile() {
                             {/* <button type="button" class="btn btn-info"><NavLink to = "/getSkills">Show Skills</NavLink></button>  */}
                             {/* <button type="button" class="btn btn-info" onClick={handleShowSkills}>Show Skills</button> */}
                             <button onClick={handleEdit} className="btn btn-primary mt-3">Edit Profile</button>
-                            <button type="button" class="btn btn-info" onClick={handleAddSkills}>Add Skill</button>
+                            <button type="button" className="btn btn-info" onClick={handleAddSkills}>Add Skill</button>
                         </div>
                         <p><strong>Skills:</strong></p>
                     </div>
