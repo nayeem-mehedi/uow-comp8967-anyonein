@@ -81,17 +81,17 @@ export const followProject = async (req, res) => {
             {
                 where:
                 {
-                    user: { id: userDataRedis.userId },
-                    project: { id: followProjectId }
+                    follower: { id: userDataRedis.userId },
+                    pointedProject: { id: followProjectId }
                 },
-                relation: ['user', 'project']
+                relations: ['follower', 'pointedProject']
             });
 
         if (existingFollow) {
             await projectFollowRepository.remove(existingFollow);
             return res.status(200).json({ message: 'Unfollowed the project' });
         } else {
-            const projectFollow = projectFollowRepository.create({ user: { id: userDataRedis.userId }, project: projectToFollow });
+            const projectFollow = projectFollowRepository.create({ follower: { id: userDataRedis.userId }, pointedProject: projectToFollow });
             await projectFollowRepository.save(projectFollow);
             return res.status(200).json({ message: 'Started following the project' });
         }
@@ -113,21 +113,53 @@ export const followList = async (req, res) => {
             return res.status(401).json({ message: 'Invalid authorization token' });
         }
 
-        const userFollow = await userFollowRepository.find({ where: { follower: { id: userDataRedis.userId } }, relations: ['following'] });
-        
-        // FIXME: remove most of the user details that goes to FE
-        const uFList = userFollow.map(follow => follow.following)
-        
-        console.log()
-        const followedProjects = await projectFollowRepository.find({ where: { user: { id: userDataRedis.userId } }, relations: ['project'] });
-        // Users following the authenticated user
-        const followers = await userFollowRepository.find({ where: { following: { id: userDataRedis.userId } }, relations: ['follower'] });
+        const userFollow_following = await userFollowRepository
+            .createQueryBuilder('userFollow')
+            .leftJoinAndSelect('userFollow.following', 'following')
+            .select([
+                'userFollow.id',
+                'following.id',
+                'following.firstName',
+                'following.lastName',
+                'following.username'
+            ])
+            .where('userFollow.followerId = :userId', { userId: userDataRedis.userId })
+            .getMany();
 
+        const projectFollow_following = await projectFollowRepository
+            .createQueryBuilder('projectFollow')
+            .leftJoinAndSelect('projectFollow.pointedProject', 'pointedProject')
+            .select([
+                'projectFollow.id',
+                'pointedProject.id',
+                'pointedProject.name'
+            ])
+            .where('projectFollow.followerId = :userId', { userId: userDataRedis.userId })
+            .getMany();
+
+        const userFollow_follower = await userFollowRepository
+            .createQueryBuilder('userFollow')
+            .leftJoinAndSelect('userFollow.follower', 'follower')
+            .select([
+                'userFollow.id',
+                'follower.id',
+                'follower.firstName',
+                'follower.lastName',
+                'follower.username'
+            ])
+            .where('userFollow.followingId = :userId', { userId: userDataRedis.userId })
+            .getMany();
+
+        const followingUserIds = new Set(userFollow_following.map(f => f.following.id));
+        const followedByUsers = userFollow_follower.map(f => ({
+            ...f.follower,
+            following: followingUserIds.has(f.follower.id),
+        }));
 
         return res.status(200).json({
-            users: userFollow.map(follow => follow.following),
-            projects: followedProjects.map(follow => follow.project),
-            followers
+            followingUsers: userFollow_following.map(f => f.following),
+            followingProjects: projectFollow_following.map(f => f.pointedProject),
+            followedByUsers: followedByUsers,
         });
 
     } catch (error) {

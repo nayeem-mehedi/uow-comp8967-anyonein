@@ -118,7 +118,7 @@ const loadDemoData = async () => {
       } else {
         userSkills = skills.slice(r1, r2 + 1);
       }
-      
+
       for (const skill of userSkills) {
         try {
           const profileSkill = profileSkillRepo.create({
@@ -177,7 +177,7 @@ const loadDemoData = async () => {
       }
 
       project.users = assignedUsers;
-      
+
 
       await projectRepo.save(project);
       console.log(`Project ${project.name} has been created.`);
@@ -240,17 +240,19 @@ const loadDemoData = async () => {
       await announcementRepo.save(announcement);
       console.log(`Announcement created for project ${project.name}.`);
 
-      const projectFollowers = await projectFollowRepo.find({ where: { pointedProject: {id: project.id} }, relations: ["follower", "pointedProject"]});
+      const projectFollowers = await projectFollowRepo.find({ where: { pointedProject: project.id }, relations: ["follower", "pointedProject"]});
       for (const projectFollow of projectFollowers) {
+        console.log(projectFollow)
+
         const notification = notificationRepo.create({
           type: 'PROJECT_UPDATE',
           content: `Project Announcement - ${project.name}`,
-          user: projectFollow.user,
+          user: projectFollow.follower,
           relatedProject: project,
           announcement: announcement,
         });
         await notificationRepo.save(notification);
-        console.log(`Project Notification created for user ${projectFollow.user.username}.`);
+        console.log(`Project Notification created for user ${projectFollow.follower.username}.`);
       }
     }
 
@@ -260,7 +262,7 @@ const loadDemoData = async () => {
       // Activity
       "User shared a product on social media.",
       "User updated their profile picture.",
-    
+
       // Project Updates
       "User completed the initial project planning phase.",
       "User started coding the core features.",
@@ -271,7 +273,7 @@ const loadDemoData = async () => {
       "User is working on performance optimizations.",
       "User is addressing bug fixes from beta testing.",
       "User is finalizing the project documentation.",
-    
+
       // Help Requests
       "User requested help with password reset.",
       "User needs assistance with account setup.",
@@ -283,7 +285,7 @@ const loadDemoData = async () => {
       "User reported a slow loading issue.",
       "User requested help with profile update.",
       "User needs assistance with data import.",
-    
+
       // Code Updates
       "User refactored the authentication module.",
       "User added a new API endpoint for user data.",
@@ -295,7 +297,7 @@ const loadDemoData = async () => {
       "User added unit tests for the new features.",
       "User deployed the latest version to production.",
       "User completed a code review and it was approved.",
-    
+
       // Achievements
       "User completed a project milestone ahead of schedule.",
       "User's codebase reached 90% test coverage.",
@@ -304,7 +306,7 @@ const loadDemoData = async () => {
       "User's app reached 1 million downloads.",
       "User's code successfully passed a security audit.",
       "User completed a challenging task."
-    ];    
+    ];
     const randomUsers = users_db.slice(0, Math.floor(Math.random() * users_db.length) + 1);
     for (const user of randomUsers) {
       const announcement = announcementRepo.create({
