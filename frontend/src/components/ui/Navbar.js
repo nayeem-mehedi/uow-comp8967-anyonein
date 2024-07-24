@@ -39,6 +39,7 @@ function Navbar() {
           <NavLink to="/search" className="nav-items">Search Users</NavLink>
           <NavLink to="/searchproject" className="nav-items">Search Projects</NavLink>
           <NavLink to="/projects" className="nav-items">Projects</NavLink>
+          <NavLink to="/announcement" className="nav-items">Announcements</NavLink>
           <NavLink to="/about" className="nav-items">About Us</NavLink>
           <NavLink to="/contact" className="nav-items">Contact Us</NavLink>
         </div>

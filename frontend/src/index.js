@@ -20,6 +20,7 @@ import EditProfile from './components/pages/Profile/EditProfile';
 import AdminProfile from './components/pages/AdminProfile/AdminProfile';
 import Projects from './components/pages/Projects/Projects';
 import ProjectDetails from './components/pages/Projects/ProjectDetails';
+import Announcement from './components/pages/Announcements/Announcement';
 
 const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
   {
     path: "/searchproject",
     element: <Searchproject/>
+  },
+  {
+    path:"/announcement",
+    element:<Announcement/>
   }
 
 ]);
