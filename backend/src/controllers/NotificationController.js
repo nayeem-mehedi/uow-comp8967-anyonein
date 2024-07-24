@@ -1,15 +1,8 @@
 import { AppDataSource } from '../config/db.js';
-// import { Announcement } from '../models/Announcement.js';
 import { Notification } from '../models/Notification.js';
-// import { UserFollow } from '../models/UserFollow.js';
-// import { ProjectFollow } from '../models/ProjectFollow.js';
 import { checkAuthHeader } from '../helper/authHelper.js'
 
-// const announcementRepository = AppDataSource.getRepository(Announcement);
 const notificationRepository = AppDataSource.getRepository(Notification);
-// const userFollowRepository = AppDataSource.getRepository(UserFollow);
-// const projectFollowRepository = AppDataSource.getRepository(ProjectFollow);
-
 
 export const countNotifications = async (req, res) => {
     try {
@@ -51,16 +44,20 @@ export const listNotifications = async (req, res) => {
             return res.status(401).json({ message: 'Invalid authorization token' });
         }
 
-        const notifications = await notificationRepository.find(
-            {
-                where:
-                {
-                    user:
-                        { id: userDataRedis.userId }
-                },
-                order: { createdAt: 'DESC' }
-            }
-        );
+        const notifications = await notificationRepository
+            .createQueryBuilder('notification')
+            .leftJoinAndSelect('notification.relatedProject', 'relatedProject')
+            .leftJoinAndSelect('notification.relatedUser', 'relatedUser')
+            .select([
+                'notification',
+                'relatedProject.id',
+                'relatedProject.name',
+                'relatedUser.id',
+                'relatedUser.username'
+            ])
+            .where('notification.userId = :userId', { userId: userDataRedis.userId })
+            .orderBy('notification.createdAt', 'DESC')
+            .getMany();
 
         return res.status(200).json({ notifications });
 
@@ -69,8 +66,6 @@ export const listNotifications = async (req, res) => {
     }
 };
 
-
-// FIXME: get notification should have announcement link
 export const getNotification = async (req, res) => {
     try {
         // Check and validate Authorization token
@@ -84,15 +79,23 @@ export const getNotification = async (req, res) => {
         }
 
         const notificationId = req.params.id;
-        const notification = await notificationRepository.findOne(
-            {
-                where:
-                {
-                    id: notificationId,
-                    user: { id: userDataRedis.userId }
-                },
-                relations: ['announcement']
-            });
+
+        const notification = await notificationRepository
+            .createQueryBuilder('notification')
+            .leftJoinAndSelect('notification.relatedProject', 'relatedProject')
+            .leftJoinAndSelect('notification.relatedUser', 'relatedUser')
+            .leftJoinAndSelect('notification.announcement', 'announcement')
+            .select([
+                'notification',
+                'announcement',
+                'relatedProject.id',
+                'relatedProject.name',
+                'relatedUser.id',
+                'relatedUser.username'
+            ])
+            .where('notification.id = :notificationId', { notificationId: notificationId })
+            .where('notification.userId = :userId', { userId: userDataRedis.userId })
+            .getOne();
 
         if (!notification) {
             return res.status(404).json({ message: 'Notification not found' });

@@ -1,9 +1,9 @@
-import { checkAuthHeader } from '../helper/authHelper.js'
-import { AppDataSource } from '../config/db.js';
-import { Announcement } from '../models/Announcement.js';
-import { Notification } from '../models/Notification.js';
-import { UserFollow } from '../models/UserFollow.js';
-import { ProjectFollow } from '../models/ProjectFollow.js';
+import {checkAuthHeader} from '../helper/authHelper.js'
+import {AppDataSource} from '../config/db.js';
+import {Announcement} from '../models/Announcement.js';
+import {Notification} from '../models/Notification.js';
+import {UserFollow} from '../models/UserFollow.js';
+import {ProjectFollow} from '../models/ProjectFollow.js';
 import {User} from "../models/User.js";
 import {Project} from "../models/Project.js";
 
@@ -18,30 +18,52 @@ const projectRepository = AppDataSource.getRepository(Project);
 // List Announcements by User
 export const listAnnouncementsByUser = async (req, res) => {
     try {
-        const { id } = req.params;
-        const user = await userRepository.findOneBy({ id });
+        const {id} = req.params;
+        const user = await userRepository.findOneBy({id});
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({message: 'User not found'});
         }
-        const announcements = await announcementRepository.find({ where: { user: {id} } });
-        res.status(200).json({ data: announcements });
+
+        const announcements = await announcementRepository
+            .createQueryBuilder('announcement')
+            .leftJoinAndSelect('announcement.user', 'user')
+            .select([
+                'announcement',
+                'user.id',
+                'user.username'
+            ])
+            .where('announcement.userId = :id', {id})
+            .getMany();
+
+        res.status(200).json({data: announcements});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({error: error.message});
     }
 };
 
-// List Announcements by Project TODO:
+// List Announcements by Project
 export const listAnnouncementsByProject = async (req, res) => {
     try {
-        const { id } = req.params;
-        const project = await projectRepository.findOneBy({ id });
+        const {id} = req.params;
+        const project = await projectRepository.findOneBy({id});
         if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
+            return res.status(404).json({message: 'Project not found'});
         }
-        const announcements = await announcementRepository.find({ where: { project: {id} } });
-        res.status(200).json({ data: announcements });
+
+        const announcements = await announcementRepository
+            .createQueryBuilder('announcement')
+            .leftJoinAndSelect('announcement.project', 'project')
+            .select([
+                'announcement',
+                'project.id',
+                'project.name'
+            ])
+            .where('announcement.projectId = :id', {id})
+            .getMany();
+
+        res.status(200).json({data: announcements});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({error: error.message});
     }
 };
 
@@ -54,10 +76,10 @@ export const createAnnouncementUser = async (req, res) => {
         try {
             userDataRedis = await checkAuthHeader(token, res);
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            return res.status(401).json({message: 'Invalid authorization token'});
         }
 
-        const { title, content } = req.body;
+        const {title, content} = req.body;
 
         const user = await userRepository.findOneBy({id: userDataRedis.userId})
 
@@ -68,21 +90,25 @@ export const createAnnouncementUser = async (req, res) => {
             project: null,
         });
 
-        const followers = await userFollowRepository.find({ where: { following: {id: userDataRedis.userId} }, relations: ['follower', 'following'] });
+        const userFollowers = await userFollowRepository.find({
+            where: {following: {id: userDataRedis.userId}},
+            relations: ['follower', 'following']
+        });
 
-        const notifications = followers.map(follower => ({
+        const notifications = userFollowers.map(userFollow => ({
             type: 'USER_UPDATE',
             content: `User ${user.username} has a new announcement`,
-            user: follower.follower,
+            user: userFollow.follower,
             relatedUser: user,
             relatedProject: null,
+            announcement: announcement,
         }));
 
         await notificationRepository.save(notifications);
 
-        res.status(201).json({ data: announcement, message: 'Announcement created and Notifications sent' });
+        res.status(201).json({data: announcement, message: 'Announcement created and Notifications sent'});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({error: error.message});
     }
 };
 
@@ -96,24 +122,25 @@ export const createAnnouncementProject = async (req, res) => {
         try {
             userDataRedis = await checkAuthHeader(token, res);
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            return res.status(401).json({message: 'Invalid authorization token'});
         }
 
-        const { projectId, title, content } = req.body;
+        const {projectId, title, content} = req.body;
 
         let project;
 
         try {
-            project = await projectRepository.findOne({ where: { id: projectId }, relations: ['users'] });
+            project = await projectRepository.findOne({where: {id: projectId}, relations: ['users']});
         } catch (error) {
-            return res.status(500).json({ message: 'Error finding project', error: error.message });
+            return res.status(500).json({message: 'Error finding project', error: error.message});
         }
 
         if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
+            return res.status(404).json({message: 'Project not found'});
         }
 
         const usernames = project.users.map(u => u.username);
+        //FIXME:
         // if ((userDataRedis.role !== 'admin') && !usernames.includes(userDataRedis.username)) {
         //     return res.status(401).json({ message: 'User not authorized' });
         // }
@@ -125,19 +152,23 @@ export const createAnnouncementProject = async (req, res) => {
             project: project,
         });
 
-        const followers = await projectFollowRepository.find({ where: { pointedProject: {id: project.id} }, relations: ["follower", "pointedProject"]});
-        const notifications = followers.map(follower => ({
+        const projectFollowers = await projectFollowRepository.find({
+            where: {pointedProject: project.id},
+            relations: ["follower", "pointedProject"]
+        });
+        const notifications = projectFollowers.map(projectFollow => ({
             type: 'PROJECT_UPDATE',
             content: `Project ${project.name} has a new announcement`,
-            user: follower.user,
+            user: projectFollow.follower,
             relatedUser: null,
             relatedProject: project,
+            announcement: announcement,
         }));
 
         await notificationRepository.save(notifications);
 
-        res.status(201).json({ data: announcement, message: 'Announcement created and Notifications sent' });
+        res.status(201).json({data: announcement, message: 'Announcement created and Notifications sent'});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({error: error.message});
     }
 };
