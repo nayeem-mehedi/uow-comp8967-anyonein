@@ -15,13 +15,13 @@ export const ProjectFollow = new EntitySchema({
     },
   },
   relations: {
-    user: {
+    follower: {
       type: 'many-to-one',
       target: 'User',
       joinColumn: true,
       nullable: false,
     },
-    project: {
+    pointedProject: {
       type: 'many-to-one',
       target: 'Project',
       joinColumn: true,

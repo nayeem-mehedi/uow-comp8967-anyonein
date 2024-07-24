@@ -74,7 +74,7 @@ export const Project = new EntitySchema({
     followedBy: {
       type: 'one-to-many',
       target: 'ProjectFollow',
-      inverseSide: 'project',
+      inverseSide: 'projectFollow',
     },
     announcements: {
       type: 'one-to-many',

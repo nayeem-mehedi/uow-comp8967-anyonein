@@ -44,7 +44,16 @@ export const listNotifications = async (req, res) => {
             return res.status(401).json({ message: 'Invalid authorization token' });
         }
 
-        const notifications = await notificationRepository.find({ where: { user: { id: userDataRedis.userId } }, order: { createdAt: 'DESC' } });
+        const notifications = await notificationRepository.find(
+            {
+                where:
+                {
+                    user:
+                        { id: userDataRedis.userId }
+                },
+                order: { createdAt: 'DESC' }
+            }
+        );
 
         return res.status(200).json({ notifications });
 
@@ -68,7 +77,15 @@ export const getNotification = async (req, res) => {
         }
 
         const notificationId = req.params.id;
-        const notification = await notificationRepository.findOne({ where: { id: notificationId, user: { id: userDataRedis.userId } } });
+        const notification = await notificationRepository.findOne(
+            {
+                where:
+                {
+                    id: notificationId,
+                    user: { id: userDataRedis.userId }
+                },
+                relations: ['announcement']
+            });
 
         if (!notification) {
             return res.status(404).json({ message: 'Notification not found' });
