@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 
-
 function Profile() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -15,10 +14,7 @@ function Profile() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-
-                console.log(id);
-
-                const response = await fetch('http://localhost:9001/api/profiles/' + id, {
+                const response = await fetch(`http://localhost:9001/api/profiles/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -42,6 +38,14 @@ function Profile() {
         navigate(`/edit-profile/${id}`);
     };
 
+    const handleAddSkills = () => {
+        navigate("/addSkill");
+    };
+
+    const handleDeleteSkills = (skillId) => {
+        navigate(`/deleteSkill/${skillId}`);
+    };
+
     if (error) {
         return <div>Error: {error.message}</div>;
     }
@@ -52,18 +56,6 @@ function Profile() {
                 <span className="sr-only">Loading...</span>
             </div>
         );
-    }
-
-    // const handleShowSkills = () => {
-    //     navigate("/getSkills");
-    // }
-
-    const handleAddSkills = () => {
-        navigate("/addSkill");
-    }
-
-    const handleDeleteSkills = (skillId) =>{
-        navigate(`/deleteSkill/${skillId}`);
     }
 
     return (
@@ -81,28 +73,22 @@ function Profile() {
                         <p><strong>Last Name:</strong> {profile.user.lastName}</p>
                         <p><strong>Email:</strong> {profile.user.email}</p>
                         <p><strong>Phone:</strong> {profile.user.phone}</p>
-                        <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile}>{profile.githubProfile}</a></p>
-                        <p><strong>Other Profile:</strong> <a href={profile.otherProfile}>{profile.otherProfile}</a></p>
-                        <div className="profile-skills">
-                            {/* <button type="button" class="btn btn-info"><NavLink to = "/getSkills">Show Skills</NavLink></button>  */}
-                            {/* <button type="button" class="btn btn-info" onClick={handleShowSkills}>Show Skills</button> */}
-                            <button onClick={handleEdit} className="btn btn-primary mt-3">Edit Profile</button>
-                            <button type="button" className="btn btn-info" onClick={handleAddSkills}>Add Skill</button>
+                        <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile} target="_blank" rel="noopener noreferrer">{profile.githubProfile}</a></p>
+                        <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank" rel="noopener noreferrer">{profile.otherProfile}</a></p>
+                        <div className="d-flex align-items-center mt-3">
+                            <button onClick={handleEdit} className="btn btn-primary">Edit Profile</button>
+                            <button type="button" className="btn btn-info ml-3" onClick={handleAddSkills}>Add Skill</button>
                         </div>
-                        <p><strong>Skills:</strong></p>
+                        <p className="mt-4"><strong>Skills:</strong></p>
+                        <ul className="list-group">
+                            {profile.skills.map(skill => (
+                                <li className="list-group-item d-flex justify-content-between align-items-center" key={skill.id}>
+                                    {skill.name}
+                                    <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDeleteSkills(skill.id)}>Delete</button>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-
-                    <ul className="list-group">
-                        {profile.skills.map(skill => (
-                            <div className='skill-div container' key={skill.id}>
-                                <div className='col'>
-                                    <li className="list-group-item">{skill.name}</li>
-                                </div>
-                                <div className='col-2'><button type='button' className='btn-close' aria-label="Close" onClick={()=>handleDeleteSkills(skill.id)}></button></div>
-                               
-                            </div>
-                        ))}
-                    </ul>
                 </div>
             </div>
         </div>
