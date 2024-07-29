@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 import ProjectCard from "./ProjectCard"; // Import the ProjectCard component
 
@@ -7,6 +8,7 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -33,6 +35,10 @@ function Projects() {
     fetchProjects();
   }, [token]);
 
+  const handleCreateProject = () => {
+    navigate("/create-project"); // Redirecting to the CreateProject.js page
+  };
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -49,6 +55,13 @@ function Projects() {
     <Container>
       <Row>
         <Navbar />
+      </Row>
+      <Row className="mb-4">
+        {token && (
+          <Col xs={12}>
+            <Button onClick={handleCreateProject}>Create Project</Button>
+          </Col>
+        )}
       </Row>
       <Row>
         {projects.map((project) => (

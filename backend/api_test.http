@@ -144,7 +144,7 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 {
-  "name": "Selenium222"
+  "name": "React"
 }
 
 ### List all skills
