@@ -15,12 +15,12 @@ services:
       - "3306:3306"
     restart: unless-stopped
 
-  anyonein_redis:
-    image: redis:7.0-alpine
-    container_name: anyonein_redis
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
+  # anyonein_redis:
+  #   image: redis:7.0-alpine
+  #   container_name: anyonein_redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: unless-stopped
 
 volumes:
   anyonein_data:

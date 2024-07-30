@@ -20,6 +20,7 @@ function PublicNavbar(props) {
         <NavLink to="/search" className="nav-items">Search Users</NavLink>
         <NavLink to="/searchproject" className="nav-items">Search Projects</NavLink>
         <NavLink to="/projects" className="nav-items">Projects</NavLink>
+        <NavLink to="/announcement" className="nav-items">Announcements</NavLink>
         <NavLink to="/follow-list" className="nav-items">Follow List</NavLink>
     </> : <></>
 

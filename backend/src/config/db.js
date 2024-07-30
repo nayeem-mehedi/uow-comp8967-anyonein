@@ -10,6 +10,7 @@ import { ProjectFollow } from '../models/ProjectFollow.js';
 import { UserFollow } from '../models/UserFollow.js';
 import { Announcement } from '../models/Announcement.js';
 import { Notification } from '../models/Notification.js';
+import {RedisCache} from "../models/Cache.js";
 
 dotenv.config();
 
@@ -20,6 +21,6 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [User, Profile, Skill, ProfileSkill, Topic, Project, ProjectFollow, UserFollow, Announcement, Notification],
+  entities: [RedisCache, User, Profile, Skill, ProfileSkill, Topic, Project, ProjectFollow, UserFollow, Announcement, Notification],
   logging: true,
 });
