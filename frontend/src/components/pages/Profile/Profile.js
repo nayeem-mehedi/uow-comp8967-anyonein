@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
+import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 function Profile() {
     const { id } = useParams();
@@ -8,6 +10,7 @@ function Profile() {
 
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
+    const { enqueueSnackbar } = useSnackbar();
     // Retrieve the token from localStorage
     const token = localStorage.getItem('token');
 
@@ -42,9 +45,32 @@ function Profile() {
         navigate("/addSkill");
     };
 
-    const handleDeleteSkills = (skillId) => {
-        navigate(`/deleteSkill/${skillId}`);
+    // const handleDeleteSkills = (skillId) => {
+    //     navigate(`/deleteSkill/${skillId}`);
+    // };
+    const handleDeleteSkills = async (skillId) => {
+        try {
+            const response = await axios.delete(`http://localhost:9001/api/profile-skills/${skillId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${token}`,
+                }
+            });
+
+            if (response.status === 200) {
+                // Remove the deleted skill from the profile state
+                setProfile(prevProfile => ({
+                    ...prevProfile,
+                    skills: prevProfile.skills.filter(skill => skill.id !== skillId)
+                }));
+                enqueueSnackbar('Deleted successfully', { variant: 'success' });
+            }
+        } catch (error) {
+            // setError('Deletion failed. Please try again.');
+            enqueueSnackbar('Failed to delete', { variant: 'error' });
+        }
     };
+
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -96,3 +122,5 @@ function Profile() {
 }
 
 export default Profile;
+
+

@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
+import { useSnackbar } from 'notistack';
 
 function EditProfile() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const [profile, setProfile] = useState({
         user: {
             username: "",
@@ -90,8 +92,11 @@ function EditProfile() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            enqueueSnackbar('Editted successfully', { variant: 'success' });
             navigate(`/profile/${id}`);
+          
         } catch (error) {
+            enqueueSnackbar('Failed to edit', { variant: 'error' });
             setError(error);
         }
     };

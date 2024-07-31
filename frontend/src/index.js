@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from './components/App';
+import { SnackbarProvider } from 'notistack';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -112,6 +113,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+     <SnackbarProvider>
     <RouterProvider router={router} />
+    </SnackbarProvider>
   </React.StrictMode>
 );
