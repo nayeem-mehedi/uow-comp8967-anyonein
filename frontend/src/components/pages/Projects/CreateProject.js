@@ -163,8 +163,9 @@ const CreateProject = () => {
   };
 
   return (
+    <div>
+    <Navbar />
     <Container>
-      <Navbar />
       <Row className="justify-content-md-center mt-5">
         <Col md={8}>
           <h2>Create Project</h2>
@@ -294,6 +295,8 @@ const CreateProject = () => {
         </Col>
       </Row>
     </Container>
+    </div>
+
   );
 };
 

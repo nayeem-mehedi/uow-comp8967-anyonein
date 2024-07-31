@@ -13,10 +13,9 @@ const demoNotifications = [
 
 function NotificationPage() {
     return (
+        <div>
+        <Navbar />
         <Container>
-            <Row>
-                <Navbar />
-            </Row>
             <Row className="my-4">
                 <Col>
                     <h1>Notifications</h1>
@@ -34,6 +33,8 @@ function NotificationPage() {
                 </Col>
             </Row>
         </Container>
+        </div>
+
     );
 }
 

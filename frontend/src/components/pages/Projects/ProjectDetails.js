@@ -54,18 +54,19 @@ const ProjectDetails = () => {
   }
 
   return (
-    <Container>
-      <Row>
-        <Navbar />
-      </Row>
-      <Row>
-        <h1>Project Details</h1>
-        <ProjectCard project={project}  showDetailsButton={false}/>
-        <div className="p-3" >
-          <Button variant="secondary" onClick={handleGoBack} >Go back</Button>
-        </div>
-      </Row>
-    </Container>
+    <div>
+      <Navbar />
+      <Container>
+        <Row>
+          <h1>Project Details</h1>
+          <ProjectCard project={project}  showDetailsButton={false}/>
+          <div className="p-3" >
+            <Button variant="secondary" onClick={handleGoBack} >Go back</Button>
+          </div>
+        </Row>
+      </Container>
+    </div>
+
   );
 };
 

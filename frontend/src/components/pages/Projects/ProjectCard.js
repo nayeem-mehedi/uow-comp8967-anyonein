@@ -16,7 +16,7 @@ const ProjectCard = ({ project, showDetailsButton }) => {
       <Card.Body>
         <Card.Title>{project.name}</Card.Title>
         <Card.Text>
-          <strong>Description:</strong> {project.description}<br />
+          <strong>Description: </strong>{!showDetailsButton ? project.description : (project.description.length > 200 ? `${project.description.substring(0, 200)}...` : project.description)}<br />
           <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
           <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
           <strong>Users:</strong> {project.users.map((user, index) => (

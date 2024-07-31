@@ -132,74 +132,77 @@ function Searchproject() {
   }
 
   return (
-    <Container>
-      <Row className="justify-content-md-center">
-        <Navbar />
-        <Col md="6">
-          <h1 className="text-center search-h1">Search Projects</h1>
-          <Form className="search-form" onSubmit={handleSearch}>
-            <Form.Group className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder="Project Name"
-                value={query}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Topic</Form.Label>
-              <Form.Control as="select" value={selectedTopic} onChange={handleTopicChange}>
-                <option value="">Select Topic</option>
-                {topics.map(topic => (
-                  <option key={topic.id} value={topic.name}>
-                    {topic.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Skills</Form.Label>
-              <Form.Control as="select" value={selectedSkill} onChange={handleSkillChange}>
-                <option value="">Select Skill</option>
-                {skills.map(skill => (
-                  <option key={skill.id} value={skill.name}>
-                    {skill.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Button variant="primary" type="submit" style={{ marginBottom: '10px' }}>
-              Search
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-      <Row>
-        {results.map((project) => (
-          <Col md={4} key={project.id} className="mb-4">
-            <Card>
-              <Card.Body>
-                <Card.Title>{project.name}</Card.Title>
-                <Card.Text>
-                  <strong>Description:</strong> {project.description}<br />
-                  <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
-                  <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
-                  <strong>Topic:</strong> {project.topic.name}<br />
-                  <strong>Users:</strong> {project.users.map((user, index) => (
-                    <span key={user.id}>
-                        <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>
-                        {index < project.users.length - 1 && ' , '}
-                    </span>))}<br />
-                </Card.Text>
-                <Button variant="primary" href={`/projects/${project.id}`}>
-                  View Project
-                </Button>
-              </Card.Body>
-            </Card>
+    <div>
+      <Navbar />
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col md="6">
+            <h1 className="text-center search-h1">Search Projects</h1>
+            <Form className="search-form" onSubmit={handleSearch}>
+              <Form.Group className="mb-3">
+                <Form.Control
+                  type="text"
+                  placeholder="Project Name"
+                  value={query}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Topic</Form.Label>
+                <Form.Control as="select" value={selectedTopic} onChange={handleTopicChange}>
+                  <option value="">Select Topic</option>
+                  {topics.map(topic => (
+                    <option key={topic.id} value={topic.name}>
+                      {topic.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Skills</Form.Label>
+                <Form.Control as="select" value={selectedSkill} onChange={handleSkillChange}>
+                  <option value="">Select Skill</option>
+                  {skills.map(skill => (
+                    <option key={skill.id} value={skill.name}>
+                      {skill.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Button variant="primary" type="submit" style={{ marginBottom: '10px' }}>
+                Search
+              </Button>
+            </Form>
           </Col>
-        ))}
-      </Row>
-    </Container>
+        </Row>
+        <Row>
+          {results.map((project) => (
+            <Col md={4} key={project.id} className="mb-4">
+              <Card>
+                <Card.Body>
+                  <Card.Title>{project.name}</Card.Title>
+                  <Card.Text>
+                    <strong>Description:</strong> {project.description}<br />
+                    <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
+                    <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
+                    <strong>Topic:</strong> {project.topic.name}<br />
+                    <strong>Users:</strong> {project.users.map((user, index) => (
+                      <span key={user.id}>
+                          <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>
+                          {index < project.users.length - 1 && ' , '}
+                      </span>))}<br />
+                  </Card.Text>
+                  <Button variant="primary" href={`/projects/${project.id}`}>
+                    View Project
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
+   
   );
 }
 

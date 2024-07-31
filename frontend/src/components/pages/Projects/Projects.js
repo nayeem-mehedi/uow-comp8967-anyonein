@@ -52,25 +52,24 @@ function Projects() {
   }
 
   return (
-    <Container>
-      <Row>
-        <Navbar />
-      </Row>
-      <Row className="mb-4">
-        {token && (
-          <Col xs={12}>
-            <Button onClick={handleCreateProject}>Create Project</Button>
-          </Col>
-        )}
-      </Row>
-      <Row>
-        {projects.map((project) => (
-          <Col key={project.id} xs={12} md={4} className="mb-4">
-            <ProjectCard project={project} showDetailsButton={true}/>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <div>
+      <Navbar />
+      <Container>
+        <div className="createButtonSection">
+          {token && (
+            <Button onClick={handleCreateProject} className="projectCreateButton">Create Project</Button>
+          )}
+        </div>
+        <Row>
+          {projects.map((project) => (
+            <Col key={project.id} xs={12} md={4} className="mb-4">
+              <ProjectCard project={project} showDetailsButton={true}/>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
+
   );
 }
 

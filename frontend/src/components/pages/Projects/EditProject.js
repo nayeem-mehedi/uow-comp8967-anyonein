@@ -160,8 +160,9 @@ const EditProject = () => {
   };
 
   return (
+    <div>
+    <Navbar />
     <Container>
-      <Navbar />
       <Row className="justify-content-md-center mt-5">
         <Col md={8}>
           <h2>Edit Project</h2>
@@ -287,6 +288,8 @@ const EditProject = () => {
         </Col>
       </Row>
     </Container>
+    </div>
+
   );
 };
 

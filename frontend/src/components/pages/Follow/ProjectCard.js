@@ -36,7 +36,7 @@ function ProjectCard({ project, initialFollowing }) {
             <Card.Body className="p-1 d-flex justify-content-between align-items-center">
                 <div>
                     <Card.Title>{project.name}</Card.Title>
-                    <Link to={`/project/${project.id}`}>
+                    <Link to={`/projects/${project.id}`}>
                         <Card.Subtitle className="mb-2 text-muted">View Project</Card.Subtitle>
                     </Link>
                 </div>

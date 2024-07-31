@@ -72,77 +72,76 @@ function Announcement() {
     };
 
     return (
-        <Container>
-            <Row>
-                <Navbar />
-            </Row>
-            <Row className="mb-3">
-                <Col>
+        <div>
+            <Navbar />
+            <Container>
+                <div className="createButtonSection">
                     <Button onClick={() => setShowModal(true)}>Create Announcement</Button>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <fieldset>
-                        <legend>Announcements</legend>
-                        {announcements.length > 0 ? (
-                            announcements.map((announcement) => (
-                                <Card key={announcement.id} className="mb-3">
-                                    <Card.Body>
-                                        <Card.Title>{announcement.title}</Card.Title>
-                                        <Card.Text>{announcement.content}</Card.Text>
-                                        <Card.Footer>
-                                            <small className="text-muted">
-                                                Created at: {new Date(announcement.createdAt).toLocaleString()}
-                                            </small>
-                                        </Card.Footer>
-                                    </Card.Body>
-                                </Card>
-                            ))
-                        ) : (
-                            <p>No announcements available.</p>
-                        )}
-                    </fieldset>
-                </Col>
-            </Row>
+                </div>
+                <Row>
+                    <Col>
+                        <fieldset>
+                            <legend>Announcements</legend>
+                            {announcements.length > 0 ? (
+                                announcements.map((announcement) => (
+                                    <Card key={announcement.id} className="mb-3">
+                                        <Card.Body>
+                                            <Card.Title>{announcement.title}</Card.Title>
+                                            <Card.Text>{announcement.content}</Card.Text>
+                                            <Card.Footer>
+                                                <small className="text-muted">
+                                                    Created at: {new Date(announcement.createdAt).toLocaleString()}
+                                                </small>
+                                            </Card.Footer>
+                                        </Card.Body>
+                                    </Card>
+                                ))
+                            ) : (
+                                <p>No announcements available.</p>
+                            )}
+                        </fieldset>
+                    </Col>
+                </Row>
 
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Create Announcement</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="formTitle">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="formContent">
-                            <Form.Label>Content</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={3}
-                                placeholder="Enter content"
-                                value={content}
-                                onChange={(e) => setContent(e.target.value)}
-                            />
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleCreateAnnouncement}>
-                        Create Announcement
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </Container>
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create Announcement</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group controlId="formTitle">
+                                <Form.Label>Title</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="formContent">
+                                <Form.Label>Content</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={3}
+                                    placeholder="Enter content"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={handleCreateAnnouncement}>
+                            Create Announcement
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </Container>
+        </div>
+
     );
 }
 
