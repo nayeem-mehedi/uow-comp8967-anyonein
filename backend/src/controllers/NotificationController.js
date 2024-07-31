@@ -48,12 +48,16 @@ export const listNotifications = async (req, res) => {
             .createQueryBuilder('notification')
             .leftJoinAndSelect('notification.relatedProject', 'relatedProject')
             .leftJoinAndSelect('notification.relatedUser', 'relatedUser')
+            .leftJoinAndSelect('notification.announcement', 'announcement')
             .select([
                 'notification',
                 'relatedProject.id',
                 'relatedProject.name',
                 'relatedUser.id',
-                'relatedUser.username'
+                'relatedUser.username',
+                'announcement.id',
+                'announcement.title',
+                'announcement.content' 
             ])
             .where('notification.userId = :userId', { userId: userDataRedis.userId })
             .orderBy('notification.createdAt', 'DESC')
