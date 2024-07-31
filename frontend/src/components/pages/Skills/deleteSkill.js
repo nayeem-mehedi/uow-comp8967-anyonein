@@ -61,17 +61,6 @@ const DeleteSkill = () => {
 
 
 
-//   return (
-//     <div>
-//       <Navbar />
-//       <div className="container mt-4">
-//         <h1 className="mb-4">Delete Skill</h1>
-//         <p>Are you sure you want to delete this skill?</p>
-//         {error && <p className="text-danger">{error}</p>}
-//         <Button variant="danger" onClick={handleDelete}>Delete</Button>
-//       </div>
-//     </div>
-//   );
-// };
+
 
 export default DeleteSkill;
