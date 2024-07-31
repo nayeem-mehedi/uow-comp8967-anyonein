@@ -52,7 +52,7 @@ const getValue = async (key) => {
 
         // Return the value if not expired
         console.log(cacheEntry.value);
-        return cacheEntry.value;
+        return JSON.parse(cacheEntry.value);
     }else {
         // Return null if the entry is not found
         console.log('Cache entry not found');
