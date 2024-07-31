@@ -5,8 +5,16 @@ import { checkAuthHeader } from '../helper/authHelper.js';
 
 export const searchUsers = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   const { query, page = 1, limit = 10 } = req.query;
 
@@ -48,8 +56,16 @@ export const searchUsers = async (req, res) => {
 
 export const searchProjects = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   const { query, page = 1, limit = 10, skills, topics, contributor, owner } = req.query;
 

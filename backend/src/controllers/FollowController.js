@@ -13,13 +13,15 @@ const projectRepository = AppDataSource.getRepository(Project);
 export const followUser = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const followUserId = req.params.id;
@@ -61,13 +63,15 @@ export const followUser = async (req, res) => {
 export const followProject = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const followProjectId = req.params.id;
@@ -104,13 +108,15 @@ export const followProject = async (req, res) => {
 export const followList = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const userFollow_following = await userFollowRepository

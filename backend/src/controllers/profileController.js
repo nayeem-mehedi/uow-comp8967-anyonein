@@ -8,8 +8,16 @@ const userRepository = AppDataSource.getRepository(User);
 
 export const createProfile = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   // TODO: Only self allowed
 
@@ -27,14 +35,22 @@ export const createProfile = async (req, res) => {
 
 export const getSelfProfile = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  const {userId, username, role} = await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   //FIXME: 
   const queryBuilder = profileRepository.createQueryBuilder('profile')
     .leftJoinAndSelect('profile.user', 'user')
     .leftJoinAndSelect('profile.skills', 'skill')
-    .where("user.username = :username", { username });
+    .where("user.username = :username", { username: userDataRedis.username});
 
   try {
     const profile = await queryBuilder.getOne();
@@ -55,8 +71,16 @@ export const getSelfProfile = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   const id = req.params.id;
 
@@ -76,23 +100,26 @@ export const getProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   try {
-
-    // Check and validate Authorization token
-    const token = req.header('Authorization')?.split(' ')[1];
-    await checkAuthHeader(token, res);
-
-    // FIXME: Only self allowed
-
+    // Only self allowed
     const id = req.params.id;
 
     if (id === 'self') {
-      const userName = await checkAuthHeader(token, res);
-      console.log(userName);
+      // Check and validate Authorization token
+      let userDataRedis;
+      try {
+        userDataRedis = await checkAuthHeader(req);
+        if (!userDataRedis) {
+          return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+        }
+      } catch (error) {
+        console.log(error);
+        return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+      }
 
       const queryBuilder = profileRepository.createQueryBuilder('profile')
         .leftJoinAndSelect('profile.user', 'user')
         .leftJoinAndSelect('profile.skills', 'skill')
-        .where("user.username = :username", { username: userName });
+        .where("user.username = :username", { username: userDataRedis.userName });
 
       const profile = await queryBuilder.getOne();
 

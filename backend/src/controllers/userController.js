@@ -1,9 +1,7 @@
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-// import jwt from 'jsonwebtoken';
 import { AppDataSource } from '../config/db.js';
 import { User } from '../models/User.js';
-// import {getValue} from '../models/RdisModel.js';
 import { checkAuthHeader } from '../helper/authHelper.js'
 
 dotenv.config();
@@ -12,8 +10,16 @@ const userRepository = AppDataSource.getRepository(User);
 
 export const getUser = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   const id = req.params.id;
 
@@ -30,10 +36,18 @@ export const getUser = async (req, res) => {
 
 export const editUser = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  const userDataRedis = await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
-  // TODO: Admin can edit
+  // TODO: Admin or own can edit
 
   const id = req.params.id;
   const { username, firstName, lastName, email, phone, role } = req.body;
@@ -41,7 +55,7 @@ export const editUser = async (req, res) => {
   try {
     const user = await userRepository.findOneBy({ id });
 
-    if (userDataRedis.username != user.username) {
+    if (userDataRedis.username !== user.username) {
       return res.status(401).json({ message: 'User not authorized' });
     }
 
@@ -66,13 +80,15 @@ export const editUser = async (req, res) => {
 export const listUsers = async (req, res) => {
   try {
     // Check and validate Authorization token
-    const token = req.header('Authorization')?.split(' ')[1];
     let userDataRedis;
-
     try {
-      userDataRedis = await checkAuthHeader(token, res);
+      userDataRedis = await checkAuthHeader(req);
+      if (!userDataRedis) {
+        return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+      }
     } catch (error) {
-      return res.status(401).json({ message: 'Invalid authorization token' });
+      console.log(error);
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
     }
 
     try {
@@ -89,14 +105,18 @@ export const listUsers = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     // Check and validate Authorization token
-    const token = req.header('Authorization')?.split(' ')[1];
     let userDataRedis;
-
     try {
-      userDataRedis = await checkAuthHeader(token, res);
+      userDataRedis = await checkAuthHeader(req);
+      if (!userDataRedis) {
+        return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+      }
     } catch (error) {
-      return res.status(401).json({ message: 'Invalid authorization token' });
+      console.log(error);
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
     }
+
+    //TODO: only own or admin can delete
 
     const id = req.params.id;
 
@@ -133,8 +153,16 @@ export const deleteUser = async (req, res) => {
 
 export const changePassword = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  const userDataRedis = await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   // get passwords from body
   const { oldPassword, newPassword } = req.body;

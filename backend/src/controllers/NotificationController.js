@@ -7,13 +7,15 @@ const notificationRepository = AppDataSource.getRepository(Notification);
 export const countNotifications = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if (!userDataRedis) {
+                return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+            }
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const unreadNotificationCount = await notificationRepository
@@ -35,13 +37,15 @@ export const countNotifications = async (req, res) => {
 export const listNotifications = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if (!userDataRedis) {
+                return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+            }
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const notifications = await notificationRepository
@@ -73,13 +77,15 @@ export const listNotifications = async (req, res) => {
 export const getNotification = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if (!userDataRedis) {
+                return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+            }
         } catch (error) {
-            return res.status(401).json({ message: 'Invalid authorization token' });
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const notificationId = req.params.id;
