@@ -184,7 +184,8 @@ function Searchproject() {
                   <strong>Description:</strong> {project.description}<br />
                   <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
                   <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
-                  <strong>Topic:</strong> {project.topic.name}<br />
+                  {/*FIXME: Set proper topic name*/}
+                  <strong>Topic:</strong> {project.topic != null ? project.topic.name : <>N/A<span style={{color: "red"}}>FIX</span></>}<br />
                   <strong>Users:</strong> {project.users.map((user, index) => (
                     <span key={user.id}>
                         <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>

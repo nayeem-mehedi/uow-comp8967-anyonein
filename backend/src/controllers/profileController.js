@@ -119,7 +119,7 @@ export const updateProfile = async (req, res) => {
       const queryBuilder = profileRepository.createQueryBuilder('profile')
         .leftJoinAndSelect('profile.user', 'user')
         .leftJoinAndSelect('profile.skills', 'skill')
-        .where("user.username = :username", { username: userDataRedis.userName });
+        .where("user.username = :username", { username: userDataRedis.username });
 
       const profile = await queryBuilder.getOne();
 
