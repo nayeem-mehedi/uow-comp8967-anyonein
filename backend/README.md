@@ -34,3 +34,8 @@ To load some demo data in the DB : `npm run load_demo_data`
 
 ### API endpoint test
 Open the file `backend/api_test.http` and start testing the backend API
+
+
+
+`npm remove mysql`
+`npm install mssql`

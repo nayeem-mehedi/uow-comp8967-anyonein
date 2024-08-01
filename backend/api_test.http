@@ -25,15 +25,15 @@ Content-Type: application/json
 #   "password": "harry123"
 # }
 
-# {
-#   "username": "johnmcclane",
-#   "password": "john123"
-# }
-
 {
-  "username": "ellenripley",
-  "password": "ellen123"
+  "username": "johnmcclane",
+  "password": "john123"
 }
+
+# {
+#   "username": "ellenripley",
+#   "password": "ellen123"
+# }
 
 
 ###
@@ -336,7 +336,7 @@ Authorization: basic {{authToken}}
 ###
 
 ### Get notification details and READ
-GET {{baseUrl}}/notifications/608
+GET {{baseUrl}}/notifications/1144
 Authorization: basic {{authToken}}
 
 ###
@@ -360,3 +360,44 @@ Authorization: basic {{authToken}}
 ###
 
 ##### PHASE 3 END #####
+
+### FILE upload START ###
+
+# File-Upload txt
+POST {{baseUrl}}/files/upload
+Authorization: basic {{authToken}}
+Content-Type: multipart/form-data; boundary=ExampleBoundaryString
+
+--ExampleBoundaryString
+Content-Disposition: form-data; name="file_name"
+
+test
+--ExampleBoundaryString
+Content-Disposition: form-data; name="uploaded_file"; filename="test.txt"
+Content-Type: text/plain
+
+< ./test.txt
+--ExampleBoundaryString--
+
+###
+
+# File-Upload jpg
+POST {{baseUrl}}/files/upload
+Authorization: basic {{authToken}}
+Content-Type: multipart/form-data; boundary=ExampleBoundaryString
+
+--ExampleBoundaryString
+Content-Disposition: form-data; name="file_name"
+
+1
+--ExampleBoundaryString
+Content-Disposition: form-data; name="uploaded_file"; filename="1.jpg"
+Content-Type: image/jpeg
+
+< ./1.jpg
+--ExampleBoundaryString--
+
+###
+
+
+### FILE upload END ###

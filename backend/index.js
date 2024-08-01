@@ -15,6 +15,7 @@ import topicRoutes from "./src/routes/topicRoutes.js"
 import announcementRoutes from "./src/routes/announcementRoutes.js"
 import notificationRoutes from "./src/routes/notificationRoutes.js"
 import followRoutes from "./src/routes/followRoutes.js"
+import fileRoutes from "./src/routes/FileRoutes.js";
 
 dotenv.config();
 
@@ -41,12 +42,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/profiles", profileRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/profile-skills", profileSkillRoutes);
-app.use("/api/search", searchRoutes)
-app.use("/api/projects", projectRoutes)
-app.use("/api/topics", topicRoutes)
-app.use("/api/announcements", announcementRoutes)
-app.use("/api/notifications", notificationRoutes)
-app.use("/api/follow", followRoutes)
+app.use("/api/search", searchRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/topics", topicRoutes);
+app.use("/api/announcements", announcementRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/follow", followRoutes);
+app.use("/api/files", fileRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
