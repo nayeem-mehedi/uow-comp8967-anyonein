@@ -13,6 +13,7 @@ import { Notification } from './src/models/Notification.js';
 import {RedisCache} from "./src/models/Cache.js";
 import {File} from "./src/models/File.js";
 import bcrypt from 'bcrypt';
+import fs from "node:fs";
 
 dotenv.config();
 

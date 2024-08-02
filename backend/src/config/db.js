@@ -12,11 +12,12 @@ import {Announcement} from '../models/Announcement.js';
 import {Notification} from '../models/Notification.js';
 import {RedisCache} from "../models/Cache.js";
 import {File} from "../models/File.js";
+import * as fs from "node:fs";
 
 dotenv.config();
 
 export const AppDataSource = new DataSource({
-    type: 'mariadb',
+    type: 'mysql',
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT || '3306', 10),
     username: process.env.DB_USER,
