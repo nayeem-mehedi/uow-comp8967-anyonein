@@ -36,6 +36,13 @@ const putValueWithExpire = async (key, value, timeAsSec) => {
     // await redisClient.expire(key, timeAsSec, "LT")
 }
 
+
+const removeKey = async (key) => {
+    // delete the entry
+    await redisRepo.delete({key});
+    console.log('Cache entry deleted');
+}
+
 const getValue = async (key) => {
 
     // Find the cache entry by key
@@ -64,6 +71,6 @@ const getValue = async (key) => {
         // return JSON.parse(result);
 }
 
-export {putValue, putValueWithExpire, getValue};
+export {putValue, putValueWithExpire, getValue, removeKey};
 
 

@@ -18,6 +18,18 @@ const projectRepository = AppDataSource.getRepository(Project);
 // List Announcements by User
 export const listAnnouncementsByUser = async (req, res) => {
     try {
+        // Check and validate Authorization token
+        let userDataRedis;
+        try {
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+        }
+
         const {id} = req.params;
         const user = await userRepository.findOneBy({id});
         if (!user) {
@@ -44,6 +56,18 @@ export const listAnnouncementsByUser = async (req, res) => {
 // List Announcements by Project
 export const listAnnouncementsByProject = async (req, res) => {
     try {
+        // Check and validate Authorization token
+        let userDataRedis;
+        try {
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+        }
+
         const {id} = req.params;
         const project = await projectRepository.findOneBy({id});
         if (!project) {
@@ -70,13 +94,15 @@ export const listAnnouncementsByProject = async (req, res) => {
 export const createAnnouncementUser = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
         } catch (error) {
-            return res.status(401).json({message: 'Invalid authorization token'});
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const {title, content} = req.body;
@@ -116,13 +142,15 @@ export const createAnnouncementUser = async (req, res) => {
 export const createAnnouncementProject = async (req, res) => {
     try {
         // Check and validate Authorization token
-        const token = req.header('Authorization')?.split(' ')[1];
         let userDataRedis;
-
         try {
-            userDataRedis = await checkAuthHeader(token, res);
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
         } catch (error) {
-            return res.status(401).json({message: 'Invalid authorization token'});
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
         }
 
         const {projectId, title, content} = req.body;

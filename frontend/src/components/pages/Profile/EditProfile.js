@@ -1,11 +1,13 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
+import { useSnackbar } from 'notistack';
+import { Form, Row, Col } from 'react-bootstrap';
 
 function EditProfile() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { enqueueSnackbar } = useSnackbar();
     const [profile, setProfile] = useState({
         user: {
             username: "",
@@ -38,6 +40,7 @@ function EditProfile() {
                 }
                 const data = await response.json();
                 setProfile(data);
+                console.log(data);
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -49,8 +52,13 @@ function EditProfile() {
     }, [id, token]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name in profile.user) {
+        const { name, value, files } = e.target;
+        if (name === 'image' && files.length > 0) {
+            setProfile({
+                ...profile,
+                profilePicture: files[0]
+            });
+        } else if (name in profile.user) {
             setProfile({
                 ...profile,
                 user: {
@@ -65,6 +73,7 @@ function EditProfile() {
             });
         }
     };
+    
 
     const handleSkillChange = (index, value) => {
         const newSkills = profile.skills.map((skill, i) => {
@@ -78,6 +87,35 @@ function EditProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
+        // Upload the image first
+        if (profile.profilePicture) {
+            const formData = new FormData();
+            formData.append('file_name', '1');
+            formData.append('uploaded_file', profile.profilePicture);
+    
+            try {
+                const response = await fetch('http://localhost:9001/api/files/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Basic ${token}`,
+                    },
+                    body: formData,
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to upload image');
+                }
+                const imageData = await response.json();
+                // Assuming the response contains the URL of the uploaded image
+                profile.profilePicture = imageData.link;
+            } catch (error) {
+                enqueueSnackbar('Failed to upload image', { variant: 'error' });
+                setError(error);
+                return; // Exit the function if image upload fails
+            }
+        }
+    
+        // Update the profile
         try {
             const response = await fetch('http://localhost:9001/api/profiles/' + id, {
                 method: 'PUT',
@@ -90,11 +128,14 @@ function EditProfile() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            enqueueSnackbar('Edited successfully', { variant: 'success' });
             navigate(`/profile/${id}`);
         } catch (error) {
+            enqueueSnackbar('Failed to edit', { variant: 'error' });
             setError(error);
         }
     };
+    
 
     if (loading) {
         return (
@@ -183,29 +224,15 @@ function EditProfile() {
                             onChange={handleChange}
                             className="form-control"
                         />
-                        </div>
-                    <div className="form-group">
-                        <label><strong>Add/Edit Profile Picture</strong></label>
-                        <input
-                            type="url"
-                            name="profilePicture"
-                            value={profile.profilePicture}
-                            onChange={handleChange}
-                            className="form-control"
-                        />
                     </div>
-                    {/* <div className="form-group">
-                        <label><strong>My Skills</strong></label>
-                        {profile.skills.map((skill, index) => (
-                            <input
-                                key={skill.id}
-                                type="text"
-                                value={skill.name}
-                                onChange={(e) => handleSkillChange(index, e.target.value)}
-                                className="form-control mb-2"
-                            />
-                        ))}
-                    </div> */}
+                    <Form.Group as={Row} className="mb-3 signup-field" controlId="formFile">
+                        <Form.Label column sm={2}>Upload Image</Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type="file" name="image" onChange={handleChange} />
+                            <Form.Control.Feedback type="invalid">Please upload an image.</Form.Control.Feedback>
+                        </Col>
+                    </Form.Group>
+
                     <button type="submit" className="btn btn-primary">Save Changes</button>
                 </form>
             </div>

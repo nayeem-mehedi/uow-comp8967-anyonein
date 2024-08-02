@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 // import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Select from 'react-select';
-//import { useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 
 const AddSkill = () => {
   const [skills, setSkills] = useState([]);
@@ -17,20 +17,18 @@ const AddSkill = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   // Retrieve the token from localStorage
   const token = localStorage.getItem('token');
 
   const [values, setValues] = useState({
-    profileId: id,
-    skillIds: []
+    skills: []
   });
 
 
    // Use the environment variable for the API URL
    const apiUrl = process.env.REACT_APP_API_URL;
-
-
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -56,11 +54,11 @@ const AddSkill = () => {
   }, [token]);
 
   const handleChange = (selectedOptions) => {
-    const selectedSkillIds = selectedOptions ? selectedOptions.map(option => option.value) : [];
+    const selectedSkills = selectedOptions ? selectedOptions.map(option => option.value) : [];
     setSelectedSkills(selectedOptions);
     setValues(prevValues => ({
       ...prevValues,
-      skillIds: selectedSkillIds
+      skills: selectedSkills
     }));
   };
 
@@ -72,17 +70,19 @@ const AddSkill = () => {
       event.stopPropagation();
     } else {
       try {
-        const response = await axios.post(`${apiUrl}/skills`, values, {
+        const response = await axios.post(`${apiUrl}/profile-skills`, values, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${token}`,
           }
         });
         if (response.data) {
+          enqueueSnackbar('Added successfully!', { variant: 'success' });
           navigate('/profile/self');
         }
       } catch (error) {
-        setError('Submission failed. Please try again.');
+       // setError('Submission failed. Please try again.');
+        enqueueSnackbar('Error', { variant: 'error' });
       }
     }
     setValidated(true);

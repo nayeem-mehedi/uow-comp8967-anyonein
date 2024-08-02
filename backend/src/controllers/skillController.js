@@ -6,10 +6,18 @@ const skillRepository = AppDataSource.getRepository(Skill);
 
 export const createSkill = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  const userDataRedis =  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
-  // Only Admin allow
+  //FIXME: Only Admin allow
 
   const { name } = req.body;
 
@@ -24,8 +32,16 @@ export const createSkill = async (req, res) => {
 
 export const getSkills = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
   try {
     const skills = await skillRepository.find();
@@ -37,10 +53,18 @@ export const getSkills = async (req, res) => {
 
 export const deleteSkill = async (req, res) => {
   // Check and validate Authorization token
-  const token = req.header('Authorization')?.split(' ')[1];
-  const userDataRedis =  await checkAuthHeader(token, res);
+  let userDataRedis;
+  try {
+    userDataRedis = await checkAuthHeader(req);
+    if (!userDataRedis) {
+      return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+  }
 
-  // Only Admin allow
+  // FIXME: Only Admin allow
 
   const id = req.params.id;
 

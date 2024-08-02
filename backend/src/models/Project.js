@@ -39,13 +39,13 @@ export const Project = new EntitySchema({
         name: 'project_skills',
         joinColumn: {
           name: 'projectId',
-          referencedColumnName: 'id'
+          referencedColumnName: 'id',
         },
         inverseJoinColumn: {
           name: 'skillId',
-          referencedColumnName: 'id'
-        }
-      }
+          referencedColumnName: 'id',
+        },
+      },
     },
     users: {
       type: 'many-to-many',
@@ -54,22 +54,22 @@ export const Project = new EntitySchema({
         name: 'project_users',
         joinColumn: {
           name: 'projectId',
-          referencedColumnName: 'id'
+          referencedColumnName: 'id',
         },
         inverseJoinColumn: {
           name: 'userId',
-          referencedColumnName: 'id'
+          referencedColumnName: 'id',
         },
         // Adding extra column for user type
         extraColumns: [
           {
             name: 'type',
             type: 'enum',
-            enum: ['OWNER', 'CONTRIBUTOR'],
-            default: 'CONTRIBUTOR',
+            enum: ['OWNER', 'COLLABORATOR'],
+            default: 'COLLABORATOR',
           },
         ],
-      }
+      },
     },
     followedBy: {
       type: 'one-to-many',

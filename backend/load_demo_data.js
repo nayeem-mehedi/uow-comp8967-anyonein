@@ -11,6 +11,7 @@ import { UserFollow } from './src/models/UserFollow.js';
 import { Announcement } from './src/models/Announcement.js';
 import { Notification } from './src/models/Notification.js';
 import {RedisCache} from "./src/models/Cache.js";
+import {File} from "./src/models/File.js";
 import bcrypt from 'bcrypt';
 
 dotenv.config();
@@ -22,7 +23,20 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [RedisCache, User, Profile, Skill, ProfileSkill, Topic, Project, ProjectFollow, UserFollow, Announcement, Notification],
+  entities: [
+    RedisCache,
+    User,
+    Profile,
+    Skill,
+    ProfileSkill,
+    Topic,
+    Project,
+    ProjectFollow,
+    UserFollow,
+    Announcement,
+    Notification,
+    File
+  ],
   dropSchema: true,
   synchronize: true,
   logging: true,
