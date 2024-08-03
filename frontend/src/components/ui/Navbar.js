@@ -12,7 +12,9 @@ function Navbar() {
 
   useEffect(() => {
     if (!isLoggedIn()) {
-      navigate('/login');
+      console.log("Not logged in");
+      // navigate('/login');
+      setLoggedIn(false);
     } else {
       setLoggedIn(true);
     }
@@ -24,6 +26,7 @@ function Navbar() {
     <NavLink to="/projects" className="nav-items">Projects</NavLink>
     <NavLink to="/announcement" className="nav-items">Announcements</NavLink>
     <NavLink to="/follow-list" className="nav-items">Follow List</NavLink>
+    <NotificationBadge />
   </> : <></>
 
   const ProfileDropdown = loggedIn ? <>
@@ -49,7 +52,6 @@ function Navbar() {
           {loggedInItems}
           {/*<NavLink to="/about" className="nav-items">About Us</NavLink>*/}
           {/*<NavLink to="/contact" className="nav-items">Contact Us</NavLink>*/}
-          <NotificationBadge />
         </div>
         {ProfileDropdown}
       </nav>

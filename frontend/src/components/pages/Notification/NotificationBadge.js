@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {Badge} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import { FaBell, FaBellSlash } from "react-icons/fa";
@@ -7,7 +7,7 @@ function NotificationBadge() {
     const [unreadCount, setUnreadCount] = useState(0);
     const token = localStorage.getItem("token");
 
-    const fetchUnreadCount = async () => {
+    const fetchUnreadCount = useCallback(async () => {
         try {
             const response = await fetch("http://localhost:9001/api/notifications/count", {
                 method: "GET",
@@ -26,7 +26,7 @@ function NotificationBadge() {
         } catch (error) {
             console.error("Error fetching notification count:", error);
         }
-    };
+    },[token]);
 
     useEffect(() => {
         fetchUnreadCount(); // Initial fetch when component mounts
@@ -34,14 +34,14 @@ function NotificationBadge() {
         const intervalId = setInterval(fetchUnreadCount, 5000); // Poll every 5 seconds
 
         return () => clearInterval(intervalId); // Cleanup on unmount
-    }, [token]);
+    }, [token, fetchUnreadCount]);
 
     return (
         <NavLink to="/notifications" className="nav-items align-items-center">
             {unreadCount > 0 ? (
                 <>
                     <FaBell className="me-1" />
-                    <span className="badge bg-primary">{unreadCount}</span>
+                    <Badge bg="primary">{unreadCount}</Badge>
                 </>
             ) : (
                 <FaBellSlash className="me-1" />

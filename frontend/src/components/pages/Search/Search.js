@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import Navbar from "../../ui/Navbar";
+import {FOLLOW_TYPES, FollowButton} from "../Follow/FollowButton";
+import {followUser} from "../../../helper/apiURL";
 
 function Search(){
   const [query, setQuery] = useState('');
@@ -65,6 +67,8 @@ function Search(){
                     <Button variant="primary" href={`/profile/${user.profile.id}`}>
                       View Profile
                     </Button>
+                    {/*FIXME: add follow status from API BE*/}
+                    <FollowButton type={FOLLOW_TYPES.USER} followUrl={followUser} id={user.id} initialFollowing={false} />
                   </Card.Body>
                 </Card>
               ))}

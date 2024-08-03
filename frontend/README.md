@@ -1,3 +1,11 @@
+# AnyOneIn FrontEnd
+
+### Running the FrontEnd
+0. add a `.env` file inside the backedn folder with the following:
+```shell
+REACT_APP_API_URL='http://localhost:9001/api'
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

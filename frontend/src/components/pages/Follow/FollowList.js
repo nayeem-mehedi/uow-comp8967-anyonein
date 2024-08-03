@@ -58,27 +58,23 @@ function FollowList() {
                     <Col>
                         <h2>Following Users</h2>
                         {followingUsers.map((user) => (
-                            <Col key={user.id} xs={12} md={4} className="mb-4">
-                                <UserCard user={user} initialFollowing={true} />
+                            <Col key={user.id} xs={12} md={12} className="mb-4">
+                                <UserCard user={user} initialFollowing={true}/>
                             </Col>
                         ))}
                     </Col>
-                </Row>
-                <Row>
                     <Col>
                         <h2>Following Projects</h2>
                         {followingProjects.map((project) => (
-                            <Col key={project.id} xs={12} md={4} className="mb-4">
-                                <ProjectCard project={project} initialFollowing={true} />
+                            <Col key={project.id} xs={12} md={12} className="mb-4">
+                                <ProjectCard project={project} initialFollowing={true}/>
                             </Col>
                         ))}
                     </Col>
-                </Row>
-                <Row>
                     <Col>
                         <h2>Followed By Users</h2>
                         {followedByUsers.map((user) => (
-                            <Col key={user.id} xs={12} md={4} className="mb-4">
+                            <Col key={user.id} xs={12} md={12} className="mb-4">
                                 <UserCard user={user} initialFollowing={user.following}/>
                             </Col>
                         ))}

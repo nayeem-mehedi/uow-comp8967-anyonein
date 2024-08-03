@@ -1,8 +1,7 @@
 import React from 'react';
 import landingContent from '../../../assets/landing-page/landing-content';
 import Footer from './Footer';
-// import Navbar from '../../ui/Navbar';
-import PublicNavbar from '../../ui/PublicNavBar'
+import Navbar from '../../ui/Navbar';
 import LandingStart from './LandingStart';
 import LandingSections from './LandingSections';
 
@@ -11,7 +10,7 @@ function Landing() {
   return (
     <div className="landing">
       <div className="landing-start">
-        <PublicNavbar/>
+        <Navbar/>
         <LandingStart />
       </div>
       <div className="landing-section2">

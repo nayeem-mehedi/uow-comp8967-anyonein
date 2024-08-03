@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import Navbar from "../../ui/Navbar";
+import {FOLLOW_TYPES, FollowButton} from "../Follow/FollowButton";
+import {followProject} from "../../../helper/apiURL";
 
 function Searchproject() {
   const [query, setQuery] = useState('');
@@ -195,6 +197,8 @@ function Searchproject() {
                   <Button variant="primary" href={`/projects/${project.id}`}>
                     View Project
                   </Button>
+                  {/*FIXME: add follow status from API BE*/}
+                  <FollowButton type={FOLLOW_TYPES.PROJECT} followUrl={followProject} id={project.id} initialFollowing={false} />
                 </Card.Body>
               </Card>
             </Col>
