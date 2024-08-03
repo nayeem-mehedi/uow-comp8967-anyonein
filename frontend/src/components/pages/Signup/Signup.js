@@ -14,11 +14,11 @@ function Signup(){
                     <SignupForm />
                 </div>
                 <p>Already have an account? <Link to="/login" className="login-link">Login</Link></p>
-                <div className="signup-socials">
+                {/* <div className="signup-socials">
                     <button className="alt-btn" type="submit">Sign-up with Icon</button>
                     <p>or</p>
                     <button className="alt-btn" type="submit">Sign-up with Icon</button>
-                </div>
+                </div> */}
             </div>
         </div>
     );

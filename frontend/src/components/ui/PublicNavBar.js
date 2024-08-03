@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { isLoggedIn } from '../../helper/auth';
 import NotificationBadge from "../pages/Notification/NotificationBadge";
+import { ButtonGroup } from "react-bootstrap";
 
 function PublicNavbar(props) {
 
@@ -25,15 +26,15 @@ function PublicNavbar(props) {
     </> : <></>
 
     const ProfileDropdown = loggedIn ? <>
-        <Dropdown>
+        <Dropdown as={ButtonGroup}>
             <Dropdown.Toggle className="grey-btn"></Dropdown.Toggle>
 
-            <Dropdown.Menu>
-                <Dropdown.Item>
-                    <NavLink to="/profile/self" className="nav-items">View Profile</NavLink>
+            <Dropdown.Menu >
+                <Dropdown.Item className="nav-items-alt">
+                    <NavLink to="/profile/self" className="nav-items-alt">View Profile</NavLink>
                 </Dropdown.Item>
-                <Dropdown.Item>
-                    <NavLink to="/logout" className="nav-items">Logout</NavLink>
+                <Dropdown.Item className="nav-items-alt">
+                    <NavLink to="/logout" className="nav-items-alt">Logout</NavLink>
                 </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>

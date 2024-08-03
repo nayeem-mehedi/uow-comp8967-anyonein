@@ -52,21 +52,19 @@ html{
 }
 
 
-.grey-btn{
-    background-color: #D9D9D9;
-    color: #091133;
-    padding: 10px 50px;
-    font-size: 15px;
-    border-radius: 15px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: 0.3s ease;
+.grey-btn {
+    background-color: #6c757d;
+    border: none;
+    color: #fff;
     text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.5s, color 0.5s;
 }
 
-.grey-btn:hover{
-    background-color: #e4e4e4;
-    border: 2px solid #37447E;
+.grey-btn:hover {
+    background-color: #4c5257;
 }
 
 .createButtonSection{
@@ -112,6 +110,19 @@ html{
     color: #fff;
 }
 
+.nav-items-alt {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    width: 100%;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-items-alt:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
 .main-btn {
     padding: 0.5rem 1rem;
     border: 1px solid #007bff;
@@ -127,18 +138,21 @@ html{
     color: #fff;
 }
 
-.grey-btn {
-    background-color: #6c757d;
-    border: none;
-    color: #fff;
+.main-btn-alt {
     padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
+    background-color: #007bff;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.grey-btn:hover {
-    background-color: #5a6268;
+.main-btn-alt:hover {
+    background-color: transparent;
+    border: 1px solid #007bff;
+    border-radius: 0.25rem;
+    color: #007bff;
 }
+
+
 
 
 

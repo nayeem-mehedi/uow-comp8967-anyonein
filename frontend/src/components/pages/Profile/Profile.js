@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
+import Accordion from 'react-bootstrap/Accordion';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 
 function Profile() {
     const { id } = useParams();
@@ -45,9 +47,6 @@ function Profile() {
         navigate("/addSkill");
     };
 
-    // const handleDeleteSkills = (skillId) => {
-    //     navigate(`/deleteSkill/${skillId}`);
-    // };
     const handleDeleteSkills = async (skillId) => {
         try {
             const response = await axios.delete(`http://localhost:9001/api/profile-skills/${skillId}`, {
@@ -66,11 +65,9 @@ function Profile() {
                 enqueueSnackbar('Deleted successfully', { variant: 'success' });
             }
         } catch (error) {
-            // setError('Deletion failed. Please try again.');
             enqueueSnackbar('Failed to delete', { variant: 'error' });
         }
     };
-
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -102,18 +99,26 @@ function Profile() {
                         <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile} target="_blank" rel="noopener noreferrer">{profile.githubProfile}</a></p>
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank" rel="noopener noreferrer">{profile.otherProfile}</a></p>
                         <div className="d-flex align-items-center mt-3">
-                            <button onClick={handleEdit} className="btn btn-primary">Edit Profile</button>
-                            <button type="button" className="btn btn-info ml-3" onClick={handleAddSkills}>Add Skill</button>
+                            <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>
                         </div>
-                        <p className="mt-4"><strong>Skills:</strong></p>
-                        <ul className="list-group">
-                            {profile.skills.map(skill => (
-                                <li className="list-group-item d-flex justify-content-between align-items-center" key={skill.id}>
-                                    {skill.name}
-                                    <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDeleteSkills(skill.id)}>Delete</button>
-                                </li>
-                            ))}
-                        </ul>
+                        <Accordion className="mt-4">
+                            <Accordion.Item eventKey="0">
+                                <Accordion.Header>Skills</Accordion.Header>
+                                <Accordion.Body>
+                                    <div className="d-flex align-items-center mb-3">
+                                        <button type="button" className="btn btn-primary main-btn-alt" onClick={handleAddSkills}>Add Skill</button>
+                                    </div>
+                                    <ul className="list-group">
+                                        {profile.skills.map(skill => (
+                                            <li className="list-group-item d-flex justify-content-between align-items-center" key={skill.id}>
+                                                {skill.name}
+                                                <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDeleteSkills(skill.id)}>Delete</button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Accordion.Body>
+                            </Accordion.Item>
+                        </Accordion>
                     </div>
                 </div>
             </div>
@@ -122,5 +127,3 @@ function Profile() {
 }
 
 export default Profile;
-
-
