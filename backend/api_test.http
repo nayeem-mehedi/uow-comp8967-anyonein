@@ -6,11 +6,11 @@ POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
-  "username": "rudaba",
-  "password": "rudaba456",
-  "firstName": "rudaba",
-  "lastName": "kamor",
-  "email": "rudaba@test.com",
+  "username": "dummy4",
+  "password": "dummy1234",
+  "firstName": "dummy",
+  "lastName": "four",
+  "email": "dummy@test.com",
   "phone": "123123123"
 }
 
@@ -26,8 +26,8 @@ Content-Type: application/json
 # }
 
 {
-  "username": "johnmcclane",
-  "password": "john123"
+  "username": "dummy4",
+  "password": "dummy1234"
 }
 
 # {
@@ -41,7 +41,7 @@ Content-Type: application/json
 @authToken = {{login.response.body.token}}
 
 ### Get user details
-GET {{baseUrl}}/users/2
+GET {{baseUrl}}/users/26
 Authorization: basic {{authToken}}
 
 ### Edit user details
@@ -60,7 +60,7 @@ Content-Type: application/json
 Authorization: basic {{authToken}}
 
 ### Delete user
-DELETE {{baseUrl}}/users/2
+DELETE {{baseUrl}}/users/27
 Content-Type: application/json
 Authorization: basic {{authToken}}
 
@@ -93,7 +93,7 @@ Authorization: basic {{authToken}}
   "githubProfile": "https://github.com/nayeem-mehedi",
   "otherProfile": "https://www.linkedin.com/in/nayeem-mehedi",
   "profilePicture": "https://example.com/profile.jpg",
-  "userId": 3
+  "userId": 26
 }
 
 ### Get Self profile details
@@ -103,7 +103,7 @@ Authorization: basic {{authToken}}
 ###
 
 ### Get profile details
-GET {{baseUrl}}/profiles/5
+GET {{baseUrl}}/profiles/27
 Authorization: basic {{authToken}}
 
 ###
