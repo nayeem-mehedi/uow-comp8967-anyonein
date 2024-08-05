@@ -32,11 +32,16 @@ function FollowButton({type=FOLLOW_TYPES.USER, followUrl, id, initialFollowing})
         }
     };
 
+    const followBtnStyle = {
+        paddingRight: '40px',
+    };
+
     return (
         <Button
             variant={buttonVariant}
             onClick={handleFollowClick}
-            className="mt-1 d-flex align-items-center"
+            className="mt-1 d-flex align-items-center main-btn-alt"
+            style={followBtnStyle}
         >
             <FollowIcon className="me-1"/> {followText}
         </Button>

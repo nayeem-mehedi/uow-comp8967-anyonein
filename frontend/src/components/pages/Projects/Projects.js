@@ -57,7 +57,7 @@ function Projects() {
       <Container>
         <div className="createButtonSection">
           {token && (
-            <Button onClick={handleCreateProject} className="projectCreateButton">Create Project</Button>
+            <Button onClick={handleCreateProject} className="projectCreateButton main-btn-alt">Create Project</Button>
           )}
         </div>
         <Row>

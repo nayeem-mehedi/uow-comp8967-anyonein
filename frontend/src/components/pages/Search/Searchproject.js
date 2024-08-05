@@ -171,7 +171,7 @@ function Searchproject() {
                   ))}
                 </Form.Control>
               </Form.Group>
-              <Button variant="primary" type="submit" style={{ marginBottom: '10px' }}>
+              <Button variant="primary" className='main-btn-alt' type="submit" style={{ marginBottom: '10px' }}>
                 Search
               </Button>
             </Form>
@@ -194,7 +194,7 @@ function Searchproject() {
                           {index < project.users.length - 1 && ' , '}
                       </span>))}<br />
                   </Card.Text>
-                  <Button variant="primary" href={`/projects/${project.id}`}>
+                  <Button variant="primary" className='main-btn-alt' href={`/projects/${project.id}`}>
                     View Project
                   </Button>
                   {/*FIXME: add follow status from API BE*/}

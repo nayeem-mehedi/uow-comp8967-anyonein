@@ -14,41 +14,35 @@ html{
 
 /* COMMON BUTTON STYLING */
 
-.main-btn{
-    background-color: #091133;
-    color: aliceblue;
-    padding: 10px 50px;
-    margin-right: 50px;
-    font-size: 15px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: 0.5s ease;
+.main-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #394675;
+    border-radius: 0.25rem;
+    color: #394675;
+    background-color: transparent;
     text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.main-btn:hover{
-    color: #091133;
-    background-color: aliceblue;
-    border: 1px solid #091133;
+.main-btn:hover {
+    background-color: #394675;
+    color: #fff;
 }
 
-.alt-btn{
-    background-color: aliceblue;
-    color: #091133;
-    padding: 10px 50px;
-    margin-right: 50px;
-    font-size: 15px;
-    border-radius: 5px;
-    border: 1px solid #091133;
-    cursor: pointer;
-    transition: 0.3s ease;
-    text-decoration: none;
-}
-
-.alt-btn:hover{
+.main-btn-alt {
+    padding: 0.5rem 1rem;
+    background-color: #394675;
+    border: 1px solid #394675;
     color: aliceblue;
-    background-color: #091133;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.main-btn-alt:hover {
+    background-color: transparent;
+    border: 1px solid #394675;
+    border-radius: 0.25rem;
+    color: #394675;
 }
 
 
@@ -96,7 +90,7 @@ html{
 }
 
 .nav-items {
-    color: #007bff;
+    color: #49578b;
     text-decoration: none;
     font-weight: 500;
     padding: 1rem 1rem;
@@ -106,12 +100,12 @@ html{
 }
 
 .nav-items:hover {
-    background-color: #007bff;
+    background-color: #49578b;
     color: #fff;
 }
 
 .nav-items-alt {
-    color: #007bff;
+    color: #49578b;
     text-decoration: none;
     font-weight: 500;
     width: 100%;
@@ -119,55 +113,79 @@ html{
 }
 
 .nav-items-alt:hover {
-    background-color: #007bff;
+    background-color: #49578b;
     color: #fff;
 }
 
-.main-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #007bff;
-    border-radius: 0.25rem;
-    color: #007bff;
-    background-color: transparent;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
+/* ANIMATIONS FOR LANDING PAGE*/
+.animate1{
+    animation-name: slide-up;
+    animation: 1s ease-in-out 1 normal forwards slide-up;
 }
 
-.main-btn:hover {
-    background-color: #007bff;
-    color: #fff;
+@keyframes slide-up {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0%);
+    }
 }
 
-.main-btn-alt {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
+.animate2{
+    animation-name: slide-right;
+    animation: 0.5s ease-in-out 1 normal forwards slide-right;
 }
 
-.main-btn-alt:hover {
-    background-color: transparent;
-    border: 1px solid #007bff;
-    border-radius: 0.25rem;
-    color: #007bff;
+@keyframes slide-right {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
 }
 
+.animate3{
+    animation-name: slide-left;
+    animation: 1s ease-in-out 1 normal forwards slide-left;
+}
 
+@keyframes slide-left {
+    0% {
+        transform: translateX(100%);
+    }
 
+    100% {
+        transform: translateX(0%);
+    }
+}
 
 
 /* STARTING PART OF LANDING PAGE */
 
+.landing{
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
 .landing-start{
-    background-image: url("./../assets/landing-page/landingstart-bg.png");
-    background-position-x: right;
-    background-repeat: no-repeat;
-    height: 100vh;
+    height: 100%;
+}
+
+.landingstart-bg{
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: 0;
 }
 
 .landing-start-container{
     display: flex;
-    height: 80%;
+    height: 100vh;
 }
 
 .landing-start-text{
@@ -191,10 +209,14 @@ html{
 }
 
 
-.landing-start-buttons{
+.landing-start-buttons-div{
     padding-top: 80px;
     display: flex;
     width: 100%;
+}
+
+.get-started-btn{
+    margin-right: 20px;
 }
 
 /* STYLING FOR ALL THE SECTIONS IN THE LANDING PAGE */
@@ -561,7 +583,7 @@ footer h1{
     font-size: 50px;
     font-weight: 600;
     color: #091133;
-    margin-top: 150px;
+    margin-top: 100px;
     margin-bottom: 50px
 }
 
@@ -569,6 +591,7 @@ footer h1{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 30px;
 }
 .search-form button{
 }

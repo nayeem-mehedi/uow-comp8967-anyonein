@@ -12,7 +12,7 @@ function Footer(){
           <div className="footer-top">
             <p>© {currentYear} AnyoneIn</p>
             <h1>AnyoneIn</h1>
-            <NavLink to="/learn-more" className="main-btn learn-btn">Learn More</NavLink>
+            <NavLink to="/learn-more" className="main-btn-alt learn-btn">Learn More</NavLink>
           </div>
           <div className="footer-bottom">
             <div className="foot-nav">

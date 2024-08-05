@@ -26,8 +26,8 @@ Content-Type: application/json
 # }
 
 {
-  "username": "dummy4",
-  "password": "dummy1234"
+  "username": "ellenripley",
+  "password": "ellen123"
 }
 
 # {
@@ -41,7 +41,7 @@ Content-Type: application/json
 @authToken = {{login.response.body.token}}
 
 ### Get user details
-GET {{baseUrl}}/users/26
+GET {{baseUrl}}/users/1
 Authorization: basic {{authToken}}
 
 ### Edit user details

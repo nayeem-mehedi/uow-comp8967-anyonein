@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
+
 //MAING LANDING PAGE CONTENT
 
 function LandingSections(props){
