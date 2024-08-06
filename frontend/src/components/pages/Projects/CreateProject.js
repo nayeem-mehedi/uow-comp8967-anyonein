@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Navbar from "../../ui/Navbar";
 import { Container, Form, Button, Row, Col, Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 
 const CreateProject = () => {
+  const token = localStorage.getItem('token');
+
   const [projectData, setProjectData] = useState({
     name: '',
     description: '',
@@ -12,6 +15,9 @@ const CreateProject = () => {
     skills: [],
     users: []
   });
+
+  const [selectedSkillOptions, setSelectedSkillOptions] = useState([]);
+  const [selectedUserList, setSelectedUserList] = useState([]);
 
   const [skillInput, setSkillInput] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -29,27 +35,35 @@ const CreateProject = () => {
     fetchSkills();
     fetchUsers();
     fetchTopics(); // Fetch topics on component mount
-  }, []);
+  }, [token]);
 
-  const fetchSkills = async (query) => {
+  const fetchSkills = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:9001/api/skills', {
         headers: {
-          'Authorization': `Basic ${localStorage.getItem('token')}`
-        }
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${token}`,
+        },
       });
       const data = await response.json();
-      setSkillSuggestions(data);
+      // prepare skills for the multi select
+      const skillOptions = data.map(skill => ({
+        value: skill.id,
+        label: skill.name
+      }));
+      setSkillSuggestions(skillOptions);
+
     } catch (error) {
       console.error('Error fetching skills:', error);
     }
-  };
+  }, [token]);
 
-  const fetchUsers = async (query) => {
+  const fetchUsers = useCallback(async (query) => {
     try {
       const response = await fetch('http://localhost:9001/api/users', {
         headers: {
-          'Authorization': `Basic ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${token}`,
         }
       });
       const data = await response.json();
@@ -57,13 +71,14 @@ const CreateProject = () => {
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  };
+  }, [token]);
 
-  const fetchTopics = async () => {
+  const fetchTopics = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:9001/api/topics', {
         headers: {
-          'Authorization': `Basic ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${token}`,
         }
       });
       const data = await response.json();
@@ -71,7 +86,7 @@ const CreateProject = () => {
     } catch (error) {
       console.error('Error fetching topics:', error);
     }
-  };
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -79,6 +94,17 @@ const CreateProject = () => {
       ...projectData,
       [name]: value
     });
+  };
+
+  const handleSkillsChange = (selectedOptions) => {
+    const selectedSkills = selectedOptions ? selectedOptions.map(option => {
+      return {id: option.value}
+    }) : [];
+    setSelectedSkillOptions(selectedOptions);
+    setProjectData({
+      ...projectData,
+      skills: selectedSkills
+    })
   };
 
   const handleSkillChange = (e) => {
@@ -93,12 +119,13 @@ const CreateProject = () => {
 
   const handleUserChange = (e) => {
     setUserInput(e.target.value);
-    if (e.target.value.length > 2) {
-      fetchUsers(e.target.value);
-      setShowUserDropdown(true);
-    } else {
-      setShowUserDropdown(false);
-    }
+    setShowUserDropdown(true);
+    // if (e.target.value.length > 2) {
+    //   fetchUsers(e.target.value);
+    //   setShowUserDropdown(true);
+    // } else {
+    //   setShowUserDropdown(false);
+    // }
   };
 
   const addSkill = () => {
@@ -114,28 +141,51 @@ const CreateProject = () => {
   };
 
   const addUser = () => {
-    if (selectedUser) {
-      setProjectData({
-        ...projectData,
-        users: [...projectData.users, selectedUser]
-      });
-      setUserInput('');
-      setSelectedUser(null);
-      setShowUserDropdown(false);
-    }
+    setSelectedUserList([
+      ...selectedUserList,
+      selectedUser
+    ]);
+
+    setProjectData({
+      ...projectData,
+      users: [
+        ...projectData.users,
+        {id: selectedUser.id}
+      ]
+    })
+
+    setUserInput('');
+    setSelectedUser(null);
+    setShowUserDropdown(false);
+  };
+
+  const removeUser = (id) => {
+    console.log(id);
+    const newUserList = selectedUserList.filter(user => user.id !== id);
+
+    setSelectedUserList([
+      ...newUserList
+    ]);
+
+    setProjectData({
+      ...projectData,
+      users: newUserList.map(user => {
+        return {id: user.id}
+      })
+    })
   };
 
   const handleSkillSelect = (skill) => {
     setSelectedSkill(skill);
     setSkillInput(skill.name);
-    setSkillSuggestions([]);
+    // setSkillSuggestions([]);
     setShowSkillDropdown(false);
   };
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
     setUserInput(user.username); // Display the username in the input field
-    setUserSuggestions([]);
+    // setUserSuggestions([]);
     setShowUserDropdown(false);
   };
 
@@ -145,6 +195,10 @@ const CreateProject = () => {
 
   const handleUserFocus = () => {
     setTimeout(() => setShowUserDropdown(true), 100);
+  };
+
+  const handleUserBlur = () => {
+    setTimeout(() => setShowUserDropdown(false), 200); // Delay to allow dropdown item click
   };
 
   const handleTopicSelect = (topic) => {
@@ -214,7 +268,6 @@ const CreateProject = () => {
                 />
               </Form.Group>
 
-
               <Form.Group controlId="formProjectDescription" className="mb-3">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
@@ -254,41 +307,26 @@ const CreateProject = () => {
                 </Dropdown>
               </Form.Group>
 
-              <Form.Group controlId="formProjectSkills" className="mb-3">
+              <Form.Group className="mb-3">
                 <Form.Label>Skills</Form.Label>
                 <Row>
-                  <Col md={10}>
-                    <Form.Control
-                      type="text"
-                      value={skillInput}
-                      onChange={handleSkillChange}
-                      onFocus={handleSkillFocus}
-                      onBlur={() => setShowSkillDropdown(false)}
+                  <Col md={12}>
+                    <Select
+                        formatGroupLabel="formProjectSkills"
+                        name="formProjectSkills"
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        placeholder="Select Skills"
+                        isMulti
+                        isSearchable={true}
+                        options={skillSuggestions}
+                        onChange={handleSkillsChange}
+                        value={selectedSkillOptions}
+                        hasValue={true}
+                        required={true}
                     />
-                    {showSkillDropdown && skillSuggestions.length > 0 && (
-                      <Dropdown.Menu show>
-                        {skillSuggestions.map((skill) => (
-                          <Dropdown.Item
-                            key={skill.id}
-                            onMouseDown={() => handleSkillSelect(skill)}
-                          >
-                            {skill.name}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    )}
-                  </Col>
-                  <Col md={2}>
-                    <Button variant="primary" className="main-btn" onClick={addSkill}>
-                      Add Skill
-                    </Button>
                   </Col>
                 </Row>
-                <ul className="mt-2">
-                  {projectData.skills.map((skill, index) => (
-                    <li key={index}>{skill.name}</li>
-                  ))}
-                </ul>
               </Form.Group>
 
               <Form.Group controlId="formProjectUsers" className="mb-3">
@@ -296,40 +334,38 @@ const CreateProject = () => {
                 <Row>
                   <Col md={10}>
                     <Form.Control
-                      type="text"
-                      value={userInput}
-                      onChange={handleUserChange}
-                      onFocus={handleUserFocus}
-                      onBlur={() => setShowUserDropdown(false)}
+                        type="text"
+                        value={userInput}
+                        onChange={handleUserChange}
+                        onFocus={handleUserFocus}
+                        onBlur={handleUserBlur}
+                        // onClick={handleUserFocus}
                     />
                     {showUserDropdown && userSuggestions.length > 0 && (
-                      <Dropdown.Menu show>
-                        {userSuggestions.map((user) => (
-                          <Dropdown.Item
-                            key={user.id}
-                            onMouseDown={() => handleUserSelect(user)}
-                          >
-                            {user.username} ({user.email})
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
+                        <Dropdown.Menu show>
+                          {userSuggestions.map((user) => (
+                              <Dropdown.Item
+                                  key={user.id}
+                                  onClick={() => handleUserSelect(user)}
+                              >
+                                {user.username} ({user.email})
+                              </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
                     )}
                   </Col>
-                  <Col md={2}>
-                    <Button variant="primary" className="main-btn" onClick={addUser}>
+                  <Col md={2} style={{ textAlign: 'right' }}>
+                    <Button variant="secondary" onClick={addUser}>
                       Add User
                     </Button>
                   </Col>
                 </Row>
                 <ul className="mt-2">
-                  {projectData.users.map((user, index) => (
-                    <li key={index}>
-                      <p><strong>Username:</strong> {user.username}</p>
-                      <p><strong>First Name:</strong> {user.firstName}</p>
-                      <p><strong>Last Name:</strong> {user.lastName}</p>
-                      <p><strong>Email:</strong> {user.email}</p>
-                      <br />
-                    </li>
+                  {selectedUserList.map((user, index) => (
+                      <li key={`selected-user-${index}-${user.username}`}>
+                        <span><strong>{user.username}</strong> - {user.email}</span>
+                        <button type="button" className="btn btn-close" onClick={() => removeUser(user.id)}></button>
+                      </li>
                   ))}
                 </ul>
               </Form.Group>

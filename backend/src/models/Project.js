@@ -60,15 +60,6 @@ export const Project = new EntitySchema({
           name: 'userId',
           referencedColumnName: 'id',
         },
-        // Adding extra column for user type
-        extraColumns: [
-          {
-            name: 'type',
-            type: 'enum',
-            enum: ['OWNER', 'COLLABORATOR'],
-            default: 'COLLABORATOR',
-          },
-        ],
       },
     },
     followedBy: {

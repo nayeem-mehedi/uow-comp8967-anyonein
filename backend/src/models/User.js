@@ -50,29 +50,45 @@ export const User = new EntitySchema({
       target: 'Profile',
       inverseSide: 'user',
     },
-  }, followedProjects: {
-    type: 'one-to-many',
-    target: 'ProjectFollow',
-    inverseSide: 'userFollow',
-  },
-  followedUsers: {
-    type: 'one-to-many',
-    target: 'UserFollow',
-    inverseSide: 'follower',
-  },
-  followingUsers: {
-    type: 'one-to-many',
-    target: 'UserFollow',
-    inverseSide: 'following',
-  },
-  announcements: {
-    type: 'one-to-many',
-    target: 'Announcement',
-    inverseSide: 'user',
-  },
-  notifications: {
-    type: 'one-to-many',
-    target: 'Notification',
-    inverseSide: 'user',
+    followedProjects: {
+      type: 'one-to-many',
+      target: 'ProjectFollow',
+      inverseSide: 'userFollow',
+    },
+    followedUsers: {
+      type: 'one-to-many',
+      target: 'UserFollow',
+      inverseSide: 'follower',
+    },
+    followingUsers: {
+      type: 'one-to-many',
+      target: 'UserFollow',
+      inverseSide: 'following',
+    },
+    announcements: {
+      type: 'one-to-many',
+      target: 'Announcement',
+      inverseSide: 'user',
+    },
+    notifications: {
+      type: 'one-to-many',
+      target: 'Notification',
+      inverseSide: 'user',
+    },
+    projects: {
+      type: 'many-to-many',
+      target: 'Project',
+      joinTable: {
+        name: 'project_users',
+        joinColumn: {
+          name: 'userId',
+          referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+          name: 'projectId',
+          referencedColumnName: 'id',
+        },
+      },
+    },
   },
 });

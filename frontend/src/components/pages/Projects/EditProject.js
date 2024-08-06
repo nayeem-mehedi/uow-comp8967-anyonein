@@ -51,6 +51,7 @@ const EditProject = () => {
         },
       });
       const data = await response.json();
+      setProjectData(data);
 
       // setSkills
       const selectedSkillOptions = data.skills.map(skill => ({
@@ -74,7 +75,7 @@ const EditProject = () => {
     }
   }, [id, token]);
 
-  const fetchSkills = async () => {
+  const fetchSkills = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:9001/api/skills', {
         headers: {
@@ -93,9 +94,9 @@ const EditProject = () => {
     } catch (error) {
       console.error('Error fetching skills:', error);
     }
-  };
+  },[token]);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:9001/api/users', {
         headers: {
@@ -108,9 +109,9 @@ const EditProject = () => {
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  };
+  }, [token]);
 
-  const fetchTopics = async () => {
+  const fetchTopics = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:9001/api/topics', {
         headers: {
@@ -123,7 +124,7 @@ const EditProject = () => {
     } catch (error) {
       console.error('Error fetching topics:', error);
     }
-  };
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -206,7 +207,6 @@ const EditProject = () => {
         return {id: user.id}
       })
     })
-
   };
 
   const handleSkillSelect = (skill) => {
