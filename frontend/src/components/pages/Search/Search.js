@@ -47,7 +47,7 @@ function Search(){
                   onChange={(e) => setQuery(e.target.value)}
                 />
               </Form.Group>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" className='main-btn-alt' type="submit">
                 Search
               </Button>
             </Form>

@@ -28,7 +28,7 @@ const ProjectCard = ({ project, showDetailsButton }) => {
         <div className="d-flex justify-content-start">
           <div className="p-3">
             {showDetailsButton ? (
-              <Button variant="primary" onClick={handleViewDetails}>
+              <Button variant="primary" className="main-btn-alt" onClick={handleViewDetails}>
               View Project
             </Button>
             ) : <></>}

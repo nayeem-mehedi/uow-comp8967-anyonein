@@ -76,7 +76,7 @@ function Announcement() {
             <Navbar />
             <Container>
                 <div className="createButtonSection">
-                    <Button onClick={() => setShowModal(true)}>Create Announcement</Button>
+                    <Button onClick={() => setShowModal(true)} className="main-btn-alt">Create Announcement</Button>
                 </div>
                 <Row>
                     <Col>
@@ -131,10 +131,10 @@ function Announcement() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        <Button className="grey-btn" variant="secondary" onClick={() => setShowModal(false)}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={handleCreateAnnouncement}>
+                        <Button className="main-btn-alt" variant="primary" onClick={handleCreateAnnouncement}>
                             Create Announcement
                         </Button>
                     </Modal.Footer>

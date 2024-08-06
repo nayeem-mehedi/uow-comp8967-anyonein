@@ -279,7 +279,7 @@ const CreateProject = () => {
                     )}
                   </Col>
                   <Col md={2}>
-                    <Button variant="primary" onClick={addSkill}>
+                    <Button variant="primary" className="main-btn" onClick={addSkill}>
                       Add Skill
                     </Button>
                   </Col>
@@ -316,7 +316,7 @@ const CreateProject = () => {
                     )}
                   </Col>
                   <Col md={2}>
-                    <Button variant="primary" onClick={addUser}>
+                    <Button variant="primary" className="main-btn" onClick={addUser}>
                       Add User
                     </Button>
                   </Col>
@@ -334,7 +334,7 @@ const CreateProject = () => {
                 </ul>
               </Form.Group>
 
-              <Button variant="success" type="submit">
+              <Button variant="success" className="main-btn-alt" type="submit">
                 Create Project
               </Button>
             </Form>

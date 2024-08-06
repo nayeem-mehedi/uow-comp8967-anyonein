@@ -1,10 +1,14 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import LoginForm from "./LoginForm";
+import videoBG from "../../../assets/login-signup-page/login-video-bg.mp4"
 
 function Login(){
     return (
         <div className="login-container">
+            <div className="video-bg">
+                <video src={videoBG} autoPlay muted loop className="video" />
+            </div>
             <div className="login-content">
                 <div className="back">
                     <NavLink to="/home" className="grey-btn back-btn">Go Back</NavLink>
