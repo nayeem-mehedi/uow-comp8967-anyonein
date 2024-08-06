@@ -1,8 +1,12 @@
 import {AppDataSource} from '../config/db.js';
 import {Project} from '../models/Project.js';
 import {checkAuthHeader} from '../helper/authHelper.js'
+import {Skill} from "../models/Skill.js";
+import {User} from "../models/User.js";
 
 const projectRepository = AppDataSource.getRepository(Project);
+const skillRepository = AppDataSource.getRepository(Skill);
+const userRepository = AppDataSource.getRepository(User);
 
 // 1. PROJECT list
 export const listProject = async (req, res) => {
@@ -38,7 +42,7 @@ export const detailsProject = async (req, res) => {
 
     const project = await projectRepository.findOne({
         where: {id: req.params.id},
-        relations: ["topic", "skills", "users"]
+        relations: ["topic", "skills", "users"],
     });
     res.json(project);
 };
@@ -62,7 +66,6 @@ export const createProject = async (req, res) => {
     res.send(result);
 };
 
-// TODO: PROJECT Update 
 // PROJECT update
 export const updateProject = async (req, res) => {
     // Check and validate Authorization token
@@ -81,83 +84,63 @@ export const updateProject = async (req, res) => {
     const {id} = req.params;
 
     // Find the project by ID
-    let project = await projectRepository.findOne({where: {id: id}});
+    let project = await projectRepository.findOne({where: {id: id}, relations: ["skills", "users", "topic"]});
 
     if (!project) {
         return res.status(404).send({error: 'Project not found'});
     }
 
+    let updatedProject = {};
+
     // Update fields individually if they exist in the request body
     if (req.body.name) {
-        project.name = req.body.name;
+        updatedProject.name = req.body.name;
     }
 
     if (req.body.description) {
-        project.description = req.body.description;
+        updatedProject.description = req.body.description;
     }
 
     if (req.body.sourceCodeLink) {
-        project.sourceCodeLink = req.body.sourceCodeLink;
+        updatedProject.sourceCodeLink = req.body.sourceCodeLink;
     }
 
     if (req.body.topic) {
-        project.topic = req.body.topic;
+        updatedProject.topic = req.body.topic;
     }
 
     // Handle skills additions and deletions
     if (req.body.skills) {
-        const {addSkills = [], removeSkills = []} = req.body.skills;
+        const skillsToCheck = req.body.skills;
 
-        if (addSkills.length > 0) {
-            for (const skill of addSkills) {
-                const skillEntity = await skillRepository.findOne(skill.id);
-                if (skillEntity && !project.skills.some(s => s.id === skillEntity.id)) {
-                    project.skills.push(skillEntity);
-                }
+        console.log(skillsToCheck);
+
+        if (skillsToCheck.length > 0) {
+            updatedProject.skills = []
+            for (const skill of skillsToCheck) {
+                const skillEntity = await skillRepository.findOne({where: {id: skill.id}});
+                updatedProject.skills.push(skillEntity);
             }
-        }
-
-        if (removeSkills.length > 0) {
-            project.skills = project.skills.filter(skill => !removeSkills.includes(skill.id));
         }
     }
 
-    // Handle users additions and deletions
-    // users : [{id: 1, type: "OWNER"}, {id: 2, type: "CONTRIBUTOR"}]
-    // if (req.body.users) {
-    //     const { addUsers = [], removeUsers = [] } = req.body.users;
-
-    //     if (addUsers.length > 0) {
-    //         for (const user of addUsers) {
-    //             const userEntity = await userRepository.findOne(user.id);
-    //             if (userEntity && !project.users.some(u => u.id === userEntity.id)) {
-    //                 project.users.push(userEntity);
-    //             }
-    //         }
-    //     }
-
-    //     if (removeUsers.length > 0) {
-    //         project.users = project.users.filter(user => !removeUsers.includes(user.id));
-    //     }
-    // }
     if (req.body.users) {
         // Remove all existing associations
-        project.users = [];
+        updatedProject.users = [];
 
         // Add new associations
         for (const user of req.body.users) {
-            const userEntity = await userRepository.findOne(user.id);
+            const userEntity = await userRepository.findOne({where: {id: user.id}});
             if (userEntity) {
-                project.users.push({
-                    user: userEntity,
-                    type: user.type,
-                });
+                updatedProject.users.push(userEntity);
             }
         }
     }
 
     // Merge the request body into the existing project entity
-    // projectRepository.merge(project, req.body);
+    projectRepository.merge(project, updatedProject);
+    project.users = updatedProject.users;
+    project.skills = updatedProject.skills;
 
     // Save the updated project
     const result = await projectRepository.save(project);
@@ -165,7 +148,7 @@ export const updateProject = async (req, res) => {
     res.send(result);
 };
 
-// 4. PROJECT delete
+// 4. PROJECT delete TODO: STATUS Update
 export const deleteProject = async (req, res) => {
     try {
         // Check and validate Authorization token

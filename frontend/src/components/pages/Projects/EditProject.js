@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Navbar from "../../ui/Navbar";
-import { Container, Form, Button, Row, Col, Dropdown, Badge } from "react-bootstrap";
+import { Container, Form, Button, Row, Col, Dropdown, Badge, FormSelect } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import Select from "react-select";
 
@@ -51,7 +51,6 @@ const EditProject = () => {
         },
       });
       const data = await response.json();
-      setProjectData(data);
 
       // setSkills
       const selectedSkillOptions = data.skills.map(skill => ({
@@ -59,14 +58,17 @@ const EditProject = () => {
         label: skill.name
       }));
       setSelectedSkillOptions(selectedSkillOptions);
-
       // setTopic
-      if(projectData.topic)
-        setSelectedTopic(projectData.topic.id);
+      if(data.topic)
+        setSelectedTopic(data.topic.id);
 
-      //TODO: set Users
-      if(projectData.users)
-        setSelectedUserList(projectData.users);
+      // setUsers
+      if(data.users){
+        setSelectedUserList([
+            ...selectedUserList,
+            ...data.users
+        ]);
+      }
     } catch (error) {
       console.error('Error fetching project details:', error);
     }
@@ -132,6 +134,7 @@ const EditProject = () => {
   };
 
   const handleTopicChange = (event) => {
+    console.log(event.target.value);
     setSelectedTopic(event.target.value);
     setProjectData({ ...projectData, topicId: event.target.value });
   };
@@ -279,16 +282,6 @@ const EditProject = () => {
     }
   };
 
-  const selectedUsersPrint = <>
-    {selectedUserList.map((user, index) => (
-        <li key={`selected-user-${index}-${user.username}`}>
-          <span><strong>{user.username}</strong> - {user.email}</span>
-          <button type="button" className="btn btn-close" onClick={() => removeUser(user.id)}></button>
-        </li>
-    ))}
-  </>;
-
-
   return (
     <>
       <Navbar />
@@ -333,14 +326,14 @@ const EditProject = () => {
               <Form.Group controlId="formProjectTopicId" className="mb-3">
                 <Form.Label>Topic</Form.Label>
 
-                <Form.Control as="select" value={selectedTopic} onChange={handleTopicChange}>
+                <FormSelect value={selectedTopic} onChange={handleTopicChange}>
                   <option value="">Select Topic</option>
                   {topics.map(topic => (
                       <option key={topic.id} value={topic.id}>
                         {topic.name}
                       </option>
                   ))}
-                </Form.Control>
+                </FormSelect>
               </Form.Group>
 
               <Form.Group className="mb-3">
@@ -397,7 +390,12 @@ const EditProject = () => {
                   </Col>
                 </Row>
                 <ul className="mt-2">
-                  {selectedUsersPrint}
+                  {selectedUserList.map((user, index) => (
+                      <li key={`selected-user-${index}-${user.username}`}>
+                        <span><strong>{user.username}</strong> - {user.email}</span>
+                        <button type="button" className="btn btn-close" onClick={() => removeUser(user.id)}></button>
+                      </li>
+                  ))}
                 </ul>
               </Form.Group>
 
