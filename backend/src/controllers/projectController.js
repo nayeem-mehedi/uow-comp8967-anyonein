@@ -22,7 +22,25 @@ export const listProject = async (req, res) => {
         return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
     }
 
-    const projects = await projectRepository.find({relations: ["topic", "skills", "users"]});
+    const projects = await projectRepository.find({relations: ["topic", "skills", "users", "owner"]});
+    res.json(projects);
+};
+
+// 1. PROJECT list (SELF)
+export const listProjectSelf = async (req, res) => {
+    // Check and validate Authorization token
+    let userDataRedis;
+    try {
+        userDataRedis = await checkAuthHeader(req);
+        if (!userDataRedis) {
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+    }
+
+    const projects = await projectRepository.find({where: {}, relations: ["topic", "skills", "users", "owner"]});
     res.json(projects);
 };
 
@@ -42,7 +60,7 @@ export const detailsProject = async (req, res) => {
 
     const project = await projectRepository.findOne({
         where: {id: req.params.id},
-        relations: ["topic", "skills", "users"],
+        relations: ["topic", "skills", "users", "owner"],
     });
     res.json(project);
 };
@@ -84,7 +102,7 @@ export const updateProject = async (req, res) => {
     const {id} = req.params;
 
     // Find the project by ID
-    let project = await projectRepository.findOne({where: {id: id}, relations: ["skills", "users", "topic"]});
+    let project = await projectRepository.findOne({where: {id: id}, relations: ["skills", "users", "topic", "owner"]});
 
     if (!project) {
         return res.status(404).send({error: 'Project not found'});
@@ -168,7 +186,7 @@ export const deleteProject = async (req, res) => {
         let project;
 
         try {
-            project = await projectRepository.findOne({where: {id: id}, relations: ['users']});
+            project = await projectRepository.findOne({where: {id: id}, relations: ["owner"]});
         } catch (error) {
             return res.status(500).json({message: 'Error finding project', error: error.message});
         }
@@ -178,8 +196,7 @@ export const deleteProject = async (req, res) => {
         }
 
         //Admin of Self Delete
-        const usernames = project.users.map(u => u.username);
-        if ((userDataRedis.role !== 'admin') && !usernames.includes(userDataRedis.username)) {
+        if ((userDataRedis.role !== 'admin') && (project.owner.username !== userDataRedis.username)) {
             return res.status(401).json({message: 'User not authorized'});
         }
 

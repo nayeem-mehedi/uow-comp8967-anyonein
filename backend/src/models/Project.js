@@ -27,6 +27,11 @@ export const Project = new EntitySchema({
     },
   },
   relations: {
+    owner: {
+        type: 'many-to-one',
+        target: 'User',
+        joinColumn: true,
+    },
     topic: {
       type: 'many-to-one',
       target: 'Topic',

@@ -73,7 +73,7 @@ const EditProject = () => {
     } catch (error) {
       console.error('Error fetching project details:', error);
     }
-  }, [id, token]);
+  }, [id, token, selectedUserList]);
 
   const fetchSkills = useCallback(async () => {
     try {

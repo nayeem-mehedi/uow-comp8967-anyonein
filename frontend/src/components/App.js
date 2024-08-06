@@ -8,10 +8,10 @@ import './App.css';
 // import EditProfile from "./pages/Profile/EditProfile";
 
 function App() {
-  return (  
+  return (
     <div className="App">
       <Landing />
-    </div>  
+    </div>
   );
 }
 

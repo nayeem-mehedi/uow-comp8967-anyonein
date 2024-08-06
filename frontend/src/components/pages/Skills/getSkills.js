@@ -41,7 +41,7 @@ const GetSkills = () => {
     };
 
     fetchSkills();
-  }, [id, token]);
+  }, [id, token, apiUrl]);
 
   if (error) {
     return <div>Error: {error.message}</div>;

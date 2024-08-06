@@ -93,7 +93,20 @@ export const listUsers = async (req, res) => {
 
     try {
       const users = await userRepository.find();
-      res.status(200).json(users);
+      const listUser = users.map(u => {
+        return {
+          id: u.id,
+          username: u.username,
+          firstName: u.username,
+          lastName: u.username,
+          email: u.email,
+          phone: u.phone,
+          role: u.role,
+          isActive: u.isActive,
+        }
+      })
+
+      res.status(200).json(listUser);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

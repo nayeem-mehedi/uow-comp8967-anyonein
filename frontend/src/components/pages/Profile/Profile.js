@@ -4,7 +4,14 @@ import Navbar from "../../ui/Navbar";
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import Accordion from 'react-bootstrap/Accordion';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { styled } from '@mui/material/styles';
+import {Paper , Chip} from "@mui/material";
+import {Card} from "react-bootstrap";
+
+const ListItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.5),
+}));
 
 function Profile() {
     const { id } = useParams();
@@ -96,29 +103,59 @@ function Profile() {
                         <p><strong>Last Name:</strong> {profile.user.lastName}</p>
                         <p><strong>Email:</strong> {profile.user.email}</p>
                         <p><strong>Phone:</strong> {profile.user.phone}</p>
-                        <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile} target="_blank" rel="noopener noreferrer">{profile.githubProfile}</a></p>
-                        <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank" rel="noopener noreferrer">{profile.otherProfile}</a></p>
-                        <div className="d-flex align-items-center mt-3">
+                        <p><strong>GitHub Profile:</strong> <a href={profile.githubProfile} target="_blank"
+                                                               rel="noopener noreferrer">{profile.githubProfile}</a></p>
+                        <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank"
+                                                              rel="noopener noreferrer">{profile.otherProfile}</a></p>
+                        <div className="d-flex align-items-center mt-3 mb-3">
                             <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>
                         </div>
-                        <Accordion className="mt-4">
-                            <Accordion.Item eventKey="0">
-                                <Accordion.Header>Skills</Accordion.Header>
-                                <Accordion.Body>
-                                    <div className="d-flex align-items-center mb-3">
-                                        <button type="button" className="btn btn-primary main-btn-alt" onClick={handleAddSkills}>Add Skill</button>
+                        <Card className="mb-5">
+                            <Card.Body>
+                                <Card.Title>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center'
+                                    }}>
+                                        <span>Skills</span>
+                                        <div className="d-flex align-items-center mb-3">
+                                            <button type="button" className="btn btn-primary main-btn-alt"
+                                                    onClick={handleAddSkills}>Add Skill
+                                            </button>
+                                        </div>
                                     </div>
-                                    <ul className="list-group">
-                                        {profile.skills.map(skill => (
-                                            <li className="list-group-item d-flex justify-content-between align-items-center" key={skill.id}>
-                                                {skill.name}
-                                                <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDeleteSkills(skill.id)}>Delete</button>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
+
+                                </Card.Title>
+                                <Card.Text>
+                                    <Paper
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            flexWrap: 'wrap',
+                                            listStyle: 'none',
+                                            p: 0.5,
+                                            m: 0.5,
+                                            boxShadow: 'none',
+                                        }}
+                                        component="ul"
+                                    >
+                                        {profile.skills.map(skill => {
+
+                                            return (
+                                                <ListItem key={`${skill.id}-${skill.name}`}>
+                                                    <Chip
+                                                        label={skill.name}
+                                                        variant="outlined"
+                                                        onDelete={() => handleDeleteSkills(skill.id)}
+                                                    />
+                                                </ListItem>
+                                            );
+                                        })}
+                                    </Paper>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
                     </div>
                 </div>
             </div>

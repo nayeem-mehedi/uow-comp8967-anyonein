@@ -51,7 +51,7 @@ const AddSkill = () => {
     };
 
     fetchSkills();
-  }, [token]);
+  }, [token, apiUrl]);
 
   const handleChange = (selectedOptions) => {
     const selectedSkills = selectedOptions ? selectedOptions.map(option => option.value) : [];

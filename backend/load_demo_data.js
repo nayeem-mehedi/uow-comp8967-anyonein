@@ -181,19 +181,23 @@ const loadDemoData = async () => {
 
     for (const projectData of projectsData) {
       const project = projectRepo.create(projectData);
+      const owner = users_db[Math.floor(Math.random() * users_db.length) + 1];
+      project.owner = owner;
+
+      console.log(owner);
 
       const randomSkills = skills_db.slice(0, Math.floor(Math.random() * 6) + 1);
       project.skills = randomSkills;
 
       const randomUsers = users_db.slice(0, Math.floor(Math.random() * 3) + 1);//.map(user => profile.user);
-      let assignedUsers = [];
+      let colabUsers = [];
 
       for(let i = 0; i<randomUsers.length; i++) {
-        assignedUsers.push({user: randomUsers[i], type: i%2 == 0 ? 'OWNER' : 'CONTRIBUTOR'});
+        if (randomUsers[i].id !== owner.id)
+          colabUsers.push(randomUsers[i]);
       }
 
-      project.users = assignedUsers;
-
+      project.users = colabUsers;
 
       await projectRepo.save(project);
       console.log(`Project ${project.name} has been created.`);
