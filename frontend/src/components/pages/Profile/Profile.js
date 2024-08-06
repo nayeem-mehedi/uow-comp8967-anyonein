@@ -69,6 +69,10 @@ function Profile() {
         }
     };
 
+    const handleChangePassword = () => {
+        navigate("/change-password");
+    };
+
     if (error) {
         return <div>Error: {error.message}</div>;
     }
@@ -100,6 +104,13 @@ function Profile() {
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank" rel="noopener noreferrer">{profile.otherProfile}</a></p>
                         <div className="d-flex align-items-center mt-3">
                             <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>
+                            <button
+                                onClick={handleChangePassword}
+                                className="btn btn-secondary"
+                                style={{ marginLeft: '16px' }} // Inline style for spacing
+                            >
+                                Change Password
+                            </button>
                         </div>
                         <Accordion className="mt-4">
                             <Accordion.Item eventKey="0">
