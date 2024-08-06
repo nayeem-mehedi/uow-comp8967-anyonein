@@ -150,12 +150,12 @@ html{
 
 .animate3{
     animation-name: slide-left;
-    animation: 1s ease-in-out 1 normal forwards slide-left;
+    animation: 1s ease-out 1 normal forwards slide-left;
 }
 
 @keyframes slide-left {
     0% {
-        transform: translateX(100%);
+        transform: translateX(50%);
     }
 
     100% {
@@ -443,7 +443,20 @@ footer h1{
     padding: 0px 10px 0px 30px;
 }
 
+
+
 /* LOGIN PAGE */
+
+.video-bg{
+    width: 45%;
+    /* background-color: #091133; */
+}
+
+.video{
+    height: 100vh;
+    width: 100%;
+    object-fit: cover;
+}
 
 .login-container{
     display: flex;
@@ -456,8 +469,9 @@ footer h1{
     display: flex;
     flex-direction: column;
     height: 80vh;
-    width: 50%;
+    width: 55%;
     align-items: center;
+    padding: 0px 30px;
 }
 
 .login-content .back{
@@ -520,8 +534,9 @@ footer h1{
     display: flex;
     flex-direction: column;
     height: 80vh;
-    width: 50%;
+    width: 55%;
     align-items: center;
+    padding: 0px 30px;
     /* background-color: #5472eb; */
 }
 

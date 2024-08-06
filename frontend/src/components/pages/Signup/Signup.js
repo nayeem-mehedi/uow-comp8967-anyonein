@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import SignupForm from "./SignupForm";
+import videoBG from "../../../assets/login-signup-page/signup-video-bg.mp4"
 
 function Signup(){
     return (
@@ -19,6 +20,9 @@ function Signup(){
                     <p>or</p>
                     <button className="alt-btn" type="submit">Sign-up with Icon</button>
                 </div> */}
+            </div>
+            <div className="video-bg">
+                <video src={videoBG} autoPlay muted loop className="video" />
             </div>
         </div>
     );
