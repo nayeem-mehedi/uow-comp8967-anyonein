@@ -196,27 +196,9 @@ const CreateProject = () => {
   };
 
   return (
-    <div>
+    <>
     <Navbar />
     <Container>
-      <Row className="justify-content-md-center mt-5">
-        <Col md={8}>
-          <h2>Create Project</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formProjectName" className="mb-3">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={projectData.name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-=======
-    <div>
-      <Navbar />
-      <Container>
         <Row className="justify-content-md-center mt-5">
           <Col md={8}>
             <h2>Create Project</h2>
@@ -231,7 +213,7 @@ const CreateProject = () => {
                   required
                 />
               </Form.Group>
->>>>>>> Stashed changes
+
 
               <Form.Group controlId="formProjectDescription" className="mb-3">
                 <Form.Label>Description</Form.Label>
@@ -309,15 +291,6 @@ const CreateProject = () => {
                 </ul>
               </Form.Group>
 
-<<<<<<< Updated upstream
-            <Button variant="success" type="submit">
-              Create Project
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
-=======
               <Form.Group controlId="formProjectUsers" className="mb-3">
                 <Form.Label>Users</Form.Label>
                 <Row>
@@ -368,8 +341,7 @@ const CreateProject = () => {
           </Col>
         </Row>
       </Container>
-    </div>
->>>>>>> Stashed changes
+    </>
   );
 };
 
