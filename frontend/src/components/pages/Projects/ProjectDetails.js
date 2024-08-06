@@ -16,6 +16,10 @@ const ProjectDetails = () => {
     navigate(-1); // Go back to the previous page
   };
 
+  const handleEditProject = () => {
+    navigate(`/projects/edit/${id}`); // Navigate to the edit project page
+  };
+
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
@@ -54,19 +58,19 @@ const ProjectDetails = () => {
   }
 
   return (
-    <div>
+    <>
       <Navbar />
       <Container>
         <Row>
           <h1>Project Details</h1>
-          <ProjectCard project={project}  showDetailsButton={false}/>
-          <div className="p-3" >
-            <Button variant="secondary" onClick={handleGoBack} >Go back</Button>
+          <ProjectCard project={project} showDetailsButton={false} />
+          <div className="p-3">
+            <Button variant="secondary" onClick={handleGoBack}>Go back</Button>
+            <Button variant="primary" onClick={handleEditProject} className="ms-2">Edit Project</Button>
           </div>
         </Row>
       </Container>
-    </div>
-
+    </>
   );
 };
 

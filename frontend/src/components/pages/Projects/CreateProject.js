@@ -21,11 +21,14 @@ const CreateProject = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showSkillDropdown, setShowSkillDropdown] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [topics, setTopics] = useState([]);
+  const [showTopicDropdown, setShowTopicDropdown] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchSkills();
     fetchUsers();
+    fetchTopics(); // Fetch topics on component mount
   }, []);
 
   const fetchSkills = async (query) => {
@@ -53,6 +56,20 @@ const CreateProject = () => {
       setUserSuggestions(data);
     } catch (error) {
       console.error('Error fetching users:', error);
+    }
+  };
+
+  const fetchTopics = async () => {
+    try {
+      const response = await fetch('http://localhost:9001/api/topics', {
+        headers: {
+          'Authorization': `Basic ${localStorage.getItem('token')}`
+        }
+      });
+      const data = await response.json();
+      setTopics(data);
+    } catch (error) {
+      console.error('Error fetching topics:', error);
     }
   };
 
@@ -117,7 +134,7 @@ const CreateProject = () => {
 
   const handleUserSelect = (user) => {
     setSelectedUser(user);
-    setUserInput(user.name);
+    setUserInput(user.username); // Display the username in the input field
     setUserSuggestions([]);
     setShowUserDropdown(false);
   };
@@ -128,6 +145,22 @@ const CreateProject = () => {
 
   const handleUserFocus = () => {
     setTimeout(() => setShowUserDropdown(true), 100);
+  };
+
+  const handleTopicSelect = (topic) => {
+    setProjectData({
+      ...projectData,
+      topicId: topic.id.toString()
+    });
+    setShowTopicDropdown(false);
+  };
+
+  const handleTopicFocus = () => {
+    setShowTopicDropdown(true);
+  };
+
+  const handleTopicBlur = () => {
+    setTimeout(() => setShowTopicDropdown(false), 100);
   };
 
   const handleSubmit = async (e) => {
@@ -180,114 +213,103 @@ const CreateProject = () => {
                 required
               />
             </Form.Group>
+=======
+    <div>
+      <Navbar />
+      <Container>
+        <Row className="justify-content-md-center mt-5">
+          <Col md={8}>
+            <h2>Create Project</h2>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formProjectName" className="mb-3">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  value={projectData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+>>>>>>> Stashed changes
 
-            <Form.Group controlId="formProjectDescription" className="mb-3">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                name="description"
-                value={projectData.description}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+              <Form.Group controlId="formProjectDescription" className="mb-3">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  value={projectData.description}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group controlId="formProjectSourceCodeLink" className="mb-3">
-              <Form.Label>Source Code Link</Form.Label>
-              <Form.Control
-                type="url"
-                name="sourceCodeLink"
-                value={projectData.sourceCodeLink}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+              <Form.Group controlId="formProjectSourceCodeLink" className="mb-3">
+                <Form.Label>Source Code Link</Form.Label>
+                <Form.Control
+                  type="url"
+                  name="sourceCodeLink"
+                  value={projectData.sourceCodeLink}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group controlId="formProjectTopicId" className="mb-3">
-              <Form.Label>Topic</Form.Label>
-              <Form.Control
-                type="text"
-                name="topicId"
-                value={projectData.topicId}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+              <Form.Group controlId="formProjectTopicId" className="mb-3">
+                <Form.Label>Topic</Form.Label>
+                <Dropdown onFocus={handleTopicFocus} onBlur={handleTopicBlur}>
+                  <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                    {topics.find((topic) => topic.id.toString() === projectData.topicId)?.name || 'Select a topic'}
+                  </Dropdown.Toggle>
 
-            <Form.Group controlId="formProjectSkills" className="mb-3">
-              <Form.Label>Skills</Form.Label>
-              <Row>
-                <Col md={10}>
-                  <Form.Control
-                    type="text"
-                    value={skillInput}
-                    onChange={handleSkillChange}
-                    onFocus={handleSkillFocus}
-                    onBlur={() => setShowSkillDropdown(false)}
-                  />
-                  {showSkillDropdown && skillSuggestions.length > 0 && (
-                    <Dropdown.Menu show>
-                      {skillSuggestions.map((skill) => (
-                        <Dropdown.Item
-                          key={skill.id}
-                          onMouseDown={() => handleSkillSelect(skill)}
-                        >
-                          {skill.name}
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  )}
-                </Col>
-                <Col md={2}>
-                  <Button variant="primary" onClick={addSkill}>
-                    Add Skill
-                  </Button>
-                </Col>
-              </Row>
-              <ul className="mt-2">
-                {projectData.skills.map((skill, index) => (
-                  <li key={index}>{skill.name}</li>
-                ))}
-              </ul>
-            </Form.Group>
+                  <Dropdown.Menu show={showTopicDropdown}>
+                    {topics.map((topic) => (
+                      <Dropdown.Item key={topic.id} onClick={() => handleTopicSelect(topic)}>
+                        {topic.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Form.Group>
 
-            <Form.Group controlId="formProjectUsers" className="mb-3">
-              <Form.Label>Users</Form.Label>
-              <Row>
-                <Col md={10}>
-                  <Form.Control
-                    type="text"
-                    value={userInput}
-                    onChange={handleUserChange}
-                    onFocus={handleUserFocus}
-                    onBlur={() => setShowUserDropdown(false)}
-                  />
-                  {showUserDropdown && userSuggestions.length > 0 && (
-                    <Dropdown.Menu show>
-                      {userSuggestions.map((user) => (
-                        <Dropdown.Item
-                          key={user.id}
-                          onMouseDown={() => handleUserSelect(user)}
-                        >
-                          {user.name} ({user.email})
-                        </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  )}
-                </Col>
-                <Col md={2}>
-                  <Button variant="primary" onClick={addUser}>
-                    Add User
-                  </Button>
-                </Col>
-              </Row>
-              <ul className="mt-2">
-                {projectData.users.map((user, index) => (
-                  <li key={index}>ID: {user.id}, Name: {user.name}</li>
-                ))}
-              </ul>
-            </Form.Group>
+              <Form.Group controlId="formProjectSkills" className="mb-3">
+                <Form.Label>Skills</Form.Label>
+                <Row>
+                  <Col md={10}>
+                    <Form.Control
+                      type="text"
+                      value={skillInput}
+                      onChange={handleSkillChange}
+                      onFocus={handleSkillFocus}
+                      onBlur={() => setShowSkillDropdown(false)}
+                    />
+                    {showSkillDropdown && skillSuggestions.length > 0 && (
+                      <Dropdown.Menu show>
+                        {skillSuggestions.map((skill) => (
+                          <Dropdown.Item
+                            key={skill.id}
+                            onMouseDown={() => handleSkillSelect(skill)}
+                          >
+                            {skill.name}
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    )}
+                  </Col>
+                  <Col md={2}>
+                    <Button variant="primary" onClick={addSkill}>
+                      Add Skill
+                    </Button>
+                  </Col>
+                </Row>
+                <ul className="mt-2">
+                  {projectData.skills.map((skill, index) => (
+                    <li key={index}>{skill.name}</li>
+                  ))}
+                </ul>
+              </Form.Group>
 
+<<<<<<< Updated upstream
             <Button variant="success" type="submit">
               Create Project
             </Button>
@@ -295,8 +317,59 @@ const CreateProject = () => {
         </Col>
       </Row>
     </Container>
-    </div>
+=======
+              <Form.Group controlId="formProjectUsers" className="mb-3">
+                <Form.Label>Users</Form.Label>
+                <Row>
+                  <Col md={10}>
+                    <Form.Control
+                      type="text"
+                      value={userInput}
+                      onChange={handleUserChange}
+                      onFocus={handleUserFocus}
+                      onBlur={() => setShowUserDropdown(false)}
+                    />
+                    {showUserDropdown && userSuggestions.length > 0 && (
+                      <Dropdown.Menu show>
+                        {userSuggestions.map((user) => (
+                          <Dropdown.Item
+                            key={user.id}
+                            onMouseDown={() => handleUserSelect(user)}
+                          >
+                            {user.username} ({user.email})
+                          </Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    )}
+                  </Col>
+                  <Col md={2}>
+                    <Button variant="primary" onClick={addUser}>
+                      Add User
+                    </Button>
+                  </Col>
+                </Row>
+                <ul className="mt-2">
+                  {projectData.users.map((user, index) => (
+                    <li key={index}>
+                      <p><strong>Username:</strong> {user.username}</p>
+                      <p><strong>First Name:</strong> {user.firstName}</p>
+                      <p><strong>Last Name:</strong> {user.lastName}</p>
+                      <p><strong>Email:</strong> {user.email}</p>
+                      <br />
+                    </li>
+                  ))}
+                </ul>
+              </Form.Group>
 
+              <Button variant="success" type="submit">
+                Create Project
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+>>>>>>> Stashed changes
   );
 };
 
