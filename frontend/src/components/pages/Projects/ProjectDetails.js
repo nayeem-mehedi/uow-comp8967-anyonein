@@ -1,4 +1,4 @@
-// ProjectDetails.js - Ensure id is retrieved from useParams
+// ProjectDetails.js
 import React, { useState, useEffect } from "react";
 import { Container, Button, Row } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
@@ -14,6 +14,10 @@ const ProjectDetails = () => {
 
   const handleGoBack = () => {
     navigate(-1); // Go back to the previous page
+  };
+
+  const handleEditProject = () => {
+    navigate(`/projects/edit/${id}`); // Navigate to the edit project page
   };
 
   useEffect(() => {
@@ -54,6 +58,7 @@ const ProjectDetails = () => {
   }
 
   return (
+<<<<<<< Updated upstream
     <Container>
       <Row>
         <Navbar />
@@ -66,6 +71,21 @@ const ProjectDetails = () => {
         </div>
       </Row>
     </Container>
+=======
+    <div>
+      <Navbar />
+      <Container>
+        <Row>
+          <h1>Project Details</h1>
+          <ProjectCard project={project} showDetailsButton={false} />
+          <div className="p-3">
+            <Button variant="secondary" onClick={handleGoBack}>Go back</Button>
+            <Button variant="primary" onClick={handleEditProject} className="ms-2">Edit Project</Button>
+          </div>
+        </Row>
+      </Container>
+    </div>
+>>>>>>> Stashed changes
   );
 };
 
