@@ -119,11 +119,12 @@ function Profile() {
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank"
                                                               rel="noopener noreferrer">{profile.otherProfile}</a></p>
                         <div className="d-flex align-items-center mt-3 mb-3">
-                            {isSelf && <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>}
+                            {isSelf && <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit
+                                Profile</button>}
                             {isSelf && <button
                                 onClick={handleChangePassword}
                                 className="btn btn-secondary"
-                                style={{ marginLeft: '16px' }} // Inline style for spacing
+                                style={{marginLeft: '16px'}} // Inline style for spacing
                             >
                                 Change Password
                             </button>}

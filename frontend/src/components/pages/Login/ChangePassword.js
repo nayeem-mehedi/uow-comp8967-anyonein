@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import axios from 'axios';
+import {useUserDispatch} from "../../context/UserContext";
+import Navbar from "../../ui/Navbar";
 
 function ChangePassword() {
+  const dispatch = useUserDispatch();
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState(""); // Added state for confirm password
@@ -58,6 +62,9 @@ function ChangePassword() {
       }
 
       setMessage("Password changed successfully.");
+      dispatch({type: 'LOGOUT'});
+      // Clear the token from localStorage
+      localStorage.removeItem('token');
       navigate("/login"); // Redirect to login after successful change
     } catch (error) {
       setMessage(`Error: ${error.response ? error.response.data.message : error.message}`);
@@ -65,10 +72,14 @@ function ChangePassword() {
   };
 
   return (
-    <div className="login-container">
+    <>
+    <div className="general-bg">
+    <Navbar />
+
+<div className="login-container">
       <div className="login-content">
         <div className="back">
-          <NavLink to="/home" className="grey-btn back-btn">Go Back</NavLink>
+          <NavLink to={-1} className="grey-btn back-btn">Go Back</NavLink>
         </div>
         <h1>Change Password</h1>
         <div className="login-form">
@@ -112,6 +123,8 @@ function ChangePassword() {
         </div>
       </div>
     </div>
+    </div>
+    </>
   );
 }
 

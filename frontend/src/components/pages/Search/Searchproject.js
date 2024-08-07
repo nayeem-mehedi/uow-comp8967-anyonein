@@ -5,6 +5,7 @@ import { FOLLOW_TYPES, FollowButton } from "../Follow/FollowButton";
 import { followProject } from "../../../helper/apiURL";
 import { IconButton } from "@mui/material";
 import { BiSearch } from 'react-icons/bi';
+import {Link} from "react-router-dom";
 
 function SearchProject() {
   const [query, setQuery] = useState('');
@@ -231,13 +232,15 @@ function SearchProject() {
                     <strong>Topic:</strong> {project.topic && project.topic.name}<br />
                     <strong>Users:</strong> {project.users && project.users.map((user, index) => (
                       <span key={user.id}>
-                        <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>
+                        <Link to={`/profile/${user.id}`}>
+                          {`${user.firstName} ${user.lastName}`}
+                        </Link>
                         {index < project.users.length - 1 && ' , '}
                       </span>))}<br />
                   </Card.Text>
-                  <Button variant="primary" className="main-btn-alt" href={`/projects/${project.id}`}>
+                  <Link className='btn btn-primary main-btn-alt' to={`/projects/${project.id}`}>
                     View Project
-                  </Button>
+                  </Link>
                   <FollowButton type={FOLLOW_TYPES.PROJECT} followUrl={followProject} id={project.id} initialFollowing={false} />
                 </Card.Body>
               </Card>

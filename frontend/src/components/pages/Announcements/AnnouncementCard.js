@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const AnnouncementCard = ({ announcement }) => {
     return (
@@ -8,9 +9,13 @@ const AnnouncementCard = ({ announcement }) => {
             <div className="announcement-meta">
                 {announcement.user ? (
                     <div>
-                        <a href={`/profile/${announcement.user.profile.id}`} className="announcement-user">
+                        <Link
+                            to={`/profile/${announcement.user.profile.id}`}
+                            className="announcement-user"
+                            style={{ display: 'block', marginTop: '5px' }}
+                        >
                             Posted by: {announcement.user.username}
-                        </a>
+                        </Link>
                         {announcement.user.profile && (
                             <div className="announcement-profile">
                                 <img src={announcement.user.profile.profilePicture} alt="avatar" className="avatar"/>
@@ -18,9 +23,13 @@ const AnnouncementCard = ({ announcement }) => {
                         )}
                     </div>
                 ) : (
-                    <a href={`/projects/${announcement.project.id}`} className="announcement-project">
+                    <Link
+                        to={`/projects/${announcement.project.id}`}
+                        className="announcement-project"
+                        style={{ display: 'block', marginTop: '5px' }}
+                    >
                         Project: {announcement.project.name}
-                    </a>
+                    </Link>
                 )}
                 <span className="announcement-date">
                                     {new Date(announcement.createdAt).toLocaleString()}

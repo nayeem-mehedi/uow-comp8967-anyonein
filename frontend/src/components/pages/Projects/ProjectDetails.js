@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Row } from "react-bootstrap";
-import { useParams, useNavigate } from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 import ProjectAnnouncement from "./ProjectAnnouncement";
 import JoinRequestList from "../JoinRequest/JoinRequestList";
@@ -110,18 +110,18 @@ const ProjectDetails = ({ showJoin = true }) => {
           <div className="project-section">
             <strong>Owner:</strong>{" "}
             {project.owner && (
-              <a href={`/profile/${project.owner.id}`}>
-                {`${project.owner.firstName} ${project.owner.lastName}`}
-              </a>
+                <Link to={`/profile/${project.owner.id}`}>
+                  {`${project.owner.firstName} ${project.owner.lastName}`}
+                </Link>
             )}
           </div>
           <div className="project-section">
             <strong>Users:</strong>{" "}
             {project.users.map((user, index) => (
               <span key={user.id}>
-                <a href={`/profile/${user.id}`}>
-                  {`${user.firstName} ${user.lastName}`}
-                </a>
+                <Link to={`/profile/${user.id}`}>
+                        {`${user.firstName} ${user.lastName}`}
+                </Link>
                 {index < project.users.length - 1 && ", "}
               </span>
             ))}

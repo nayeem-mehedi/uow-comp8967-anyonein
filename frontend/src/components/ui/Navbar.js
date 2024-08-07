@@ -3,9 +3,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import NotificationBadge from "../pages/Notification/NotificationBadge";
 import ProfileDropdown from './ProfileDropdown';
 import { useUserState } from '../context/UserContext';
+// import {isLoggedIn} from "../../helper/auth";
 
 function Navbar() {
   const { profile, loggedIn } = useUserState();
+  const [isLoggedIn, setIsLoggedIn] = useState(loggedIn)
 
   const navigate = useNavigate();
 
@@ -43,7 +45,7 @@ function Navbar() {
   //   fetchProfile()
   // }, [token, profile]);
 
-  const loggedInItems = loggedIn ? <>
+  const loggedInItems = isLoggedIn ? <>
     <NavLink to="/feed" className="nav-items">Feed</NavLink>
     <NavLink to="/search" className="nav-items">Search Users</NavLink>
     <NavLink to="/searchproject" className="nav-items">Search Projects</NavLink>

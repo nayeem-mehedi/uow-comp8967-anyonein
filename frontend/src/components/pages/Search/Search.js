@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import Navbar from "../../ui/Navbar";
 import {FOLLOW_TYPES, FollowButton} from "../Follow/FollowButton";
 import {followUser} from "../../../helper/apiURL";
+import {Link} from "react-router-dom";
 
 function Search(){
   const [query, setQuery] = useState('');
@@ -68,9 +69,9 @@ const viewBtnStyle = {
                       <strong>Active:</strong> {user.isActive ? 'Yes' : 'No'}<br /> */}
                       <strong>Skills:</strong> {user.profile.skills.map(skill => skill.name).join(', ')}
                     </Card.Text>
-                    <Button className='main-btn-alt' variant="primary" href={`/profile/${user.profile.id}`} style={viewBtnStyle}>
+                    <Link className='btn btn-primary main-btn-alt' to={`/profile/${user.profile.id}`} style={viewBtnStyle}>
                       View Profile
-                    </Button>
+                    </Link>
                     {/*FIXME: add follow status from API BE*/}
                     <FollowButton type={FOLLOW_TYPES.USER} followUrl={followUser} id={user.id} initialFollowing={false} />
                   </Card.Body>

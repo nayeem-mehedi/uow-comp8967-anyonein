@@ -124,11 +124,13 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
     <UserProvider>
+  <React.StrictMode>
+
      <SnackbarProvider>
     <RouterProvider router={router} />
     </SnackbarProvider>
-    </UserProvider>
+
   </React.StrictMode>
+    </UserProvider>
 );
