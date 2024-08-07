@@ -621,3 +621,54 @@ footer h1{
     flex-direction: row;
     justify-content: space-between;
 }
+
+/* Project details section */
+
+.project-details-container {
+    max-width: 800px;
+    margin: 20px auto 0px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .project-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+  }
+  
+  .project-description {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .project-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .project-section {
+    font-size: 1.1rem;
+    color: #444;
+  }
+  
+  .project-section a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .project-section a:hover {
+    text-decoration: underline;
+  }
+
+  .project-buttons {
+    max-width: 60%;
+    text-align: end;
+    margin: 20px auto 0px auto;
+  }
