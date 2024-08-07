@@ -436,3 +436,10 @@ Authorization: basic {{authToken}}
 }
 
 ###
+
+
+### home feed
+GET {{baseUrl}}/announcements/feed
+Authorization: basic {{authToken}}
+
+###
