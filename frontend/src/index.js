@@ -26,6 +26,9 @@ import FollowList from './components/pages/Follow/FollowList';
 import NotificationPage from './components/pages/Notification/NotificationPage';
 import CreateProject from './components/pages/Projects/CreateProject';
 import EditProject from './components/pages/Projects/EditProject';
+import AnnouncementsFeed from './components/pages/Feed/AnnouncementsFeed';
+
+import { UserProvider } from './components/context/UserContext';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +36,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/home",
+    path: "/landing",
     element: <Landing />,
   },
   {
@@ -108,13 +111,19 @@ const router = createBrowserRouter([
     path: "/projects/edit/:id", 
     element: <EditProject/>,
   },
+  {
+    path: "/feed",
+    element: <AnnouncementsFeed/>,
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <UserProvider>
      <SnackbarProvider>
     <RouterProvider router={router} />
     </SnackbarProvider>
+    </UserProvider>
   </React.StrictMode>
 );

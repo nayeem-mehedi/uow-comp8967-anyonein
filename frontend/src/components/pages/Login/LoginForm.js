@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import {useUserDispatch} from "../../context/UserContext";
 
 function LoginForm() {
+    const dispatch = useUserDispatch();
 
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
@@ -19,6 +21,29 @@ function LoginForm() {
         setValues(prev => ({...prev, [event.target.name]: event.target.value}));
     };
 
+      const fetchProfile = async (token) => {
+
+          console.log(token)
+        try {
+            const response = await fetch(`http://localhost:9001/api/profiles/self`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${token}`,
+              },
+            });
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            dispatch({type: 'LOGIN', payload: data});
+        } catch (error) {
+          // setError(error);
+          console.log("Profile fetch error", error);
+          navigate('/login');
+        }
+      };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -29,8 +54,10 @@ function LoginForm() {
                 console.log(values);
                 const response = await axios.post('http://localhost:9001/api/auth/login', values);
                 if (response.data) {
-                    localStorage.setItem('token', response.data.token); 
-                    navigate('/profile/self'); 
+                    localStorage.setItem('token', response.data.token);
+
+                    await fetchProfile(response.data.token);
+                    navigate('/feed');
                 }
             } catch (error) {
                 setError("Login failed. Please check your username and password.");

@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-
-const isLoggedIn = () => {
-    return !!localStorage.getItem('token');
-};
+import {useUserDispatch} from "../../context/UserContext";
 
 const Logout = () => {
+    const dispatch = useUserDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isLoggedIn()) {
-            navigate('/login');
-        }
 
         // Function to handle logout
         const handleLogout = async () => {
@@ -26,10 +21,11 @@ const Logout = () => {
             } catch (error) {
                 console.error('Logout failed:', error);
             } finally {
+                dispatch({type: 'LOGOUT'});
                 // Clear the token from localStorage
                 localStorage.removeItem('token');
                 // Redirect to the login page
-                navigate('/login');
+                navigate('/landing');
             }
         };
 

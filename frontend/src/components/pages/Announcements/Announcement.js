@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, Button, Modal, Form } from "react-bootstrap"
 import Navbar from "../../ui/Navbar";
 import { isLoggedIn } from '../../../helper/auth';
 import {CreateAnnouncement, ANNOUNCEMENT_TYPE} from "./CreateAnnouncement";
+import AnnouncementCard from "./AnnouncementCard";
 
 function Announcement() {
     const navigate = useNavigate();
@@ -59,17 +60,7 @@ function Announcement() {
                             <legend>Announcements</legend>
                             {announcements && announcements.length > 0 ? (
                                 announcements.map((announcement) => (
-                                    <Card key={announcement.id} className="mb-3">
-                                        <Card.Body>
-                                            <Card.Title>{announcement.title}</Card.Title>
-                                            <Card.Text>{announcement.content}</Card.Text>
-                                            <Card.Footer>
-                                                <small className="text-muted">
-                                                    Created at: {new Date(announcement.createdAt).toLocaleString()}
-                                                </small>
-                                            </Card.Footer>
-                                        </Card.Body>
-                                    </Card>
+                                    <AnnouncementCard announcement={announcement} />
                                 ))
                             ) : (
                                 <span>You do not have any announcements. Create one 💬</span>

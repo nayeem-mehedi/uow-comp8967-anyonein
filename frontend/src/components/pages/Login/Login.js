@@ -11,7 +11,7 @@ function Login(){
             </div>
             <div className="login-content">
                 <div className="back">
-                    <NavLink to="/home" className="grey-btn back-btn">Go Back</NavLink>
+                    <NavLink to="/landing" className="grey-btn back-btn">Go Back</NavLink>
                 </div>
                 <h1>Login</h1>
                 <div className="login-form">

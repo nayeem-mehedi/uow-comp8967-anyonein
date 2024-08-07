@@ -104,7 +104,6 @@ export const followProject = async (req, res) => {
     }
 };
 
-//FIXME: check how deep the JSON goes
 export const followList = async (req, res) => {
     try {
         // Check and validate Authorization token

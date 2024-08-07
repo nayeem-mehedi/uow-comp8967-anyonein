@@ -41,11 +41,7 @@ export const listAnnouncementsByUser = async (req, res) => {
         const announcements = await announcementRepository
             .createQueryBuilder('announcement')
             .leftJoinAndSelect('announcement.user', 'user')
-            .select([
-                'announcement',
-                'user.id',
-                'user.username'
-            ])
+            .leftJoinAndSelect('user.profile', 'profile')
             .where('announcement.userId = :id', {id: realID})
             .orderBy('announcement.createdAt', 'DESC')
             .getMany();
@@ -203,5 +199,65 @@ export const createAnnouncementProject = async (req, res) => {
         res.status(201).json({data: announcement, message: 'Announcement created and Notifications sent'});
     } catch (error) {
         res.status(500).json({error: error.message});
+    }
+};
+
+export const announcementFeed = async (req, res) => {
+    try {
+        // Check and validate Authorization token
+        let userDataRedis;
+        try {
+            userDataRedis = await checkAuthHeader(req);
+            if(!userDataRedis) {
+                return res.status(401).json({ message: 'ERROR_UNAUTHORIZED' });
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
+        }
+
+        const userFollow_following = await userFollowRepository
+            .createQueryBuilder('userFollow')
+            .leftJoinAndSelect('userFollow.following', 'following')
+            .select([
+                'userFollow.id',
+                'following.id',
+                'following.firstName',
+                'following.lastName',
+                'following.username'
+            ])
+            .where('userFollow.followerId = :userId', { userId: userDataRedis.userId })
+            .getMany();
+
+        const projectFollow_following = await projectFollowRepository
+            .createQueryBuilder('projectFollow')
+            .leftJoinAndSelect('projectFollow.pointedProject', 'pointedProject')
+            .select([
+                'projectFollow.id',
+                'pointedProject.id',
+                'pointedProject.name'
+            ])
+            .where('projectFollow.followerId = :userId', { userId: userDataRedis.userId })
+            .getMany();
+
+
+        const followingUserIds = userFollow_following.map(uf => uf.following.id);
+        const followingProjectIds = projectFollow_following.map(pf => pf.pointedProject.id);
+
+        const announcements = await announcementRepository
+            .createQueryBuilder('announcement')
+            .leftJoinAndSelect('announcement.user', 'user')
+            .leftJoinAndSelect('user.profile', 'profile')
+            .leftJoinAndSelect('announcement.project', 'project')
+            .where('announcement.userId IN (:...userIds)', { userIds: followingUserIds })
+            .orWhere('announcement.projectId IN (:...projectIds)', { projectIds: followingProjectIds })
+            .orderBy('announcement.createdAt', 'DESC')
+            .getMany();
+
+
+        return res.status(200).json(announcements);
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };

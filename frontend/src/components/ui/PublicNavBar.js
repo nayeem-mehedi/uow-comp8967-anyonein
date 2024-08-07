@@ -44,7 +44,7 @@ function PublicNavbar(props) {
         <div className="nav-container">
             <nav className="navbar">
                 <div className="nav-links">
-                    <NavLink to="/home" className="nav-items">Home</NavLink>
+                    <NavLink to="/landing" className="nav-items">Home</NavLink>
                     {loggedInItems}
                     {/*<NavLink to="/about" className="nav-items">About Us</NavLink>*/}
                     {/*<NavLink to="/contact" className="nav-items">Contact Us</NavLink>*/}

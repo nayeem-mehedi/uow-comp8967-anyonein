@@ -88,15 +88,23 @@ function NotificationPage() {
                 </Col>
             </Row>
             <Row>
-                <Col>
+                <Col md={8}>
                     <ListGroup>
                         {notifications.map(notification => (
                             <ListGroup.Item
                                 key={notification.id}
                                 onClick={() => handleNotificationClick(notification)}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
                             >
-                                <span> {notification.isRead ? `${notification.content } [unread]` : <strong>{`${notification.content } [read]`}</strong> } </span>
+                                <span> {notification.isRead ? `${notification.content} [unread]` :
+                                    <strong>{`${notification.content} [read]`}</strong>}
+                                </span>
+                                <span style={{
+                                    marginLeft: 'auto',
+                                    whiteSpace: 'nowrap'
+                                }}>
+                                    {new Date(notification.createdAt).toLocaleString()}
+                                </span>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
