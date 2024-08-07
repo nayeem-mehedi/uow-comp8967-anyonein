@@ -23,13 +23,16 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:9001/api/projects/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Basic ${token}`,
-          },
-        });
+        const response = await fetch(
+          `http://localhost:9001/api/projects/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Basic ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -60,19 +63,52 @@ const ProjectDetails = () => {
   return (
     <>
       <Navbar />
-      <Container>
-        <Row>
-          <h1>Project Details</h1>
-          <ProjectCard project={project} showDetailsButton={false} />
-          <div className="p-3">
-            <Button variant="secondary" onClick={handleGoBack}>Go back</Button>
-            <Button variant="primary" onClick={handleEditProject} className="ms-2">Edit Project</Button>
+      <div className="project-details-container">
+        <h1 className="project-title">{project.name}</h1>
+        <div className="project-description"> {project.description} </div>
+        <div className="project-info">
+          <div className="project-section">
+            <strong>Source Code Link:</strong>{" "}
+            {project.sourceCodeLink ? (
+              <a
+                href={project.sourceCodeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View Source
+              </a>
+            ) : (
+              "N/A"
+            )}
           </div>
-        </Row>
-        <Row>
-          <ProjectAnnouncement projectId={project.id}/>
-        </Row>
-      </Container>
+          <div className="project-section">
+            <strong>Skills Needed:</strong>{" "}
+            {project.skills.map((skill) => skill.name).join(", ")}
+          </div>
+          <div className="project-section">
+            <strong>Users:</strong>{" "}
+            {project.users.map((user, index) => (
+              <span key={user.id}>
+                <a
+                  href={`/profile/${user.id}`}
+                >{`${user.firstName} ${user.lastName}`}</a>
+                {index < project.users.length - 1 && ", "}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="project-buttons">
+        <Button variant="secondary" onClick={handleGoBack}>
+          Go Back
+        </Button>
+        <Button variant="primary" onClick={handleEditProject} className="ms-2">
+          Edit Project
+        </Button>
+      </div>
+      <Row>
+        <ProjectAnnouncement projectId={project.id} />
+      </Row>
     </>
   );
 };
