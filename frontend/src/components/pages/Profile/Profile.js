@@ -89,7 +89,7 @@ function Profile() {
     }
 
     return (
-        <div>
+        <div className="general-bg">
             <Navbar />
             <div className="container mt-4">
                 <h1 className="mb-4">Profile</h1>

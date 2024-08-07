@@ -136,7 +136,7 @@ function Searchproject() {
   }
 
   return (
-    <div>
+    <div className='general-bg'>
       <Navbar />
       <Container>
         <Row className="justify-content-md-center">

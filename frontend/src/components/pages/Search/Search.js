@@ -31,8 +31,12 @@ function Search(){
     );
 }
 
+const viewBtnStyle = {
+  paddingRight: "20px",
+};
+
   return (
-    <div>
+    <div className='general-bg'>
       <Navbar />
       <Container>
         <Row className="justify-content-md-center">
@@ -64,7 +68,7 @@ function Search(){
                       <strong>Active:</strong> {user.isActive ? 'Yes' : 'No'}<br /> */}
                       <strong>Skills:</strong> {user.profile.skills.map(skill => skill.name).join(', ')}
                     </Card.Text>
-                    <Button variant="primary" href={`/profile/${user.profile.id}`}>
+                    <Button className='main-btn-alt' variant="primary" href={`/profile/${user.profile.id}`} style={viewBtnStyle}>
                       View Profile
                     </Button>
                     {/*FIXME: add follow status from API BE*/}

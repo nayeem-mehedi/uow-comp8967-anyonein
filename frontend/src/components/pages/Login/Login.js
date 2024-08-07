@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import LoginForm from "./LoginForm";
-import videoBG from "../../../assets/login-signup-page/login-video-bg.mp4"
+import videoBG from "../../../assets/login-signup-page/login-video-bg2.mp4"
 
 function Login(){
     return (

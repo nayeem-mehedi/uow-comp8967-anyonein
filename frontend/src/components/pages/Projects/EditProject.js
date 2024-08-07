@@ -283,7 +283,7 @@ const EditProject = () => {
   };
 
   return (
-    <>
+    <div className="general-bg">
       <Navbar />
       <Container>
         <Row className="justify-content-md-center mt-5">
@@ -384,7 +384,7 @@ const EditProject = () => {
                     )}
                   </Col>
                   <Col md={2} style={{ textAlign: 'right' }}>
-                    <Button variant="secondary" onClick={addUser}>
+                    <Button className="main-btn" variant="secondary" onClick={addUser}>
                       Add User
                     </Button>
                   </Col>
@@ -399,14 +399,14 @@ const EditProject = () => {
                 </ul>
               </Form.Group>
 
-              <Button variant="primary" type="submit">
+              <Button className="green-btn-alt" variant="primary" type="submit">
                 Save Changes
               </Button>
             </Form>
           </Col>
         </Row>
       </Container>
-    </>
+    </div>
   );
 };
 
