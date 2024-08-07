@@ -13,7 +13,7 @@ function Projects() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:9001/api/projects", {
+        const response = await fetch("http://localhost:9001/api/projects/self-project", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -43,14 +43,6 @@ function Projects() {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!projects.length) {
-    return (
-      <div className="spinner-border" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Navbar />
@@ -61,11 +53,12 @@ function Projects() {
           )}
         </div>
         <Row>
-          {projects.map((project) => (
+          {projects.length > 0 ? projects.map((project) => (
             <Col key={project.id} xs={12} md={4} className="mb-4">
               <ProjectCard project={project} showDetailsButton={true}/>
             </Col>
-          ))}
+          ))
+          : <span>You do not have any project. Create one 🛠️</span>}
         </Row>
       </Container>
     </div>

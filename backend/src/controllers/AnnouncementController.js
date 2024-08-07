@@ -14,7 +14,6 @@ const projectFollowRepository = AppDataSource.getRepository(ProjectFollow);
 const userRepository = AppDataSource.getRepository(User);
 const projectRepository = AppDataSource.getRepository(Project);
 
-
 // List Announcements by User
 export const listAnnouncementsByUser = async (req, res) => {
     try {
@@ -31,7 +30,10 @@ export const listAnnouncementsByUser = async (req, res) => {
         }
 
         const {id} = req.params;
-        const user = await userRepository.findOneBy({id});
+
+        const realID = id === 'self' ? userDataRedis.userId: id;
+
+        const user = await userRepository.findOneBy({id: realID});
         if (!user) {
             return res.status(404).json({message: 'User not found'});
         }
@@ -44,7 +46,7 @@ export const listAnnouncementsByUser = async (req, res) => {
                 'user.id',
                 'user.username'
             ])
-            .where('announcement.userId = :id', {id})
+            .where('announcement.userId = :id', {id: realID})
             .getMany();
 
         res.status(200).json({data: announcements});
@@ -69,6 +71,7 @@ export const listAnnouncementsByProject = async (req, res) => {
         }
 
         const {id} = req.params;
+
         const project = await projectRepository.findOneBy({id});
         if (!project) {
             return res.status(404).json({message: 'Project not found'});
@@ -158,7 +161,7 @@ export const createAnnouncementProject = async (req, res) => {
         let project;
 
         try {
-            project = await projectRepository.findOne({where: {id: projectId}, relations: ['users']});
+            project = await projectRepository.findOne({where: {id: projectId}, relations: ['owner', 'users']});
         } catch (error) {
             return res.status(500).json({message: 'Error finding project', error: error.message});
         }
@@ -168,10 +171,10 @@ export const createAnnouncementProject = async (req, res) => {
         }
 
         const usernames = project.users.map(u => u.username);
-        //FIXME:
-        // if ((userDataRedis.role !== 'admin') && !usernames.includes(userDataRedis.username)) {
-        //     return res.status(401).json({ message: 'User not authorized' });
-        // }
+
+        if ((userDataRedis.role !== 'admin') && project.owner.id !== userDataRedis.userId && !usernames.includes(userDataRedis.username)) {
+            return res.status(401).json({ message: 'User not authorized' });
+        }
 
         const announcement = await announcementRepository.save({
             title,

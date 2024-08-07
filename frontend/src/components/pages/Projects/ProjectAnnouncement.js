@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Modal, Form } from "react-bootstrap";
-import Navbar from "../../ui/Navbar";
 import { isLoggedIn } from '../../../helper/auth';
-import {CreateAnnouncement, ANNOUNCEMENT_TYPE} from "./CreateAnnouncement";
+import {CreateAnnouncement, ANNOUNCEMENT_TYPE} from "../Announcements/CreateAnnouncement";
 
-function Announcement() {
+function ProjectAnnouncement({projectId}) {
     const navigate = useNavigate();
-    const { id } = useParams();
     const token = localStorage.getItem("token");
 
     // console.log(id);
@@ -32,7 +30,7 @@ function Announcement() {
 
     const fetchAnnouncements = async () => {
         try {
-            const response = await fetch('http://localhost:9001/api/announcements/user/self', {
+            const response = await fetch(`http://localhost:9001/api/announcements/project/${projectId}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
@@ -48,7 +46,6 @@ function Announcement() {
 
     return (
         <div>
-            <Navbar />
             <Container>
                 <div className="createButtonSection">
                     <Button onClick={() => setShowModal(true)} className="main-btn-alt">Create Announcement</Button>
@@ -58,7 +55,7 @@ function Announcement() {
                         <fieldset>
                             <legend>Announcements</legend>
                             {announcements && announcements.length > 0 ? (
-                                announcements.map((announcement) => (
+                                announcements.map(announcement => (
                                     <Card key={announcement.id} className="mb-3">
                                         <Card.Body>
                                             <Card.Title>{announcement.title}</Card.Title>
@@ -78,10 +75,13 @@ function Announcement() {
                     </Col>
                 </Row>
                 <Modal show={showModal} onHide={() => setShowModal(false)}>
-                    <CreateAnnouncement type={ANNOUNCEMENT_TYPE.USER_ANNOUNCEMENT} succFunc={() => {
+                    <CreateAnnouncement
+                        type={ANNOUNCEMENT_TYPE.PROJECT_ANNOUNCEMENT}
+                        succFunc={() => {
                         setShowModal(false);
                         fetchAnnouncements();  // Refresh the announcements list
-                    }}/>
+                    }}
+                        projectId={projectId}/>
                 </Modal>
             </Container>
         </div>
@@ -89,4 +89,4 @@ function Announcement() {
     );
 }
 
-export default Announcement;
+export default ProjectAnnouncement;

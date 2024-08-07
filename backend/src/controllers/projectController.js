@@ -40,7 +40,7 @@ export const listProjectSelf = async (req, res) => {
         return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
     }
 
-    const projects = await projectRepository.find({where: {}, relations: ["topic", "skills", "users", "owner"]});
+    const projects = await projectRepository.find({where: {owner: {id: userDataRedis.userId}}, relations: ["topic", "skills", "users", "owner"]});
     res.json(projects);
 };
 
@@ -79,7 +79,12 @@ export const createProject = async (req, res) => {
         return res.status(401).json({message: 'ERROR_UNAUTHORIZED'});
     }
 
-    const project = projectRepository.create(req.body);
+    const projectData = {
+        ...req.body,
+        owner: userDataRedis.userId,
+    }
+
+    const project = projectRepository.create(projectData);
     const result = await projectRepository.save(project);
     res.send(result);
 };
