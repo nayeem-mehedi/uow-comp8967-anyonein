@@ -12,13 +12,22 @@ html{
 
 }
 
+/* GENERAL BACKGROUND*/
+
+.general-bg{
+    background-color: #F1F5F2;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+}
+
 /* COMMON BUTTON STYLING */
 
 .main-btn {
     padding: 0.5rem 1rem;
-    border: 1px solid #394675;
+    border: 1px solid #394367;
     border-radius: 0.25rem;
-    color: #394675;
+    color: #394367;
     background-color: transparent;
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s;
@@ -45,20 +54,53 @@ html{
     color: #394675;
 }
 
+.green-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #355834;
+    border-radius: 0.25rem;
+    color: #355834;
+    background-color: transparent;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.green-btn:hover {
+    background-color: #355834;
+    color: #fff;
+}
+
+.green-btn-alt {
+    padding: 0.5rem 1rem;
+    background-color: #355834;
+    border: 1px solid #355834;
+    color: aliceblue;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.green-btn-alt:hover {
+    background-color: transparent;
+    border: 1px solid #355834;
+    border-radius: 0.25rem;
+    color: #355834;
+}
 
 .grey-btn {
-    background-color: #6c757d;
-    border: none;
+    background-color: #95A3A4;
+    border: 1px solid #95A3A4;
     color: #fff;
     text-decoration: none;
-    padding: 0.6rem 1.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.5s, color 0.5s;
 }
 
 .grey-btn:hover {
-    background-color: #4c5257;
+    background-color: #606566;
+    /* color: #7f8788; */
+    border: 1px solid #606566;
+    border-radius: 0.25rem;
 }
 
 .createButtonSection{
@@ -90,7 +132,7 @@ html{
 }
 
 .nav-items {
-    color: #49578b;
+    color: #394367;
     text-decoration: none;
     font-weight: 500;
     padding: 1rem 1rem;
@@ -100,12 +142,12 @@ html{
 }
 
 .nav-items:hover {
-    background-color: #49578b;
+    background-color: #394367;
     color: #fff;
 }
 
 .nav-items-alt {
-    color: #49578b;
+    color: #394367;
     text-decoration: none;
     font-weight: 500;
     width: 100%;
@@ -113,7 +155,7 @@ html{
 }
 
 .nav-items-alt:hover {
-    background-color: #49578b;
+    background-color: #394367;
     color: #fff;
 }
 
@@ -273,7 +315,7 @@ html{
 
 /* STYLING SPECIFIC TO 3RD, 4TH AND 5TH SECTION OF LANDING PAGE */
 
-.landing-section3, .landing-section4, .landing-section5{
+.landing-section3, .landing-section4{
     background-position-x: left;
     background-position-y: center;
     background-repeat: no-repeat;
@@ -281,6 +323,7 @@ html{
     background-position: 10%;
     height: 80vh;
 }
+
 
 .landing-section3{
     background-image: url("../assets/landing-page/landing3-bg.png");
@@ -290,17 +333,13 @@ html{
     background-image: url("../assets/landing-page/landing4-bg.png");
 }
 
-.landing-section5{
-    background-image: url("../assets/landing-page/landing5-bg.png");
-}
-
-.landing3-container, .landing4-container, .landing5-container{
+.landing3-container, .landing4-container{
     height: 100%;
     display: flex;
     justify-content: flex-end;
 }
 
-.landing3-text, .landing4-text, .landing5-text{
+.landing3-text, .landing4-text{
     width: 50%;
     height: 100%;
     display: flex;
@@ -314,12 +353,35 @@ html{
     display: none;
 }
 
+.landing5-container{
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.landing-section5{
+    background-image: url("../assets/landing-page/landing5-bg.png");
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-position: 90%;
+    height: 80vh;
+}
+
+.landing5-text{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 200px 100px;
+}
+
 /* STYLING SPECIFIC TO THE LAST SECTION OF LANDING PAGE */
 
 .landing-section-end{
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url("../assets/landing-page/landingend-bg.png");
+    background-image: url("../assets/landing-page/landingend-bg2.png");
     height: 85vh;
 }
 
@@ -355,7 +417,7 @@ html{
 footer{
     display: flex;
     flex-direction: column;
-    background-color: #67B0BF;
+    background-color: #394367;
 }
 
 .footer-top{
@@ -384,7 +446,7 @@ footer p{
 }
 
 footer h1{
-    color: #37447E;
+    color: aliceblue;
     font-weight: 700;
 }
 
@@ -417,11 +479,13 @@ footer h1{
 .foot-nav .nav-links a{
     padding: 10px;
     text-decoration: none;
-    color: rgb(216, 216, 216);
+    color: rgb(194, 191, 191);
     font-weight: 400;
     font-size: x-large;
     margin-left: 50px;
     transition: 0.5s ease;
+    width: fit-content;
+    border-radius: 5px;
 }
 
 .footer-bottom .nav-links a:hover{
@@ -443,7 +507,13 @@ footer h1{
     padding: 0px 10px 0px 30px;
 }
 
+.learn-btn{
+    background-color: aliceblue;
+}
 
+.learn-btn:hover {
+    border: 1px solid aliceblue;
+}
 
 /* LOGIN PAGE */
 
@@ -468,10 +538,11 @@ footer h1{
 .login-content{
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: 100vh;
     width: 55%;
     align-items: center;
-    padding: 0px 30px;
+    padding: 120px 30px;
+    background-color: #F1F5F2;
 }
 
 .login-content .back{
@@ -533,11 +604,11 @@ footer h1{
 .signup-content{
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: 100vh;
     width: 55%;
     align-items: center;
-    padding: 0px 30px;
-    /* background-color: #5472eb; */
+    padding: 110px 30px;
+    background-color: #F1F5F2;
 }
 
 .signup-content .back{
@@ -598,8 +669,8 @@ footer h1{
     font-size: 50px;
     font-weight: 600;
     color: #091133;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem
+    margin-top: 100px;
+    margin-bottom: 50px
 }
 
 .search-form{
@@ -620,6 +691,12 @@ footer h1{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+/* NOTIFICATION */
+
+.notification-badge{
+    background-color: #394367;
 }
 
 /* Project details section */
@@ -672,3 +749,4 @@ footer h1{
     text-align: end;
     margin: 20px auto 0px auto;
   }
+

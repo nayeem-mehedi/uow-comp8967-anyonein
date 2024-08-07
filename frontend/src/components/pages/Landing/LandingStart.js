@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import landingStartBg from '../../../assets/landing-page/landingstart-bg.png'
+import landingStartBg from '../../../assets/landing-page/landing-start3.png'
 
 function LandingStart(){
     return(
