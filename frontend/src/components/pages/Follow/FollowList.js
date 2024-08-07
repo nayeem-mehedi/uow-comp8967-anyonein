@@ -53,7 +53,7 @@ function FollowList() {
     return (
         <div className="general-bg">
             <Navbar />
-            <Container>
+            <Container className="mt-4">
                 <Row>
                     <Col>
                         <h2>Following Users</h2>
