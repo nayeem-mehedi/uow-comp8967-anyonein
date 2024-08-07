@@ -2,33 +2,28 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useSnackbar } from 'notistack';
 
-function JoinRequestModal({ projectId, succFunc }) {
-    const finalJoinReqUrl = `http://localhost:9001/api/projects/${projectId}/join`;
+function JoinRequestModal({ projectId, onSuccess, onClose }) {
     const [message, setMessage] = useState('');
-
-    const token = localStorage.getItem("token");
     const { enqueueSnackbar } = useSnackbar();
+    const token = localStorage.getItem("token");
 
     const handleJoinRequest = async () => {
         try {
-            const response = await fetch(
-                finalJoinReqUrl,
-                {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Basic ${token}`,
-                    },
-                    body: JSON.stringify({ message }),
-                });
-
+            const response = await fetch(`http://localhost:9001/api/projects/${projectId}/join`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Basic ${token}`,
+                },
+                body: JSON.stringify({ message }),
+            });
 
             if (!response.ok) {
                 enqueueSnackbar('Join Request sending failed', { variant: 'error' });
                 console.error("Error sending join request", response.statusText);
             } else {
                 enqueueSnackbar('Join Request sent successfully', { variant: 'success' });
-                succFunc()
+                onSuccess();  // Call the success callback to close the modal
             }
         } catch (error) {
             enqueueSnackbar("Join Request sending failed", { variant: 'error' });
@@ -61,28 +56,28 @@ function JoinRequestModal({ projectId, succFunc }) {
                 </Button>
             </Modal.Footer>
         </>
-    )
+    );
 }
 
-
-const JoinRequestButton = ({projectId}) => {
+const JoinRequestButton = ({ projectId }) => {
     const [showModal, setShowModal] = useState(false);
 
     return (
         <>
-            <div className="joinRequestButtonSection mt-2 mb-2 ">
-                <Button onClick={() => setShowModal(true)} className="main-btn-alt">Join Project</Button>
+            <div className="joinRequestButtonSection mt-2 mb-2">
+                <Button onClick={() => setShowModal(true)} className="green-btn-alt">
+                    Join Project
+                </Button>
             </div>
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <JoinRequestModal
-                    succFunc={() => {
-                        setShowModal(false);
-                    }}
-                    projectId={projectId} />
+                    projectId={projectId}
+                    onSuccess={() => setShowModal(false)}  // Close modal on success
+                    onClose={() => setShowModal(false)}   // Ensure modal closes on cancel
+                />
             </Modal>
         </>
-
-    )
+    );
 }
 
 export default JoinRequestButton;

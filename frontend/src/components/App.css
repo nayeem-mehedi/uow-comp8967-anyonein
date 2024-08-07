@@ -745,8 +745,19 @@ footer h1{
   }
 
   .project-buttons {
-    max-width: 60%;
-    text-align: end;
+    max-width: 50%;
+    text-align: center;
     margin: 20px auto 0px auto;
   }
 
+
+  /* JOIN REQUESTS LIST */
+
+  .join-requests-div{
+    width: 70%;
+    text-align: center;
+  }
+
+  .join-requests-div h3{
+    padding-bottom: 10px;
+  }
