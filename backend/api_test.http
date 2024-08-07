@@ -420,7 +420,7 @@ Authorization: basic {{authToken}}
 ###
 
 #### PROJECT JOIN REQUEST LIST###
-GET {{baseUrl}}/projects/11/join-requests
+GET {{baseUrl}}/projects/5/join-requests
 Content-Type: application/json
 Authorization: basic {{authToken}}
 

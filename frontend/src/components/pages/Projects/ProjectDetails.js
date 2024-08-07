@@ -4,8 +4,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import ProjectCard from "./ProjectCard";
 import Navbar from "../../ui/Navbar";
 import ProjectAnnouncement from "./ProjectAnnouncement";
+import JoinRequestList from "../JoinRequest/JoinRequestList"
+import JoinRequestButton from "../JoinRequest/JoinRequestButton";
 
-const ProjectDetails = () => {
+const ProjectDetails = ({showJoin =true}) => {
   const { id } = useParams(); // Retrieve id from route parameters
   const [project, setProject] = useState(null);
   const [error, setError] = useState(null);
@@ -86,6 +88,11 @@ const ProjectDetails = () => {
             {project.skills.map((skill) => skill.name).join(", ")}
           </div>
           <div className="project-section">
+            <strong>Owner:</strong>{" "}
+            {project.owner && <a href={`/profile/${project.owner.id}`}>{`${project.owner.firstName} ${project.owner.lastName}`}</a>}
+          </div>
+
+          <div className="project-section">
             <strong>Users:</strong>{" "}
             {project.users.map((user, index) => (
               <span key={user.id}>
@@ -105,9 +112,13 @@ const ProjectDetails = () => {
         <Button variant="primary" onClick={handleEditProject} className="ms-2">
           Edit Project
         </Button>
+        {showJoin && <JoinRequestButton projectId={project.id}/>}
       </div>
       <Row>
         <ProjectAnnouncement projectId={project.id} />
+      </Row>
+      <Row>
+        <JoinRequestList projectId={project.id} />
       </Row>
     </>
   );

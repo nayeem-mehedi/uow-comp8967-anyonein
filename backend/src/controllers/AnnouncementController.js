@@ -33,7 +33,7 @@ export const listAnnouncementsByUser = async (req, res) => {
 
         const realID = id === 'self' ? userDataRedis.userId: id;
 
-        const user = await userRepository.findOneBy({id: realID});
+        const user = await userRepository.findOneBy({id: realID} );
         if (!user) {
             return res.status(404).json({message: 'User not found'});
         }
@@ -47,6 +47,7 @@ export const listAnnouncementsByUser = async (req, res) => {
                 'user.username'
             ])
             .where('announcement.userId = :id', {id: realID})
+            .orderBy('announcement.createdAt', 'DESC')
             .getMany();
 
         res.status(200).json({data: announcements});
@@ -86,6 +87,7 @@ export const listAnnouncementsByProject = async (req, res) => {
                 'project.name'
             ])
             .where('announcement.projectId = :id', {id})
+            .orderBy('announcement.createdAt', 'DESC')
             .getMany();
 
         res.status(200).json({data: announcements});

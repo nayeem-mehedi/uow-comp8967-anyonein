@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 import ProjectCard from "./ProjectCard"; // Import the ProjectCard component
+import JoinRequestList from "../JoinRequest/JoinRequestList";
 
 function Projects() {
   const [projects, setProjects] = useState([]);

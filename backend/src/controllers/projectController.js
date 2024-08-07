@@ -259,7 +259,7 @@ export const joinRequest = async (req, res) => {
                     user: userEntity
                 });
 
-            await joinRequestRepository.save(joinRequest);
+            const result = await joinRequestRepository.save(joinRequest);
 
             return res.json({ message: 'Project join request sent successfully' });
         } catch (error) {

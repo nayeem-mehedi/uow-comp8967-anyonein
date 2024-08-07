@@ -4,7 +4,7 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const ProjectCard = ({ project, showDetailsButton }) => {
+const ProjectCard = ({ project, showDetailsButton}) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
@@ -19,6 +19,7 @@ const ProjectCard = ({ project, showDetailsButton }) => {
           <strong>Description: </strong>{!showDetailsButton ? project.description : (project.description.length > 200 ? `${project.description.substring(0, 200)}...` : project.description)}<br />
           <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
           <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
+          <strong>Owner:</strong> {project.owner && <a href={`/profile/${project.owner.id}`}>{`${project.owner.firstName} ${project.owner.lastName}`}</a>}<br />
           <strong>Users:</strong> {project.users.map((user, index) => (
             <span key={user.id}>
               <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>
