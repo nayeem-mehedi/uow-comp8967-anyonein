@@ -26,7 +26,7 @@ import FollowList from './components/pages/Follow/FollowList';
 import NotificationPage from './components/pages/Notification/NotificationPage';
 import CreateProject from './components/pages/Projects/CreateProject';
 import EditProject from './components/pages/Projects/EditProject';
-
+import Chat from './components/pages/Chatbox/Chat';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -107,6 +107,10 @@ const router = createBrowserRouter([
   {
     path: "/edit-project/:projectId", 
     element: <EditProject />,
+  },
+  {
+    path: "/chat", 
+    element: <Chat />,
   },
 ]);
 
