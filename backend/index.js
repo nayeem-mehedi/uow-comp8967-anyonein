@@ -16,6 +16,7 @@ import announcementRoutes from "./src/routes/announcementRoutes.js"
 import notificationRoutes from "./src/routes/notificationRoutes.js"
 import followRoutes from "./src/routes/followRoutes.js"
 import fileRoutes from "./src/routes/FileRoutes.js";
+import messageRoutes from "./src/routes/MessageRoutes.js";
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use("/api/announcements", announcementRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/follow", followRoutes);
 app.use("/api/files", fileRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

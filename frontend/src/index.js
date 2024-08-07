@@ -122,7 +122,7 @@ const router = createBrowserRouter([
     element: <AnnouncementsFeed/>,
   },
     {
-        path: "/chat",
+        path: "/chat/:id",
         element: <Chat />,
     },
 ]);

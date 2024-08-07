@@ -443,3 +443,26 @@ GET {{baseUrl}}/announcements/feed
 Authorization: basic {{authToken}}
 
 ###
+
+### send message between you and the other person
+POST {{baseUrl}}/messages/
+Authorization: basic {{authToken}}
+Content-Type: application/json
+
+{
+  "receiver": 1,
+  "content": "Hello Hi there"
+}
+###
+
+### get message list between you and the other person
+GET {{baseUrl}}/messages/users
+Authorization: basic {{authToken}}
+
+###
+
+### get message list between you and the other person
+GET {{baseUrl}}/messages/1
+Authorization: basic {{authToken}}
+
+###

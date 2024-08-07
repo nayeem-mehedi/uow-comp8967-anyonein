@@ -13,6 +13,7 @@ import {Notification} from '../models/Notification.js';
 import {RedisCache} from "../models/Cache.js";
 import {File} from "../models/File.js";
 import {JoinRequest} from "../models/JoinRequest.js";
+import {Message} from '../models/Message.js';
 
 dotenv.config();
 
@@ -36,7 +37,8 @@ export const AppDataSource = new DataSource({
         Announcement,
         Notification,
         File,
-        JoinRequest
+        JoinRequest,
+        Message
     ],
     logging: true,
 });

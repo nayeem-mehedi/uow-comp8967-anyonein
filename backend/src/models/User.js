@@ -75,6 +75,7 @@ export const User = new EntitySchema({
       target: 'Notification',
       inverseSide: 'user',
     },
+    //Collaborator of Project
     projects: {
       type: 'many-to-many',
       target: 'Project',
@@ -90,10 +91,22 @@ export const User = new EntitySchema({
         },
       },
     },
+    //Project Join Request
     joinRequests: {
       type: 'one-to-many',
       target: 'JoinRequest',
       inverseSide: 'user',
+    },
+    //Messaging
+    sentMessages: {
+      type: 'one-to-many',
+      target: 'Message',
+      inverseSide: 'sender',
+    },
+    receivedMessages: {
+      type: 'one-to-many',
+      target: 'Message',
+      inverseSide: 'receiver',
     },
   },
 });

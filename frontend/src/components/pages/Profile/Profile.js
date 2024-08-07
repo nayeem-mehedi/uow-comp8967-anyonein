@@ -128,6 +128,13 @@ function Profile() {
                             >
                                 Change Password
                             </button>}
+                            {!isSelf && <button
+                                onClick={() => navigate(`/chat/${profile.user.id}`)}
+                                className="btn btn-secondary"
+                                style={{marginLeft: '16px'}} // Inline style for spacing
+                            >
+                                Send Message
+                            </button>}
                         </div>
                         <Card className="mb-5">
                             <Card.Body>
