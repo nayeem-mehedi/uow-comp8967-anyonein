@@ -90,5 +90,10 @@ export const User = new EntitySchema({
         },
       },
     },
+    joinRequests: {
+      type: 'one-to-many',
+      target: 'JoinRequest',
+      inverseSide: 'user',
+    },
   },
 });

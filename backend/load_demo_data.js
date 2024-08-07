@@ -12,6 +12,7 @@ import { Announcement } from './src/models/Announcement.js';
 import { Notification } from './src/models/Notification.js';
 import {RedisCache} from "./src/models/Cache.js";
 import {File} from "./src/models/File.js";
+import {JoinRequest} from "./src/models/JoinRequest.js";
 import bcrypt from 'bcrypt';
 import fs from "node:fs";
 
@@ -36,7 +37,8 @@ export const AppDataSource = new DataSource({
     UserFollow,
     Announcement,
     Notification,
-    File
+    File,
+    JoinRequest
   ],
   dropSchema: true,
   synchronize: true,

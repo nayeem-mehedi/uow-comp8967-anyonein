@@ -14,8 +14,9 @@ export const Project = new EntitySchema({
       nullable: false,
     },
     description: {
-      type: String,
+      type: 'text',
       nullable: false,
+
     },
     sourceCodeLink: {
       type: String,
@@ -75,6 +76,11 @@ export const Project = new EntitySchema({
     announcements: {
       type: 'one-to-many',
       target: 'Announcement',
+      inverseSide: 'project',
+    },
+    joinRequests: {
+      type: 'one-to-many',
+      target: 'JoinRequest',
       inverseSide: 'project',
     },
   },
