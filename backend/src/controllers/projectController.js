@@ -27,7 +27,7 @@ export const listProject = async (req, res) => {
     }
 
     const projects = await projectRepository.find({ relations: ["topic", "skills", "users", "owner"] });
-    return çres.json(projects);
+    return res.json(projects);
 };
 
 // 1. PROJECT list (SELF)
@@ -261,13 +261,13 @@ export const joinRequest = async (req, res) => {
 
             await joinRequestRepository.save(joinRequest);
 
-            res.json({ message: 'Project join request sent successfully' });
+            return res.json({ message: 'Project join request sent successfully' });
         } catch (error) {
             return res.status(500).json({ message: 'Error sending Project join request ', error: error.message });
         }
 
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
@@ -307,9 +307,9 @@ export const joinRequestList = async (req, res) => {
         const joinRequests = await joinRequestRepository.find({ where: { project: {id: id} }, relations: ['user', 'project'] });
         // const project = await projectRepository.findOne(projectId, { relations: ['joinRequests'] });
 
-        res.status(200).json(joinRequests);
+        return res.status(200).json(joinRequests);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 };
 
