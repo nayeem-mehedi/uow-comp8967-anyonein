@@ -51,7 +51,7 @@ function FollowList() {
     }
 
     return (
-        <div>
+        <div className="general-bg">
             <Navbar />
             <Container>
                 <Row>

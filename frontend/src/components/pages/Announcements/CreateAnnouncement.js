@@ -77,7 +77,7 @@ const CreateAnnouncement = ({type = ANNOUNCEMENT_TYPE.USER_ANNOUNCEMENT, project
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button className="main-btn-alt" variant="primary" onClick={handleCreateAnnouncement}>
+                <Button className="green-btn-alt" variant="primary" onClick={handleCreateAnnouncement}>
                     Create Announcement
                 </Button>
             </Modal.Footer>

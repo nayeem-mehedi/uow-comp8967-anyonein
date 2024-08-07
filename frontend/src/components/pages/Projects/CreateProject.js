@@ -250,7 +250,7 @@ const CreateProject = () => {
   };
 
   return (
-    <>
+    <div className="general-bg">
     <Navbar />
     <Container>
         <Row className="justify-content-md-center mt-5">
@@ -293,7 +293,7 @@ const CreateProject = () => {
               <Form.Group controlId="formProjectTopicId" className="mb-3">
                 <Form.Label>Topic</Form.Label>
                 <Dropdown onFocus={handleTopicFocus} onBlur={handleTopicBlur}>
-                  <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                  <Dropdown.Toggle className="main-btn-alt" variant="secondary" id="dropdown-basic">
                     {topics.find((topic) => topic.id.toString() === projectData.topicId)?.name || 'Select a topic'}
                   </Dropdown.Toggle>
 
@@ -355,7 +355,7 @@ const CreateProject = () => {
                     )}
                   </Col>
                   <Col md={2} style={{ textAlign: 'right' }}>
-                    <Button variant="secondary" onClick={addUser}>
+                    <Button className="main-btn" variant="secondary" onClick={addUser}>
                       Add User
                     </Button>
                   </Col>
@@ -370,14 +370,14 @@ const CreateProject = () => {
                 </ul>
               </Form.Group>
 
-              <Button variant="success" className="main-btn-alt" type="submit">
+              <Button variant="success" className="green-btn-alt" type="submit">
                 Create Project
               </Button>
             </Form>
           </Col>
         </Row>
       </Container>
-    </>
+    </div>
   );
 };
 

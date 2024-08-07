@@ -56,7 +56,7 @@ function NotificationPage() {
     }
 
     return (
-        <div>
+        <div className="general-bg">
         <Navbar />
         <Container>
             <Row className="my-4">
@@ -88,7 +88,7 @@ function NotificationPage() {
                     <p>{selectedAnnouncement?.content}</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    <Button className="grey-btn" variant="secondary" onClick={handleCloseModal}>
                         Close
                     </Button>
                 </Modal.Footer>

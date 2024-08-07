@@ -47,7 +47,7 @@ function Announcement() {
     };
 
     return (
-        <div>
+        <div className="general-bg">
             <Navbar />
             <Container>
                 <div className="createButtonSection">

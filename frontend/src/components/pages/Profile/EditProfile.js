@@ -150,7 +150,7 @@ function EditProfile() {
     }
 
     return (
-        <div>
+        <div className="general-bg">
             <Navbar />
             <div className="container mt-4">
                 <h1 className="mb-4">Edit Profile</h1>
@@ -233,7 +233,7 @@ function EditProfile() {
                         </Col>
                     </Form.Group>
 
-                    <button type="submit" className="btn btn-primary">Save Changes</button>
+                    <button type="submit" className="btn green-btn-alt">Save Changes</button>
                 </form>
             </div>
         </div>

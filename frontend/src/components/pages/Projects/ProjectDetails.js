@@ -61,7 +61,7 @@ const ProjectDetails = () => {
   }
 
   return (
-    <>
+    <div className="general-bg">
       <Navbar />
       <div className="project-details-container">
         <h1 className="project-title">{project.name}</h1>
@@ -99,17 +99,17 @@ const ProjectDetails = () => {
         </div>
       </div>
       <div className="project-buttons">
-        <Button variant="secondary" onClick={handleGoBack}>
+        <Button className="grey-btn" variant="secondary" onClick={handleGoBack}>
           Go Back
         </Button>
-        <Button variant="primary" onClick={handleEditProject} className="ms-2">
+        <Button variant="primary" onClick={handleEditProject} className="ms-2 main-btn-alt">
           Edit Project
         </Button>
       </div>
       <Row>
         <ProjectAnnouncement projectId={project.id} />
       </Row>
-    </>
+    </div>
   );
 };
 
