@@ -120,7 +120,7 @@ const ProjectDetails = ({showJoin =true}) => {
       <Row>
         <JoinRequestList projectId={project.id} />
       </Row>
-    </>
+    </div>
   );
 };
 
