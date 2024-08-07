@@ -89,33 +89,32 @@ export const getNotification = async (req, res) => {
         }
 
         const notificationId = req.params.id;
-
-        const notification = await notificationRepository
-            .createQueryBuilder('notification')
-            .leftJoinAndSelect('notification.relatedProject', 'relatedProject')
-            .leftJoinAndSelect('notification.relatedUser', 'relatedUser')
-            .leftJoinAndSelect('notification.announcement', 'announcement')
-            .select([
-                'notification',
-                'announcement',
-                'relatedProject.id',
-                'relatedProject.name',
-                'relatedUser.id',
-                'relatedUser.username'
-            ])
-            .where('notification.id = :notificationId', { notificationId: notificationId })
-            .where('notification.userId = :userId', { userId: userDataRedis.userId })
-            .getOne();
-
-        if (!notification) {
+        const readNotification = await notificationRepository.findOneBy({ id: notificationId });
+        if (!readNotification) {
             return res.status(404).json({ message: 'Notification not found' });
         }
 
-        notification.isRead = true;
-        await notificationRepository.save(notification);
+        readNotification.isRead = true;
+        await notificationRepository.save(readNotification);
 
+        // const notification = await notificationRepository
+        //     .createQueryBuilder('notification')
+        //     .leftJoinAndSelect('notification.relatedProject', 'relatedProject')
+        //     .leftJoinAndSelect('notification.relatedUser', 'relatedUser')
+        //     .leftJoinAndSelect('notification.announcement', 'announcement')
+        //     .select([
+        //         'notification',
+        //         'announcement',
+        //         'relatedProject.id',
+        //         'relatedProject.name',
+        //         'relatedUser.id',
+        //         'relatedUser.username'
+        //     ])
+        //     .where('notification.id = :notificationId', { notificationId: notificationId })
+        //     .where('notification.userId = :userId', { userId: userDataRedis.userId })
+        //     .getOne();
 
-        return res.status(200).json({ notification });
+        return res.status(200).json({ readNotification });
 
     } catch (error) {
         res.status(500).json({ error: error.message });

@@ -8,35 +8,58 @@ function NotificationPage() {
     const [error, setError] = useState(null);
     const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const token = localStorage.getItem('token');
+
+    const fetchNotifications = async () => {
+        try {
+            const response = await fetch("http://localhost:9001/api/notifications", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            setNotifications(data.notifications);
+            setLoading(false);
+        } catch (err) {
+            setError(err.message);
+            setLoading(false);
+        }
+    };
+
+    const readNotification = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:9001/api/notifications/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            console.log(data);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            const token = localStorage.getItem('token'); // Adjust the way you store/retrieve the token as needed
-
-            try {
-                const response = await fetch("http://localhost:9001/api/notifications", {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const data = await response.json();
-                setNotifications(data.notifications);
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
         fetchNotifications();
     }, []);
 
+
+
     const handleNotificationClick = async (notification) => {
+        await readNotification(notification.id);
+        await fetchNotifications();
+
         if (notification.announcement) {
             setSelectedAnnouncement(notification.announcement);
             setShowModal(true);
@@ -73,7 +96,7 @@ function NotificationPage() {
                                 onClick={() => handleNotificationClick(notification)}
                                 style={{ cursor: 'pointer' }}
                             >
-                                {notification.content}
+                                <span> {notification.isRead ? `${notification.content } [unread]` : <strong>{`${notification.content } [read]`}</strong> } </span>
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
