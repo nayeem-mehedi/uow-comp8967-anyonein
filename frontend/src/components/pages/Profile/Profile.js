@@ -83,6 +83,10 @@ function Profile() {
         }
     };
 
+    const handleChangePassword = () => {
+        navigate("/change-password");
+    };
+
     if (error) {
         return <div>Error: {error.message}</div>;
     }
@@ -116,6 +120,13 @@ function Profile() {
                                                               rel="noopener noreferrer">{profile.otherProfile}</a></p>
                         <div className="d-flex align-items-center mt-3 mb-3">
                             {isSelf && <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>}
+                            {isSelf && <button
+                                onClick={handleChangePassword}
+                                className="btn btn-secondary"
+                                style={{ marginLeft: '16px' }} // Inline style for spacing
+                            >
+                                Change Password
+                            </button>}
                         </div>
                         <Card className="mb-5">
                             <Card.Body>
