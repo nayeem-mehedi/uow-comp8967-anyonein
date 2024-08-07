@@ -3,6 +3,8 @@ import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import Navbar from "../../ui/Navbar";
 import {FOLLOW_TYPES, FollowButton} from "../Follow/FollowButton";
 import {followProject} from "../../../helper/apiURL";
+import {IconButton} from "@mui/material";
+import {BiSearch} from 'react-icons/bi';
 
 function Searchproject() {
   const [query, setQuery] = useState('');
@@ -138,43 +140,54 @@ function Searchproject() {
       <Navbar />
       <Container>
         <Row className="justify-content-md-center">
-          <Col md="6">
-            <h1 className="text-center search-h1">Search Projects</h1>
-            <Form className="search-form" onSubmit={handleSearch}>
-              <Form.Group className="mb-3">
-                <Form.Control
-                  type="text"
-                  placeholder="Project Name"
-                  value={query}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Topic</Form.Label>
-                <Form.Control as="select" value={selectedTopic} onChange={handleTopicChange}>
-                  <option value="">Select Topic</option>
-                  {topics.map(topic => (
-                    <option key={topic.id} value={topic.name}>
-                      {topic.name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Skills</Form.Label>
-                <Form.Control as="select" value={selectedSkill} onChange={handleSkillChange}>
-                  <option value="">Select Skill</option>
-                  {skills.map(skill => (
-                    <option key={skill.id} value={skill.name}>
-                      {skill.name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
-              <Button variant="primary" className='main-btn-alt' type="submit" style={{ marginBottom: '10px' }}>
-                Search
-              </Button>
-            </Form>
+          <Col lg="12"><h1 className="text-center search-h1">Search Projects</h1></Col>
+          <Col lg="12">
+              <Form className="search-form" onSubmit={handleSearch}>
+                <Row>
+              <Col lg="5">
+                <Form.Group className="mb-3">
+                  <Form.Control
+                      type="text"
+                      placeholder="Project Name"
+                      value={query}
+                      onChange={handleInputChange}
+                  />
+                </Form.Group>
+              </Col >
+                <Col lg="3">
+                  <Form.Group className="mb-3">
+                    {/*<Form.Label>Topic</Form.Label>*/}
+                    <Form.Control as="select" value={selectedTopic} onChange={handleTopicChange}>
+                      <option value="">Select Topic</option>
+                      {topics.map(topic => (
+                          <option key={topic.id} value={topic.name}>
+                            {topic.name}
+                          </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col lg="3">
+                  <Form.Group className="mb-3">
+                    {/*<Form.Label>Skills</Form.Label>*/}
+                    <Form.Control as="select" value={selectedSkill} onChange={handleSkillChange}>
+                      <option value="">Select Skill</option>
+                      {skills && skills.map(skill => (
+                          <option key={skill.id} value={skill.name}>
+                            {skill.name}
+                          </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                  <Col lg="1">
+                    <IconButton type="submit"><BiSearch /></IconButton>
+                {/*<Button variant="primary" className='main-btn-alt btn-circle' type="submit" style={{ marginBottom: '10px' }}>*/}
+                {/*  Search*/}
+                {/*</Button>*/}
+                  </Col>
+                </Row>
+              </Form>
           </Col>
         </Row>
         <Row>
@@ -186,9 +199,9 @@ function Searchproject() {
                   <Card.Text>
                     <strong>Description:</strong> {project.description}<br />
                     <strong>Source Code Link:</strong> {project.sourceCodeLink ? <a href={project.sourceCodeLink}>View Source</a> : 'N/A'}<br />
-                    <strong>Skills:</strong> {project.skills.map(skill => skill.name).join(', ')}<br />
-                    <strong>Topic:</strong> {project.topic.name}<br />
-                    <strong>Users:</strong> {project.users.map((user, index) => (
+                    <strong>Skills:</strong> {project.skills && project.skills.map(skill => skill.name).join(', ')}<br />
+                    <strong>Topic:</strong> {project.topic && project.topic.name}<br />
+                    <strong>Users:</strong> {project.users && project.users.map((user, index) => (
                       <span key={user.id}>
                           <a href={`/profile/${user.id}`}>{`${user.firstName} ${user.lastName}`}</a>
                           {index < project.users.length - 1 && ' , '}

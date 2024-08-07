@@ -220,6 +220,12 @@ Authorization: basic {{authToken}}
 
 ####
 
+### List all projects
+GET {{baseUrl}}/projects/self-project
+Authorization: basic {{authToken}}
+
+####
+
 ### List one project's details
 GET {{baseUrl}}/projects/11
 Authorization: basic {{authToken}}
@@ -401,3 +407,32 @@ Content-Type: image/jpeg
 
 
 ### FILE upload END ###
+
+#### PROJECT JOIN REQUEST ###
+POST {{baseUrl}}/projects/11/join
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "message": "I am very eager to join your project "
+}
+
+###
+
+#### PROJECT JOIN REQUEST LIST###
+GET {{baseUrl}}/projects/11/join-requests
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+###
+
+#### PROJECT JOIN REQUEST ACCEPT/REJECT###
+PATCH {{baseUrl}}/projects/join-requests/2
+Content-Type: application/json
+Authorization: basic {{authToken}}
+
+{
+  "status": "accepted"
+}
+
+###

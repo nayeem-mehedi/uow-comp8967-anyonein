@@ -1,5 +1,6 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import React, {useState} from "react";
+import { useSnackbar } from 'notistack';
 
 const ANNOUNCEMENT_TYPE = {
     PROJECT_ANNOUNCEMENT: 1,
@@ -10,6 +11,7 @@ const CreateAnnouncement = ({type = ANNOUNCEMENT_TYPE.USER_ANNOUNCEMENT, project
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const token = localStorage.getItem("token");
+    const { enqueueSnackbar } = useSnackbar();
 
     const userAnnUrl = 'http://localhost:9001/api/announcements/user';
     const projAnnUrl = 'http://localhost:9001/api/announcements/project';
@@ -31,13 +33,17 @@ const CreateAnnouncement = ({type = ANNOUNCEMENT_TYPE.USER_ANNOUNCEMENT, project
 
 
             if (response.status === 401) {
+                enqueueSnackbar('Not authorized to announce', { variant: 'error' });
                 console.error("Unauthorized: Please check your authentication token.");
             } else if (!response.ok) {
+                enqueueSnackbar('Announcement publishing failed', { variant: 'error' });
                 console.error("Error creating announcement:", response.statusText);
             } else {
+                enqueueSnackbar('Announcement published successfully', { variant: 'success' });
                 succFunc()
             }
         } catch (error) {
+            enqueueSnackbar('Announcement publishing failed', { variant: 'error' });
             console.error("Error creating announcement:", error);
         }
     };
