@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
@@ -22,6 +22,13 @@ function Profile() {
     const { enqueueSnackbar } = useSnackbar();
     // Retrieve the token from localStorage
     const token = localStorage.getItem('token');
+
+    // get current location
+    const location = useLocation();
+    // Access the pathname
+    const currentPath = location.pathname;
+
+    const isSelf = currentPath ? currentPath.includes("self") : false;
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -108,7 +115,7 @@ function Profile() {
                         <p><strong>Other Profile:</strong> <a href={profile.otherProfile} target="_blank"
                                                               rel="noopener noreferrer">{profile.otherProfile}</a></p>
                         <div className="d-flex align-items-center mt-3 mb-3">
-                            <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>
+                            {isSelf && <button onClick={handleEdit} className="btn btn-primary main-btn-alt">Edit Profile</button>}
                         </div>
                         <Card className="mb-5">
                             <Card.Body>
@@ -120,9 +127,9 @@ function Profile() {
                                     }}>
                                         <span>Skills</span>
                                         <div className="d-flex align-items-center mb-3">
-                                            <button type="button" className="btn btn-primary main-btn-alt"
+                                            {isSelf && <button type="button" className="btn btn-primary main-btn-alt"
                                                     onClick={handleAddSkills}>Add Skill
-                                            </button>
+                                            </button>}
                                         </div>
                                     </div>
 
@@ -144,11 +151,16 @@ function Profile() {
 
                                             return (
                                                 <ListItem key={`${skill.id}-${skill.name}`}>
-                                                    <Chip
-                                                        label={skill.name}
-                                                        variant="outlined"
-                                                        onDelete={() => handleDeleteSkills(skill.id)}
-                                                    />
+                                                    { isSelf ?
+                                                        (<Chip
+                                                            label={skill.name}
+                                                            variant="outlined"
+                                                            onDelete={() => handleDeleteSkills(skill.id)}
+                                                        />)
+                                                        : (
+                                                            <Chip label={skill.name} variant="outlined" />
+                                                        )
+                                                    }
                                                 </ListItem>
                                             );
                                         })}
