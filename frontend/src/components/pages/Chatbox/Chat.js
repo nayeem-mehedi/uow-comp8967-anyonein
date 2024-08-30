@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {useParams, useNavigate, Link} from "react-router-dom";
+import {useParams, /*useNavigate, Link*/} from "react-router-dom";
 import Navbar from "../../ui/Navbar";
 // import io from 'socket.io-client';
 
 // const socket = io('http://localhost:3000'); // Replace with your backend URL
 
 const Chat = () => {
-  const { id } = useParams();
-  const [contacts, setContacts] = useState([ { name: 'Aiden Chavez', lastSeen: '2 hours ago' },
+  const { /*id*/ } = useParams();
+  const [contacts, /*setContacts*/] = useState([ { name: 'Aiden Chavez', lastSeen: '2 hours ago' },
     { name: 'Vincent Porter', lastSeen: 'online' },
     { name: 'Christian Kelly', lastSeen: '10 hours ago' },
     { name: 'Monica Ward', lastSeen: 'online' },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Row, Col, Card, Button, Modal, Form } from "react-bootstrap";
+import { Container, Row, Col, /*Card,Form,*/ Button, Modal } from "react-bootstrap";
 import Navbar from "../../ui/Navbar";
 import { isLoggedIn } from '../../../helper/auth';
 import {CreateAnnouncement, ANNOUNCEMENT_TYPE} from "./CreateAnnouncement";
@@ -8,7 +8,7 @@ import AnnouncementCard from "./AnnouncementCard";
 
 function Announcement() {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { /*id*/ } = useParams();
     const token = localStorage.getItem("token");
 
     // console.log(id);

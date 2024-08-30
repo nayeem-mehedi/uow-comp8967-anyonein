@@ -10,7 +10,7 @@ function LoginForm() {
 
     const navigate = useNavigate();
     const [validated, setValidated] = useState(false);
-    const [error, setError] = useState("");
+    const [/*error*/, setError] = useState("");
     
     const [values, setValues] = useState({
         username: "",
